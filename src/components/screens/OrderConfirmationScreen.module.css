@@ -1,0 +1,314 @@
+/* ─── Page ───────────────────────────────────────────────────── */
+.page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f3f2ef;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  overflow-y: auto;
+}
+
+/* ─── Top nav ────────────────────────────────────────────────── */
+.topNav {
+  background: #2f73ac;
+  display: flex;
+  justify-content: center;
+  padding: 11px 24px;
+  flex-shrink: 0;
+}
+
+.navInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 1128px;
+  max-width: 100%;
+}
+
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navLogoWrap {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.navLogoImg {
+  position: absolute;
+  left: 2.67px;
+  top: 2.67px;
+  width: 26.67px;
+  height: 26.67px;
+  display: block;
+}
+
+.secureLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lockWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.lockImg {
+  position: absolute;
+  left: 2px;
+  top: 1px;
+  width: 12px;
+  height: 14px;
+  display: block;
+}
+
+.secureLabelText {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.32px;
+  white-space: nowrap;
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navIconWrap {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.navIconImg {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.navAvatar {
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+
+/* ─── Main layout ────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 32px 24px 40px;
+}
+
+.contentArea {
+  width: 1128px;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* ─── Card ───────────────────────────────────────────────────── */
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 32px;
+  width: 731px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ─── Success illustration ───────────────────────────────────── */
+.illustration {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* ─── Text section ───────────────────────────────────────────── */
+.textSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  text-align: center;
+}
+
+.heading {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.36px;
+  line-height: 1.25;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.body {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.body strong {
+  font-weight: 600;
+}
+
+.btnWrap {
+  display: flex;
+  justify-content: center;
+}
+
+.downloadBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #0a66c2;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 7px 16px 7px 24px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.downloadBtn:hover {
+  background: #004182;
+}
+
+.downloadIconWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.downloadIconImg {
+  position: absolute;
+  left: 2px;
+  top: 1px;
+  width: 12px;
+  height: 14px;
+  display: block;
+}
+
+.downloadLabel {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+/* ─── Divider ────────────────────────────────────────────────── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+/* ─── More questions ─────────────────────────────────────────── */
+.moreQuestions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.moreQTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: black;
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  margin: 0 0 2px;
+}
+
+.moreQSub {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.repCard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  min-height: 48px;
+}
+
+.repAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.repInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.repNameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.repName {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.repIn14 {
+  width: 14px;
+  height: 14px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.repEmail {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+}

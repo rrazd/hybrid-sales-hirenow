@@ -1,0 +1,62 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Collapsed-panel FAB ───────────────────────────────────── */
+.fab {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 56px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #ffffff;
+  border: none;
+  border-radius: 0 28px 28px 0;
+  box-shadow: 3px 0 12px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.22s ease 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fab:hover {
+  background: rgba(0, 0, 0, 1);
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.35);
+  transform: translateY(-50%) translateX(2px);
+}
+
+.fabHidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fabArrow {
+  font-size: 20px;
+  line-height: 1;
+  margin-left: 4px; /* optical nudge toward the open edge */
+}
+
+.placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: var(--color-cool-gray-60);
+  font-size: var(--font-size-lg);
+}

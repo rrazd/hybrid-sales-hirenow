@@ -1,0 +1,180 @@
+.pageWrapper {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 24px;
+  min-height: 100vh;
+  background: #F3F6F8;
+  overflow-y: auto;
+}
+
+/* browserWrap — relative ancestor for the NOT LBP ribbon overlay */
+.browserWrap {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+}
+
+/* Browser frame */
+.browser {
+  width: 100%;
+  background: #FDFAF5;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Top Nav ──────────────────────────────────────────── */
+.topNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 24px;
+  background: #788FA5;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.liLogo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.searchBar {
+  width: 168px;
+  height: 16px;
+  background: #C0D1E2;
+  border-radius: 400px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ─── Page Body ─────────────────────────────────────────── */
+/* position: relative so children can be absolute if needed */
+.pageBody {
+  flex: 1;
+  position: relative;
+  min-height: 530px;
+}
+
+/* ─── Stepper ───────────────────────────────────────────── */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding-top: 36px;
+  padding-bottom: 20px;
+}
+
+.stepBar {
+  width: 83px;
+  height: 5px;
+  border-radius: 400px;
+}
+
+.stepActive  { background: #788FA5; }
+.stepInactive { background: #C0D1E2; }
+
+/* ─── Main form placeholder ─────────────────────────────── */
+/* Figma: left 133px, top 134px from frame top (body starts after nav 48px) */
+/* Proportional: left ~14%, right ~12.5%, matching 707px / 960px */
+.formPlaceholder {
+  position: absolute;
+  left: 133px;
+  right: 120px;
+  top: 97px;   /* 134px from frame - 48px nav - ~space above stepper already counted */
+  height: 369px;
+  background: #E0E9F3;
+  border-radius: 20px;
+}
+
+/* ─── NOT LBP — bottom-right corner ribbon ───────────────── */
+/* Sits outside .browser so overflow:hidden doesn't clip it  */
+.notLbpWrap {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 180px;
+  height: 180px;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  z-index: 10;
+  border-radius: 0 0 16px 0;
+}
+
+.notLbpBanner {
+  position: absolute;
+  bottom: 42px;
+  right: -68px;
+  width: 280px;
+  padding: 9px 0;
+  background: #F5E463;
+  transform: rotate(-35deg);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: 0.06em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+}
+
+/* ─── Footer ────────────────────────────────────────────── */
+.footer {
+  background: #FFFFFF;
+  border-top: 4px solid #C7D1D8;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+
+.footerButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.btnPrimary {
+  background: #788FA5;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 400px;
+  padding: 0 24px;
+  height: 32px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: not-allowed;
+  font-family: inherit;
+}
+
+.btnSecondary {
+  background: #FFFFFF;
+  color: #788FA5;
+  border: 2px solid #788FA5;
+  border-radius: 400px;
+  padding: 0 24px;
+  height: 32px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: not-allowed;
+  font-family: inherit;
+}

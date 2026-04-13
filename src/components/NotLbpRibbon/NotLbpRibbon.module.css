@@ -1,0 +1,32 @@
+.wrap {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 220px;
+  height: 220px;
+  overflow: hidden;
+  /* Force Safari to respect overflow clipping on transformed children */
+  -webkit-mask-image: linear-gradient(white, white);
+  pointer-events: none;
+  user-select: none;
+  z-index: 10;
+  border-radius: 0 0 16px 0;
+}
+
+.banner {
+  position: absolute;
+  /* Push far enough right that the left end bleeds well past the left clip edge */
+  bottom: 30px;
+  right: -130px;
+  width: 460px;
+  padding: 9px 0;
+  background: #F5E463;
+  transform: rotate(-35deg);
+  transform-origin: center center;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: 0.06em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+}

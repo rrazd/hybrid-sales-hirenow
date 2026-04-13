@@ -1,0 +1,460 @@
+.panel {
+  width: var(--panel-width);
+  height: 100vh;
+  background: var(--color-white);
+  border-right: 1px solid var(--color-border);
+  overflow: hidden;
+  position: sticky;
+  top: 0;
+  flex-shrink: 0;
+  transition:
+    width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.4s ease;
+}
+
+.panelCollapsed {
+  width: 0;
+  border-right-color: transparent;
+}
+
+/* Inner container: fixed width so content never reflows during clip */
+.panelInner {
+  width: var(--panel-width);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  /* Fade in after width has mostly opened */
+  transition: opacity 0.22s ease 0.2s;
+}
+
+.panelCollapsed .panelInner {
+  opacity: 0;
+  /* Fade out immediately before width starts closing */
+  transition: opacity 0.15s ease;
+}
+
+/* Collapse button — absolute top-right of panel */
+.collapseBtn {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+  z-index: 1;
+}
+
+.collapseBtn:hover {
+  background: rgba(0, 0, 0, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.personaStripe {
+  height: 5px;
+  width: 100%;
+  flex-shrink: 0;
+  transition: background 0.4s ease;
+}
+
+.perspectiveSection {
+  padding: var(--space-5) var(--space-4) var(--space-6);
+}
+
+.perspectiveLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-cool-gray-60);
+  margin: 0 0 var(--space-2);
+}
+
+.perspectiveBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  cursor: default;
+  user-select: none;
+}
+
+/* Illustration avatar (Alex) */
+.avatarIllustration {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.avatarBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatarPerson {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatarBadge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1.5px solid white;
+}
+
+/* Photo avatar (Amy) */
+.avatarPhotoWrap {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.avatarPhoto {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatarLinkedInBadge {
+  position: absolute;
+  bottom: -3px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1.5px solid white;
+  display: block;
+}
+
+/* Initials avatar (fallback) */
+.avatarInitials {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+}
+
+.perspectiveName {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 34px;
+  font-weight: 700;
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'WONK' 1;
+  color: #0F172A;
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.perspectiveRole {
+  font-size: var(--font-size-xs);
+  color: #475569;
+  margin: 5px 0 0;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 0;
+}
+
+.blurbSection {
+  padding: var(--space-4);
+  flex: 1;
+}
+
+.blurbLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-cool-gray-60);
+  margin: 0 0 var(--space-2);
+}
+
+.blurbText {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+  color: var(--color-cool-gray-90);
+  margin: 0;
+}
+
+.stepsSection {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.stepsLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-cool-gray-60);
+  margin: 0 0 var(--space-2);
+}
+
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.stepItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.stepItem:hover {
+  background: var(--color-cool-gray-10);
+}
+
+.stepItemActive {
+  background: var(--color-cool-gray-10);
+}
+
+.stepDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-cool-gray-40);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.stepNumber {
+  font-size: 10px;
+  color: var(--color-cool-gray-60);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stepLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-cool-gray-90);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stepPerspective {
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+}
+
+.loFiBadge {
+  font-size: 10px;
+  background: var(--color-cool-gray-20);
+  color: var(--color-cool-gray-70);
+  padding: 1px 5px;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* ─── Quote advisor layout picker ───────────────────────────── */
+.layoutSection {
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.layoutLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-cool-gray-60);
+  margin: 0 0 var(--space-2);
+}
+
+.layoutSegment {
+  display: flex;
+  background: var(--color-cool-gray-10);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 2px;
+}
+
+.segmentBtn {
+  flex: 1;
+  padding: 6px 8px;
+  border: none;
+  border-radius: calc(var(--radius-md) - 2px);
+  background: transparent;
+  color: var(--color-cool-gray-70);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+
+.segmentBtn:hover:not(.segmentBtnActive) {
+  background: var(--color-cool-gray-20);
+  color: var(--color-cool-gray-90);
+}
+
+.segmentBtnActive {
+  background: white;
+  color: rgba(0, 0, 0, 0.85);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.navFooter {
+  padding: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  min-height: 80px;
+  align-items: center;
+}
+
+/* Primary: Continue button — dark */
+.btnNext {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 20px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.01em;
+}
+
+.btnNext:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  transform: translateY(-1px);
+}
+
+.btnNext:active:not(:disabled) {
+  background: rgba(0, 0, 0, 0.9);
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.btnNext:focus-visible {
+  outline: 3px solid rgba(0, 0, 0, 0.5);
+  outline-offset: 3px;
+}
+
+.btnNext:disabled {
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btnArrow {
+  font-size: 17px;
+  line-height: 1;
+  transition: transform 0.18s ease;
+}
+
+.btnNext:hover:not(:disabled) .btnArrow {
+  transform: translateX(3px);
+}
+
+/* Invisible spacer when no Back button — keeps Continue same width */
+.btnSpacer {
+  flex: 1;
+}
+
+/* Back button — bordered ghost, dark */
+.btnBack {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 16px;
+  background: transparent;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.75);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: center;
+  letter-spacing: 0.01em;
+  border-radius: 10px;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.btnBack:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.9);
+  border-color: rgba(0, 0, 0, 0.75);
+}
+
+.btnBack:focus-visible {
+  outline: 3px solid rgba(0, 0, 0, 0.3);
+  outline-offset: 2px;
+}

@@ -1,0 +1,571 @@
+/* ─── Page ───────────────────────────────────────────────────── */
+.page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f3f2ef;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  overflow-y: auto;
+}
+
+/* ─── Top nav ────────────────────────────────────────────────── */
+.topNav {
+  background: #2f73ac;
+  display: flex;
+  justify-content: center;
+  padding: 11px 24px;
+  flex-shrink: 0;
+}
+
+.navInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 1128px;
+  max-width: 100%;
+}
+
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navLogoWrap {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.navLogoImg {
+  position: absolute;
+  left: 2.67px;
+  top: 2.67px;
+  width: 26.67px;
+  height: 26.67px;
+  display: block;
+}
+
+.secureLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lockWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.lockImg {
+  position: absolute;
+  left: 2px;
+  top: 1px;
+  width: 12px;
+  height: 14px;
+  display: block;
+}
+
+.secureLabelText {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.32px;
+  white-space: nowrap;
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navIconWrap {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.navIconImg {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.navAvatar {
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+
+/* ─── Main layout ────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 24px;
+}
+
+.contentRow {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  width: 1128px;
+  max-width: 100%;
+  padding-top: 24px;
+  padding-bottom: 40px;
+}
+
+/* ─── Left column ────────────────────────────────────────────── */
+.leftCol {
+  flex: 0 0 731px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ─── Cards ──────────────────────────────────────────────────── */
+.card {
+  background: white;
+  border-radius: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Welcome card */
+.welcomeHeading {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f1f1f;
+  letter-spacing: 0.38px;
+  line-height: 1.25;
+  margin: 0 0 8px;
+}
+
+.inlineFeedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.lightbulbWrap {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.lightbulbImg {
+  position: absolute;
+  left: 1.72px;
+  top: 1.74px;
+  width: 20.5px;
+  height: 20.3px;
+  display: block;
+}
+
+.inlineFeedbackText {
+  font-size: 14px;
+  font-weight: 400;
+  color: #1f1f1f;
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  margin: 0;
+  padding-top: 3px;
+}
+
+/* FAQ card */
+.faqHeading {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.38px;
+  line-height: 1.25;
+  margin: 0 0 27px;
+  white-space: nowrap;
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 24px;
+  /* Kept in DOM for accessibility but visually covered by bars */
+  visibility: hidden;
+}
+
+.faqItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faqQ {
+  font-size: 16px;
+  font-weight: 600;
+  color: black;
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.faqA {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.75);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+/* Lo-fi gray placeholder bars overlaid on FAQ */
+.faqBars {
+  position: absolute;
+  left: 32px;
+  top: 76px; /* below heading + margin */
+  width: calc(100% - 64px);
+  height: 282px;
+}
+
+.faqBarGroup {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faqBar {
+  height: 21px;
+  border-radius: 30px;
+}
+
+.faqDivider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin: 24px 0;
+}
+
+.moreQuestions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.moreQTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: black;
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  margin: 0 0 2px;
+}
+
+.moreQSub {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.repCard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  min-height: 48px;
+}
+
+.repAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.repInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.repNameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.repName {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.repIn14 {
+  width: 14px;
+  height: 14px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.repEmail {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+/* ─── Right column ───────────────────────────────────────────── */
+.rightCol {
+  flex: 0 0 365px;
+}
+
+.orderCard {
+  background: white;
+  border-radius: 8px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.orderSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.orderTitle {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.38px;
+  line-height: 1.25;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.orderSubtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.dueTodayRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+
+.dueTodayLabel {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+}
+
+.dueTodayValue {
+  font-size: 16px;
+  font-weight: 600;
+  color: #057642;
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+}
+
+.orderDivider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.showDetailsBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
+  letter-spacing: -0.15px;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+}
+
+.chevronWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.chevronImg {
+  position: absolute;
+  left: 1px;
+  top: 5px;
+  width: 14px;
+  height: 7px;
+  display: block;
+}
+
+.timelineList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.timelineList li {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+}
+
+.timelineList li strong {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.legalText {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.75);
+  line-height: 1.25;
+  margin: 0;
+}
+
+.legalLink {
+  font-weight: 600;
+  color: #0a66c2;
+  text-decoration: none;
+}
+
+.placeOrderBtn {
+  width: 100%;
+  background: #0a66c2;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.32px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.placeOrderBtn:hover {
+  background: #004182;
+}
+
+/* ─── Expanded order details ──────────────────────────────── */
+.orderDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lineItem {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.lineItemLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lineItemName {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+}
+
+.lineItemSub {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+}
+
+.lineItemValue {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.subtotalsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.subtotalRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 37px;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+}
+
+.subtotalRowBold {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 37px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+}

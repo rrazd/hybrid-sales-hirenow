@@ -1,0 +1,119 @@
+.wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #0F172A;
+  min-height: 100vh;
+  cursor: pointer;
+  gap: 20px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.wrap.enter  { opacity: 0; }
+.wrap.hold   { opacity: 1; }
+.wrap.exit   { opacity: 0; }
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+/* From — dimmed */
+.fromSide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.35;
+}
+
+.fromAvatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.fromName {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  font-family: inherit;
+  letter-spacing: 0.04em;
+}
+
+/* Arrow */
+.arrow {
+  font-size: 28px;
+  color: rgba(255,255,255,0.4);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: translateX(0); }
+  50%       { opacity: 0.8; transform: translateX(4px); }
+}
+
+/* To — highlighted */
+.toSide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.toAvatarRing {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 24px rgba(255,255,255,0.15);
+}
+
+.toAvatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.toName {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'WONK' 1;
+  letter-spacing: -0.02em;
+}
+
+/* Labels */
+.label {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.skip {
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  margin: 0;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}

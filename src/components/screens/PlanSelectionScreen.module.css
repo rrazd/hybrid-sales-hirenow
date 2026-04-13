@@ -1,0 +1,207 @@
+.pageWrapper {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 24px;
+  min-height: 100vh;
+  background: #F3F6F8;
+  overflow-y: auto;
+}
+
+.browserWrap {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+}
+
+.browser {
+  width: 100%;
+  background: #FDFAF5;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  min-height: 640px;
+}
+
+/* ─── Top Nav ────────────────────────────────────────────── */
+.topNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 24px;
+  background: #788FA5;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.liLogo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.searchBar {
+  width: 168px;
+  height: 16px;
+  background: #C0D1E2;
+  border-radius: 400px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ─── Page Body ──────────────────────────────────────────── */
+.pageBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 44px 24px;
+}
+
+/* ─── Progress bar — single wide pill ───────────────────── */
+.progressBar {
+  width: 495px;
+  height: 30px;
+  background: #B7C5D2;
+  border-radius: 400px;
+  flex-shrink: 0;
+}
+
+/* ─── Card row ───────────────────────────────────────────── */
+.cardRow {
+  display: flex;
+  gap: 24px;
+  margin-top: 32px;
+  width: 100%;
+  max-width: 871px;
+}
+
+/* Left card — blank lo-fi (rendered as Figma image) */
+.cardLeft {
+  flex: 0 0 439px;
+  height: 248px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Right card — Full service hiring (selected) */
+.cardRight {
+  flex: 0 0 408px;
+  height: 248px;
+  background: #FFFFFF;
+  border: 4px solid #C7D1D8;
+  border-radius: 8px;
+  position: relative;
+}
+
+.cardTitle {
+  position: absolute;
+  top: 24px;
+  left: 28px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: 0.03em;
+  font-family: inherit;
+}
+
+.radioWrap {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 30px;
+  height: 30px;
+}
+
+.radioOuter {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.radioInner {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+/* ─── Blank footer button shapes ─────────────────────────── */
+.footerButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+  align-self: flex-end;
+  padding-bottom: 8px;
+}
+
+.btnPrimary {
+  width: 100px;
+  height: 32px;
+  background: #788FA5;
+  border-radius: 400px;
+}
+
+.btnSecondary {
+  width: 100px;
+  height: 32px;
+  background: #FFFFFF;
+  border: 4px solid #788FA5;
+  border-radius: 400px;
+}
+
+/* ─── NOT LBP — bottom-right corner ribbon ───────────────── */
+.notLbpWrap {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 180px;
+  height: 180px;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  z-index: 10;
+  border-radius: 0 0 16px 0;
+}
+
+.notLbpBanner {
+  position: absolute;
+  bottom: 42px;
+  right: -68px;
+  width: 280px;
+  padding: 9px 0;
+  background: #F5E463;
+  transform: rotate(-35deg);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: 0.06em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+}

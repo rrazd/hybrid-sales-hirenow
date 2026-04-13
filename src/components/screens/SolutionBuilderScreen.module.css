@@ -1,0 +1,1246 @@
+/* ─── Page root ──────────────────────────────────────────────── */
+.page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+  position: relative;
+  /* Solution Builder uses SF Pro (system font), not LinkedIn Sans */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ─── 1. Top Nav ─────────────────────────────────────────────── */
+.topNav {
+  height: 61px;
+  background: #003f67;
+  border-bottom: 1px solid #c7d1d8;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navLogo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.navTitle {
+  color: white;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.navSaved {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: white;
+  font-size: 14px;
+  letter-spacing: -0.15px;
+  margin-left: 16px;
+  flex-shrink: 0;
+}
+
+.navCheckIcon {
+  width: 16px;
+  height: 16px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.navSpacer {
+  flex: 1;
+}
+
+/* ─── 2. Sub-header ──────────────────────────────────────────── */
+.subHeader {
+  background: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.subHeaderLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+/* Row containing quote title/tag on left and CRM link on right — aligned to tag center */
+.quoteAndCrm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.breadcrumbItem {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+}
+
+.chevronWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.chevronInner {
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 7px;
+  height: 14px;
+  display: block;
+}
+
+.quoteRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.crmLink {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.crmLinkText {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+}
+
+.linkIconWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.linkIconInner {
+  position: absolute;
+  left: 3px;
+  top: 1px;
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+
+/* ─── 3. Main ────────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  background: #f5f5f5;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Floating layout: card + panel as a centered flex row */
+.mainWithFloat {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+}
+
+.card {
+  background: white;
+  border: 1px solid rgba(140, 140, 140, 0.2);
+  border-radius: 8px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Card loses its own centering margin when inside the float row */
+.mainWithFloat .card {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Floating Quote Advisor panel */
+.floatingAdvisor {
+  width: 280px;
+  flex-shrink: 0;
+  background: white;
+  border: 1px solid rgba(140, 140, 140, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  position: sticky;
+  top: 0;
+}
+
+/* ─── Sections ───────────────────────────────────────────────── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionDivider {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 48px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ─── Section A: Customer ────────────────────────────────────── */
+.customerField {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.customerInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 48px;
+}
+
+/* ANT Table — header and body both white */
+.card :global(.ant-table-thead th),
+.card :global(.ant-table-thead td),
+.cardReadOnly :global(.ant-table-thead th),
+.cardReadOnly :global(.ant-table-thead td) {
+  background: white !important;
+  color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.card :global(.ant-table-tbody td),
+.card :global(.ant-table-tbody tr),
+.card :global(.ant-table-row),
+.card :global(.ant-table),
+.cardReadOnly :global(.ant-table-tbody td),
+.cardReadOnly :global(.ant-table-tbody tr),
+.cardReadOnly :global(.ant-table-row),
+.cardReadOnly :global(.ant-table) {
+  background: white !important;
+}
+
+.card :global(.ant-table-wrapper),
+.card :global(.ant-table-container),
+.cardReadOnly :global(.ant-table-wrapper),
+.cardReadOnly :global(.ant-table-container) {
+  background: white !important;
+}
+
+.card :global(.ant-table-wrapper),
+.cardReadOnly :global(.ant-table-wrapper) {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card :global(.ant-table-tbody tr:last-child td),
+.cardReadOnly :global(.ant-table-tbody tr:last-child td) {
+  border-bottom: none !important;
+}
+
+/* Uniform 16px left/right padding on all cells */
+.card :global(.ant-table-thead th),
+.card :global(.ant-table-tbody td),
+.cardReadOnly :global(.ant-table-thead th),
+.cardReadOnly :global(.ant-table-tbody td) {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+/* Unit price col (3rd from last): 48px right padding shifts content 32px left of guide */
+.card :global(.ant-table-thead th:nth-last-child(3)),
+.card :global(.ant-table-tbody td:nth-last-child(3)),
+.cardReadOnly :global(.ant-table-thead th:nth-last-child(3)),
+.cardReadOnly :global(.ant-table-tbody td:nth-last-child(3)) {
+  padding-right: 48px !important;
+}
+
+/* Prevent header text from wrapping */
+.card :global(.ant-table-thead th),
+.cardReadOnly :global(.ant-table-thead th) {
+  white-space: nowrap;
+}
+
+/* Actions column: 8px outer padding — step 7 only (step 8 has no actions col) */
+.card :global(.ant-table-thead th:last-child),
+.card :global(.ant-table-tbody td:last-child) {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+/* Remove column header dividers */
+.card :global(.ant-table-thead th::before),
+.cardReadOnly :global(.ant-table-thead th::before) {
+  display: none !important;
+}
+
+/* Empty state row: fixed height, 16px left padding aligned to table edge */
+.card :global(.ant-table-tbody > tr.ant-table-placeholder > td),
+.cardReadOnly :global(.ant-table-tbody > tr.ant-table-placeholder > td) {
+  height: 105px !important;
+  padding: 0 0 0 16px !important;
+  vertical-align: middle !important;
+  text-align: left !important;
+}
+
+/* Data rows fixed to same height as empty state so totals table never shifts */
+.card :global(.ant-table-tbody tr.ant-table-row td),
+.cardReadOnly :global(.ant-table-tbody tr.ant-table-row td) {
+  height: 105px !important;
+}
+
+/* ─── Section B: Totals ──────────────────────────────────────── */
+
+/* Wraps the ANT Table + totals so guide lines can span both from top to bottom */
+.tableWithGuides {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.totalsOuter {
+  display: flex;
+  justify-content: flex-end;
+  /* align totals right edge with Net price cell right border */
+  padding-right: 160px;
+}
+
+/* Vertical guide lines — span the full tableWithGuides wrapper:
+   top of table header → bottom of totals block */
+.totalsGuide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.totalsGuideLeft {
+  right: 320px; /* flush with left edge of Net price column (actions 160px + Net price 160px) */
+}
+
+.totalsGuideRight {
+  right: 160px; /* right edge of Net price column (actions 160px) */
+}
+
+.totalsBlock {
+  /* label area = 440px (left edge) - 240px (left guide) = 200px */
+  width: 360px;
+}
+
+.totalsRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px 8px 8px; /* 16px right = contents 16px from right guide */
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.15px;
+  line-height: 20px;
+}
+
+/* Total before tax + Estimated tax: Regular weight, darker color */
+.totalsRowRegular {
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.totalsRowGray {
+  background: #f5f5f5;
+  font-weight: 400;
+}
+
+.totalsLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.totalsLabelDark {
+  display: flex;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.9);
+  font-weight: 600;
+}
+
+.totalsValueDark {
+  color: rgba(0, 0, 0, 0.9);
+  font-weight: 600;
+}
+
+.infoIcon {
+  font-size: 12px;
+  cursor: default;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* ─── Section C: Billing ─────────────────────────────────────── */
+.billingRow {
+  display: flex;
+  gap: 24px;
+}
+
+.billingField {
+  width: 160px;
+}
+
+/* ─── Add product dropdown ───────────────────────────────────── */
+.addProductWrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.productMenu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 220px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(0, 0, 0, 0.16);
+  padding: 16px 0;
+  z-index: 100;
+}
+
+.productMenuItem {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.productMenuItem:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ─── Primary button hover ───────────────────────────────────── */
+.page :global(.ant-btn-primary:not(:disabled):hover) {
+  background-color: #004182 !important;
+  border-color: #004182 !important;
+}
+
+/* ─── Section B: Buttons ─────────────────────────────────────── */
+/* Base colors — CSS module loads after ANT so these win over ANT's equal-specificity
+   base rules, while ANT's :hover pseudo-class (higher specificity) still handles hover */
+.btnOutlined {
+  border-color: #0a66c2;
+  color: #0a66c2;
+}
+
+.btnTertiary {
+  background: none;
+  border: none;
+  color: #0a66c2;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.15px;
+  cursor: pointer;
+  padding: 7px 16px;
+  border-radius: 24px;
+  line-height: 1.25;
+}
+
+.btnTertiary:hover {
+  background: rgba(140, 140, 140, 0.1);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.btnOutlined:hover {
+  background: rgba(112, 181, 249, 0.1) !important;
+  border-color: #004182 !important;
+  color: #004182 !important;
+}
+
+.btnCancel {
+  border-color: rgba(0, 0, 0, 0.75);
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.btnCancel:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.9) !important;
+  color: rgba(0, 0, 0, 0.9) !important;
+}
+
+/* ─── Callout link (dotted underline) ───────────────────────── */
+.calloutLink {
+  display: inline-flex;
+  flex-shrink: 0;
+  border-bottom: 2px dotted #56687a;
+  cursor: default;
+}
+
+.calloutLink:hover {
+  border-bottom-color: #38434f;
+}
+
+.calloutLink:hover .calloutLinkText {
+  color: #38434f;
+}
+
+.calloutLinkText {
+  border-bottom: 1px solid transparent;
+  color: #56687a;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+/* ─── Fee tooltip ────────────────────────────────────────────── */
+.feeTooltipWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.feeTooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  width: 288px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 1px rgba(140, 140, 140, 0.2), 0px 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: normal;
+  text-align: left;
+  z-index: 500;
+  pointer-events: none;
+}
+
+.feeTooltipWrap:hover .feeTooltip {
+  display: block;
+}
+
+/* ─── Confirmation dialog ────────────────────────────────────── */
+.confirmScrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+}
+
+.confirmDialog {
+  width: 560px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 1px rgba(140, 140, 140, 0.2), 0px 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Close button — absolute top-right, 48×48 hit target */
+.confirmCloseBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.confirmCloseBtn:hover .confirmCloseBtnInner {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.confirmCloseBtnInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 16px;
+}
+
+.confirmCloseIconWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.confirmCloseIconInner {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+/* Header: pl:24 pr:129 py:24 — right padding prevents text running under close btn */
+.confirmHeader {
+  padding: 24px 129px 24px 24px;
+  flex-shrink: 0;
+}
+
+.confirmHeading {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.38px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+/* Body: px:24 pb:24, no top padding (header bottom pad already gives gap) */
+.confirmBody {
+  padding: 0 24px 24px;
+  flex-shrink: 0;
+}
+
+.confirmBodyText {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.confirmDivider {
+  height: 1px;
+  background: rgba(140, 140, 140, 0.2);
+  flex-shrink: 0;
+}
+
+/* Buttons row: px:24 py:16 gap:8 */
+.confirmButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 16px 24px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Inset shadow on buttons row per Figma */
+.confirmButtons::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+}
+
+/* Each button wrapper — flex-1, min-height 48px */
+.confirmBtnCancel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 7px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 24px;
+  background: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.confirmBtnCancel:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.confirmBtnContinue {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 7px 16px;
+  border: none;
+  border-radius: 24px;
+  background: #0a66c2;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.confirmBtnContinue:hover {
+  background: #004182;
+}
+
+/* ─── Modal: Full Service Hiring ────────────────────────────── */
+.modalScrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 128px;
+  z-index: 200;
+}
+
+.modal {
+  width: 544px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 1px rgba(140, 140, 140, 0.2), 0px 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 16px 24px;
+  border-bottom: 1px solid rgba(140, 140, 140, 0.2);
+}
+
+.modalCloseBtn {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.modalCloseBtn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px 24px;
+}
+
+.modalField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 320px;
+}
+
+.fieldLabel {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+}
+
+.fieldInputWrap {
+  width: 100%;
+}
+
+.fieldInput {
+  width: 100%;
+  box-sizing: border-box;
+  height: 48px;
+  padding: 12px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.9);
+  border-radius: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.32px;
+  outline: none;
+  background: white;
+}
+
+.fieldInput::placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.fieldInput:focus {
+  border-color: #0a66c2;
+  border-width: 2px;
+}
+
+.fieldInputError {
+  border-color: #cf0007;
+  border-width: 2px;
+}
+
+.fieldInputError:focus {
+  border-color: #cf0007;
+  border-width: 2px;
+}
+
+.fieldError {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #cf0007;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.fieldErrorIcon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.fieldErrorIconImg {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.roleDropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(0, 0, 0, 0.16);
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 300;
+  padding: 8px 0;
+}
+
+.roleDropdownItem {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.roleDropdownItem:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Finder's fee % prefix input */
+.feeInputWrap {
+  display: flex;
+  align-items: center;
+  width: 83px;
+  height: 48px;
+  border: 1px solid rgba(0, 0, 0, 0.9);
+  border-radius: 4px;
+  overflow: hidden;
+  background: white;
+}
+
+.feeInputWrap:focus-within {
+  border-color: #0a66c2;
+  border-width: 2px;
+}
+
+.feePrefix {
+  padding: 0 16px 0 4px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.feeInput {
+  flex: 1;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 0 4px 0 16px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  background: white;
+  min-width: 0;
+}
+
+.fieldHelper {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.modalNotice {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.modalDivider {
+  height: 1px;
+  background: rgba(140, 140, 140, 0.2);
+}
+
+.modalFooter {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 24px;
+}
+
+/* ─── Step 8: Checkout generated ────────────────────────────── */
+
+.heroCard {
+  background: white;
+  border: 1px solid rgba(140, 140, 140, 0.2);
+  border-radius: 8px;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.heroLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.heroAvatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(140, 140, 140, 0.2);
+  flex-shrink: 0;
+}
+
+.heroTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  margin: 0 0 4px;
+}
+
+.heroExpiry {
+  font-size: 14px;
+  font-weight: 600;
+  color: #b24020;
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.cardReadOnly {
+  background: white;
+  border: 1px solid rgba(140, 140, 140, 0.2);
+  border-radius: 8px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+/* ─── Quote Advisor cards ────────────────────────────────────── */
+.advisorCardStack {
+  display: flex;
+  flex-direction: column;
+}
+
+.advisorCard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.advisorCard:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.advisorCardHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.advisorCardTagAlert {
+  background: #ad4601;
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.15px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  line-height: 1.25;
+}
+
+.advisorCardTagInfo {
+  background: rgba(140, 140, 140, 0.2);
+  color: rgba(0, 0, 0, 0.75);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.15px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  line-height: 1.25;
+}
+
+.advisorCardTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.advisorCardDesc {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.advisorCardBtn {
+  background: none;
+  border: none;
+  color: #0a66c2;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.15px;
+  cursor: pointer;
+  padding: 7px 16px;
+  border-radius: 24px;
+  line-height: 1.25;
+  align-self: flex-start;
+  margin-left: -16px;
+}
+
+.advisorCardBtn:hover {
+  background: rgba(140, 140, 140, 0.1);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* ─── Toast notification ─────────────────────────────────────── */
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.toast {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  width: 320px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 1px 0px rgba(140, 140, 140, 0.2), 0px 4px 12px 0px rgba(0, 0, 0, 0.3);
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  animation: toastSlideIn 0.18s ease;
+}
+
+.toastHidden {
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+}
+
+.toastRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toastIconText {
+  display: flex;
+  flex: 1;
+  gap: 8px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.toastIconWrap {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toastIconInner {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.toastText {
+  flex: 1;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  padding: 3px 0;
+  margin: 0;
+}
+
+.toastCloseBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 16px;
+  padding: 8px;
+}
+
+.toastCloseBtn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.toastCloseIconWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.toastCloseIconInner {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+/* ─── 4. Footer ──────────────────────────────────────────────── */
+.footer {
+  background: white;
+  box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.1);
+  padding: 16px 32px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
