@@ -133,7 +133,7 @@ export default function CheckoutPageScreen({ onNavigate, products = [] }: Props)
 
               <div className={styles.orderSection}>
                 <p className={styles.orderTitle}>Order Summary</p>
-                <p className={styles.orderSubtitle}>Full-service hiring ×{products.length || 1}</p>
+                <p className={styles.orderSubtitle}>Full-service hiring x{products.length || 1}</p>
               </div>
 
               <div className={styles.dueTodayRow}>
