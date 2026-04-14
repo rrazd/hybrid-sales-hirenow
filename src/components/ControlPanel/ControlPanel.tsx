@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { flowSteps } from '../../data/flow';
 import type { Perspective } from '../../data/flow';
 import { personas } from '../../data/personas';
@@ -63,6 +64,7 @@ export default function ControlPanel({
   quoteAdvisorContentOn = false,
   onQuoteAdvisorContentChange,
 }: ControlPanelProps) {
+  const [stepsOpen, setStepsOpen] = useState(false);
   const currentIdx = flowSteps.findIndex(s => s.id === currentStepId);
   const currentStep = flowSteps[currentIdx] ?? flowSteps[0];
   const perspective = currentStep.perspective;
@@ -96,9 +98,38 @@ export default function ControlPanel({
           </div>
         </div>
 
-        {/* Current Step Blurb */}
+        {/* Current Step Blurb + Step Picker */}
         <div className={styles.blurbSection}>
-          <p className={styles.blurbLabel}>Step {currentStep.stepNumber}</p>
+          <button
+            className={styles.stepPickerBtn}
+            onClick={() => setStepsOpen(o => !o)}
+          >
+            <span className={styles.blurbLabel}>Step {currentStep.stepNumber} of {flowSteps.length}</span>
+            <svg
+              className={`${styles.stepPickerChevron} ${stepsOpen ? styles.stepPickerChevronOpen : ''}`}
+              width="10" height="6" viewBox="0 0 10 6" fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden
+            >
+              <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          {stepsOpen && (
+            <div className={styles.stepDropdown}>
+              {flowSteps.map(step => (
+                <button
+                  key={step.id}
+                  className={`${styles.stepDropdownItem} ${step.id === currentStepId ? styles.stepDropdownItemActive : ''}`}
+                  onClick={() => { onNavigate(step.id); setStepsOpen(false); }}
+                >
+                  <span className={styles.stepDropdownNum}>{step.stepNumber}</span>
+                  <span className={styles.stepDropdownLabel}>{step.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
           <p className={styles.blurbText} dangerouslySetInnerHTML={{ __html: currentStep.blurb }} />
         </div>
 

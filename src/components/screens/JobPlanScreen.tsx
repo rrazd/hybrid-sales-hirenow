@@ -8,6 +8,7 @@
  * Text labels and status badges are part of the lo-fi design — kept as-is.
  */
 
+import { useState } from 'react';
 import NotLbpRibbon from '../NotLbpRibbon/NotLbpRibbon';
 import styles from './JobPlanScreen.module.css';
 
@@ -18,17 +19,24 @@ function StatusBadge({ label }: { label: string }) {
   return <span className={styles.badge}>{label}</span>;
 }
 
+const TOTAL_IMGS = 2;
+
 export default function JobPlanScreen() {
+  const [loadedCount, setLoadedCount] = useState(0);
+  const onLoad = () => setLoadedCount(c => c + 1);
+  const ready = loadedCount >= TOTAL_IMGS;
+
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.browserWrap}>
+        {!ready && <div className={styles.skeleton} />}
         <div className={styles.browser}>
           {/* Top Nav */}
           <div className={styles.topNav}>
-            <img src={imgLiLogo} alt="LinkedIn" className={styles.liLogo} />
+            <img src={imgLiLogo} alt="LinkedIn" className={styles.liLogo} onLoad={onLoad} />
             <div className={styles.navRight}>
               <div className={styles.searchBar} />
-              <img src={imgOval} alt="" className={styles.avatar} />
+              <img src={imgOval} alt="" className={styles.avatar} onLoad={onLoad} />
             </div>
           </div>
 

@@ -196,6 +196,111 @@
 .blurbSection {
   padding: var(--space-4);
   flex: 1;
+  overflow-y: auto;
+  overflow-x: visible;
+  position: relative;
+}
+
+/* Step picker button */
+.stepPickerBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0 0 var(--space-2);
+  cursor: pointer;
+}
+
+.stepPickerBtn:hover .blurbLabel {
+  color: var(--color-cool-gray-80);
+}
+
+.stepPickerChevron {
+  color: var(--color-cool-gray-60);
+  flex-shrink: 0;
+  display: block;
+  transition: transform 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  margin-top: 1px; /* optical alignment with caps text */
+}
+
+.stepPickerChevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Step dropdown — Stripe-style entrance */
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.stepDropdown {
+  position: absolute;
+  top: calc(var(--space-4) + 1.5rem); /* below the step picker button */
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06);
+  overflow: hidden;
+  transform-origin: top center;
+  animation: dropdownIn 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.stepDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 8px 11px 14px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s ease;
+}
+
+.stepDropdownItem:last-child {
+  border-bottom: none;
+}
+
+.stepDropdownItem:hover {
+  background: #f6f9fc;
+}
+
+.stepDropdownItemActive {
+  background: rgba(10,102,194,0.07);
+}
+
+.stepDropdownItemActive .stepDropdownNum,
+.stepDropdownItemActive .stepDropdownLabel {
+  color: #0a66c2;
+  font-weight: 600;
+}
+
+.stepDropdownNum {
+  font-size: 11px;
+  font-weight: 700;
+  color: #8898aa;
+  width: 18px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.stepDropdownLabel {
+  font-size: 13px;
+  font-weight: 400;
+  color: #1a1f36;
+  line-height: 1.35;
 }
 
 .blurbLabel {
@@ -204,14 +309,14 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-cool-gray-60);
-  margin: 0 0 var(--space-2);
+  margin: 0;
 }
 
 .blurbText {
   font-size: var(--font-size-sm);
   line-height: var(--line-height-base);
   color: var(--color-cool-gray-90);
-  margin: 0;
+  margin: var(--space-2) 0 0;
 }
 
 .stepsSection {

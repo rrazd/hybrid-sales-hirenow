@@ -115,38 +115,41 @@ export default function OrderConfirmationScreen() {
 
             <SuccessIllustration />
 
-            {/* Heading + body + button */}
+            {/* Unified text section — matches Figma frame y=184 h=239 */}
             <div className={styles.textSection}>
-              <p className={styles.heading}>Your order was successful!</p>
-              <p className={styles.body}>
-                <strong>Order FLD123131</strong>
-                {' was purchased on Jan 15, 2026.\nThanks for choosing Full Service Hiring. You\'ll receive a welcome email from us shortly.'}
-              </p>
-              <div className={styles.btnWrap}>
-                <button className={styles.downloadBtn}>
-                  <div className={styles.downloadIconWrap}>
-                    <img src={imgDownload} alt="" className={styles.downloadIconImg} />
-                  </div>
-                  <span className={styles.downloadLabel}>Download your order form</span>
-                </button>
-              </div>
-            </div>
 
-            {/* Divider + More questions */}
-            <div className={styles.divider} />
-            <div className={styles.moreQuestions}>
-              <div>
-                <p className={styles.moreQTitle}>More questions?</p>
-                <p className={styles.moreQSub}>Contact your LinkedIn representative</p>
+              {/* Inner 632px frame — heading, body, button centered */}
+              <div className={styles.textInner}>
+                <p className={styles.heading}>Your order was successful!</p>
+                <p className={styles.body}>
+                  <strong>Order FLD123131</strong>
+                  {' was purchased on Jan 15, 2026. Thanks for choosing Full-service hiring. You\'ll receive a welcome email from us shortly.'}
+                </p>
+                <div className={styles.btnWrap}>
+                  <button className={styles.downloadBtn}>
+                    <span className={styles.downloadLabel}>Download your order form</span>
+                  </button>
+                </div>
               </div>
-              <div className={styles.repCard}>
-                <img src={imgAmyAvatar} alt="Amy Smith" className={styles.repAvatar} />
-                <div className={styles.repInfo}>
-                  <div className={styles.repNameRow}>
-                    <span className={styles.repName}>Amy Smith</span>
-                    <img src={imgIn14} alt="" className={styles.repIn14} />
+
+              {/* Divider + More questions — 32px below button, left-aligned */}
+              <div className={styles.moreQuestionsWrap}>
+                <div className={styles.divider} />
+                <div className={styles.moreQuestions}>
+                  <div>
+                    <p className={styles.moreQTitle}>More questions?</p>
+                    <p className={styles.moreQSub}>Contact your LinkedIn representative</p>
                   </div>
-                  <span className={styles.repEmail}>asmith@linkedin.com</span>
+                  <div className={styles.repCard}>
+                    <img src={imgAmyAvatar} alt="Amy Smith" className={styles.repAvatar} />
+                    <div className={styles.repInfo}>
+                      <div className={styles.repNameRow}>
+                        <span className={styles.repName}>Amy Smith</span>
+                        <img src={imgIn14} alt="" className={styles.repIn14} />
+                      </div>
+                      <span className={styles.repEmail}>asmith@linkedin.com</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

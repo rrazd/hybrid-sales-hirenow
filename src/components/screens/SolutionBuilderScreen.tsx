@@ -36,7 +36,7 @@ const imgToastSuccess  = 'https://www.figma.com/api/mcp/asset/f28b7d85-bbf6-4e05
 const imgToastClose    = 'https://www.figma.com/api/mcp/asset/6d543344-4111-4a4f-8921-69fd28b64b55';
 const imgConfirmClose  = 'https://www.figma.com/api/mcp/asset/02a279a0-3e9a-4bb6-a57d-9ab09cef7b8b';
 
-type ProductRow = { key: string; role?: string; feePct?: number; salary?: number; feeAmount?: number };
+export type ProductRow = { key: string; role?: string; feePct?: number; salary?: number; feeAmount?: number };
 
 function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: string) => void): ColumnsType<ProductRow> {
   return [
@@ -46,7 +46,7 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
       render: (_, row) => row.role ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
           <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>
-            Full service hiring
+            Full-service hiring
           </span>
           <span style={{ fontSize: 14, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.9)' }}>{row.role}</span>
           <div className={styles.feeTooltipWrap}>
@@ -119,7 +119,7 @@ function buildReadOnlyProductColumns(): ColumnsType<ProductRow> {
       key: 'product',
       render: (_, row) => row.role ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
-          <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>Full service hiring</span>
+          <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>Full-service hiring</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <span style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.role}</span>
             <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.9)' }}>∙</span>
@@ -238,6 +238,8 @@ interface SolutionBuilderScreenProps {
   onCanContinueChange?: (can: boolean) => void;
   quoteAdvisorContentOn?: boolean;
   onHasProductsChange?: (has: boolean) => void;
+  products?: ProductRow[];
+  onProductsChange?: (products: ProductRow[]) => void;
 }
 
 export default function SolutionBuilderScreen({
@@ -247,12 +249,18 @@ export default function SolutionBuilderScreen({
   onCanContinueChange,
   quoteAdvisorContentOn,
   onHasProductsChange,
+  products: productsProp = [],
+  onProductsChange,
 }: SolutionBuilderScreenProps) {
   // Modal / product state
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [checkoutError, setCheckoutError] = useState(false);
-  const [products, setProducts] = useState<ProductRow[]>([]);
+  const products = productsProp;
+  const setProducts = (updater: ProductRow[] | ((prev: ProductRow[]) => ProductRow[])) => {
+    const next = typeof updater === 'function' ? updater(products) : updater;
+    onProductsChange?.(next);
+  };
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -557,10 +565,6 @@ export default function SolutionBuilderScreen({
           <img src={imgNavLogo} alt="LinkedIn" className={styles.navLogo} />
           <span className={styles.navTitle}>SOLUTION BUILDER</span>
         </div>
-        <div className={styles.navSaved}>
-          <img src={imgCheckIcon} alt="" className={styles.navCheckIcon} />
-          <span>All changes saved</span>
-        </div>
         <div className={styles.navSpacer} />
         <Avatar src={imgAmyAvatar} size={32} style={{ flexShrink: 0 }} />
       </header>
@@ -570,12 +574,10 @@ export default function SolutionBuilderScreen({
         <div className={styles.subHeaderLeft}>
           <div className={styles.breadcrumbs}>
             <span className={styles.breadcrumbItem}>Quotes</span>
-            {/* ChevronRightSmall: 16×16 outer, inner image 7×14 at left:5px top:1px */}
             <div className={styles.chevronWrap}>
               <img src={imgChevron} alt="" className={styles.chevronInner} />
             </div>
           </div>
-          <div className={styles.quoteAndCrm}>
           <div className={styles.quoteRow}>
             <Typography.Title level={3} style={{ margin: 0, fontSize: 24, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '0.36px' }}>
               Q123213
@@ -591,12 +593,17 @@ export default function SolutionBuilderScreen({
                 fontWeight: 600,
                 letterSpacing: '-0.32px',
                 lineHeight: 1.25,
-                padding: '1px 4px',
+                padding: '4px 8px',
                 margin: 0,
               }}
             >
               Quote in progress
             </Tag>
+          </div>
+        </div>
+        <div className={styles.subHeaderRight}>
+          <div className={styles.navSaved}>
+            <span>All changes saved</span>
           </div>
           <div className={styles.crmLink}>
             <span className={styles.crmLinkText}>HireNow CRM</span>
@@ -604,7 +611,6 @@ export default function SolutionBuilderScreen({
             <div className={styles.linkIconWrap}>
               <img src={imgLinkExternal} alt="" className={styles.linkIconInner} />
             </div>
-          </div>
           </div>
         </div>
       </div>
@@ -649,20 +655,10 @@ export default function SolutionBuilderScreen({
                     padding: '7px 16px',
                     height: 'auto',
                   }}
-                  onClick={() => setMenuOpen(true)}
+                  onClick={() => setModalOpen(true)}
                 >
-                  Add products
+                  Add product
                 </Button>
-                {showProductMenu && (
-                  <div className={styles.productMenu}>
-                    <div
-                      className={styles.productMenuItem}
-                      onClick={() => { setMenuOpen(false); setModalOpen(true); }}
-                    >
-                      Full service hiring
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
             {checkoutError && products.length === 0 && (
@@ -799,7 +795,7 @@ export default function SolutionBuilderScreen({
             {/* Header */}
             <div className={styles.modalHeader}>
               <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: 0, letterSpacing: '0.38px' }}>
-                Full service hiring
+                {editingKey ? 'Edit Full-service hiring' : 'Add Full-service hiring'}
               </Typography.Title>
               <button className={styles.modalCloseBtn} onClick={handleModalClose}>
                 <img src={imgCloseSmall} alt="Close" style={{ width: 12, height: 12, display: 'block' }} />
@@ -848,7 +844,7 @@ export default function SolutionBuilderScreen({
                 <div style={{ position: 'relative', width: 24, height: 24, flexShrink: 0, marginTop: 2 }}>
                   <img src={imgSignalNotice} alt="" style={{ position: 'absolute', left: 3, top: 3, width: 18, height: 18, display: 'block' }} />
                 </div>
-                <Typography.Text style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>
+                <Typography.Text style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25, display: 'block', minHeight: '3.75em' }}>
                   Headcount isn't fixed, this agreement covers all hires for this role during the term.{selectedRole && (
                     <> LinkedIn's fee per hire: <strong>{feePct}% (finder's fee) × {fmt(forecastedSalary)} (forecasted salary) = {fmt(feeAmount)}.</strong></>
                   )}
@@ -872,7 +868,7 @@ export default function SolutionBuilderScreen({
                   style={{ borderRadius: 24, fontSize: 16, fontWeight: 600, letterSpacing: '-0.32px', padding: '12px 24px', height: 'auto' }}
                   onClick={handleAddProduct}
                 >
-                  Add product
+                  {editingKey ? 'Save' : 'Add'}
                 </Button>
               </div>
             </div>

@@ -7,6 +7,7 @@
  * Scrim covers entire browser frame (including nav). Modal centered on top.
  */
 
+import { useState } from 'react';
 import NotLbpRibbon from '../NotLbpRibbon/NotLbpRibbon';
 import styles from './PhoneModalScreen.module.css';
 
@@ -16,19 +17,26 @@ const imgLeftCard   = 'https://www.figma.com/api/mcp/asset/a68f4754-e709-4025-a0
 const imgRadioOuter = 'https://www.figma.com/api/mcp/asset/e4cd980e-ba3e-41ce-834b-cd2e96c121fd';
 const imgRadioInner = 'https://www.figma.com/api/mcp/asset/3e5b536f-bf82-4baf-b3c3-d58580899fec';
 
+const TOTAL_IMGS = 5;
+
 export default function PhoneModalScreen() {
+  const [loadedCount, setLoadedCount] = useState(0);
+  const onLoad = () => setLoadedCount(c => c + 1);
+  const ready = loadedCount >= TOTAL_IMGS;
+
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.browserWrap}>
+        {!ready && <div className={styles.skeleton} />}
         {/* browser is position:relative — scrim and modal are absolute children covering everything */}
         <div className={styles.browser}>
 
           {/* ── Base page (nav + content) ── */}
           <div className={styles.topNav}>
-            <img src={imgLiLogo} alt="LinkedIn" className={styles.liLogo} />
+            <img src={imgLiLogo} alt="LinkedIn" className={styles.liLogo} onLoad={onLoad} />
             <div className={styles.navRight}>
               <div className={styles.searchBar} />
-              <img src={imgOval} alt="" className={styles.avatar} />
+              <img src={imgOval} alt="" className={styles.avatar} onLoad={onLoad} />
             </div>
           </div>
 
@@ -36,13 +44,13 @@ export default function PhoneModalScreen() {
             <div className={styles.progressBar} />
             <div className={styles.cardRow}>
               <div className={styles.cardLeft}>
-                <img src={imgLeftCard} alt="" className={styles.cardImg} />
+                <img src={imgLeftCard} alt="" className={styles.cardImg} onLoad={onLoad} />
               </div>
               <div className={styles.cardRight}>
-                <span className={styles.cardTitle}>Full service hiring</span>
+                <span className={styles.cardTitle}>Full-service hiring</span>
                 <div className={styles.radioWrap}>
-                  <img src={imgRadioOuter} alt="" className={styles.radioOuter} />
-                  <img src={imgRadioInner} alt="" className={styles.radioInner} />
+                  <img src={imgRadioOuter} alt="" className={styles.radioOuter} onLoad={onLoad} />
+                  <img src={imgRadioInner} alt="" className={styles.radioInner} onLoad={onLoad} />
                 </div>
               </div>
             </div>

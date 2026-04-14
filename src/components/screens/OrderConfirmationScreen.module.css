@@ -112,7 +112,7 @@
   flex: 1;
   display: flex;
   justify-content: center;
-  padding: 32px 24px 40px;
+  padding: 32px 24px;
 }
 
 .contentArea {
@@ -128,11 +128,13 @@
   border-radius: 8px;
   padding: 32px;
   width: 731px;
+  height: 455px;
   max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  overflow: hidden;
 }
 
 /* ─── Success illustration ───────────────────────────────────── */
@@ -149,8 +151,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
   width: 100%;
+}
+
+/* Inner 632px frame — constrains body text width to match Figma line-breaking */
+.textInner {
+  width: 632px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
   text-align: center;
 }
 
@@ -172,7 +183,6 @@
   letter-spacing: -0.32px;
   line-height: 1.25;
   margin: 0;
-  white-space: pre-line;
 }
 
 .body strong {
@@ -187,17 +197,16 @@
 .downloadBtn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: #0a66c2;
-  border: 1px solid transparent;
-  border-radius: 16px;
-  padding: 7px 16px 7px 24px;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 24px;
+  padding: 7px 16px;
   cursor: pointer;
   transition: background 0.15s ease;
 }
 
 .downloadBtn:hover {
-  background: #004182;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .downloadIconWrap {
@@ -220,13 +229,23 @@
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: white;
+  color: rgba(0, 0, 0, 0.9);
   letter-spacing: -0.15px;
   line-height: 1.25;
   white-space: nowrap;
 }
 
-/* ─── Divider ────────────────────────────────────────────────── */
+/* ─── Divider + more questions wrapper ──────────────────────── */
+/* 32px below textInner (exact gap from Figma); left-aligned text */
+.moreQuestionsWrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 32px;
+  text-align: left;
+}
+
 .divider {
   width: 100%;
   height: 1px;

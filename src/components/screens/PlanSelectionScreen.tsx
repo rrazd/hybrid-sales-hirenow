@@ -8,6 +8,7 @@
  * Two plan selection cards side by side — left blank (lo-fi), right shows "Full service hiring".
  */
 
+import { useState } from 'react';
 import NotLbpRibbon from '../NotLbpRibbon/NotLbpRibbon';
 import styles from './PlanSelectionScreen.module.css';
 
@@ -17,17 +18,24 @@ const imgLeftCard = 'https://www.figma.com/api/mcp/asset/90df0103-9956-4b00-9126
 const imgRadioOuter = 'https://www.figma.com/api/mcp/asset/93bd0089-3246-40d8-aceb-8affe98ff85b';
 const imgRadioInner = 'https://www.figma.com/api/mcp/asset/68113085-97dd-47d6-a506-6c627e96223b';
 
+const TOTAL_IMGS = 5;
+
 export default function PlanSelectionScreen() {
+  const [loadedCount, setLoadedCount] = useState(0);
+  const onLoad = () => setLoadedCount(c => c + 1);
+  const ready = loadedCount >= TOTAL_IMGS;
+
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.browserWrap}>
+        {!ready && <div className={styles.skeleton} />}
         <div className={styles.browser}>
           {/* Top Nav */}
           <div className={styles.topNav}>
-            <img src={imgLiLogo} alt="LinkedIn" className={styles.liLogo} />
+            <img src={imgLiLogo} alt="LinkedIn" className={styles.liLogo} onLoad={onLoad} />
             <div className={styles.navRight}>
               <div className={styles.searchBar} />
-              <img src={imgOval} alt="" className={styles.avatar} />
+              <img src={imgOval} alt="" className={styles.avatar} onLoad={onLoad} />
             </div>
           </div>
 
@@ -40,15 +48,15 @@ export default function PlanSelectionScreen() {
             <div className={styles.cardRow}>
               {/* Left card — blank lo-fi placeholder */}
               <div className={styles.cardLeft}>
-                <img src={imgLeftCard} alt="" className={styles.cardImg} />
+                <img src={imgLeftCard} alt="" className={styles.cardImg} onLoad={onLoad} />
               </div>
 
               {/* Right card — Full service hiring (selected) */}
               <div className={styles.cardRight}>
-                <span className={styles.cardTitle}>Full service hiring</span>
+                <span className={styles.cardTitle}>Full-service hiring</span>
                 <div className={styles.radioWrap}>
-                  <img src={imgRadioOuter} alt="" className={styles.radioOuter} />
-                  <img src={imgRadioInner} alt="" className={styles.radioInner} />
+                  <img src={imgRadioOuter} alt="" className={styles.radioOuter} onLoad={onLoad} />
+                  <img src={imgRadioInner} alt="" className={styles.radioInner} onLoad={onLoad} />
                 </div>
               </div>
             </div>

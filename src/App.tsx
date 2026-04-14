@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ConfigProvider, theme } from 'antd';
 import { flowSteps } from './data/flow';
 import ControlPanel from './components/ControlPanel/ControlPanel';
+import type { ProductRow } from './components/screens/SolutionBuilderScreen';
 import PostJobScreen from './components/screens/PostJobScreen';
 import PlanSelectionScreen from './components/screens/PlanSelectionScreen';
 import PhoneModalScreen from './components/screens/PhoneModalScreen';
@@ -42,16 +43,34 @@ const linkedInTheme = {
   },
 };
 
+// Steps that need at least one product to make sense
+const STEPS_NEEDING_PRODUCTS = new Set([
+  'solution-builder-filled', 'checkout', 'checkout-page', 'order-confirmation',
+]);
+
+const DEFAULT_PRODUCT: ProductRow = {
+  key: 'fsh-default',
+  role: 'Account Executive',
+  feePct: 15,
+  salary: 97800,
+  feeAmount: 14670,
+};
+
 export default function App() {
   const [currentStepId, setCurrentStepId] = useState(flowSteps[0].id);
   const [panelOpen, setPanelOpen] = useState(true);
   const [quoteAdvisorLayout, setQuoteAdvisorLayout] = useState<QuoteAdvisorLayout>('floating');
-  const [nextBlocked, setNextBlocked] = useState(false);
-  const [hasProducts, setHasProducts] = useState(false);
   const [quoteAdvisorContentOn, setQuoteAdvisorContentOn] = useState(false);
+  const [products, setProducts] = useState<ProductRow[]>([]);
+
+  const hasProducts = products.length > 0;
+  // Step 7 requires at least one product to continue
+  const nextBlocked = currentStepId === 'solution-builder' && !hasProducts;
 
   const handleNavigate = (id: string) => {
-    setNextBlocked(false);
+    if (STEPS_NEEDING_PRODUCTS.has(id) && products.length === 0) {
+      setProducts([DEFAULT_PRODUCT]);
+    }
     setCurrentStepId(id);
   };
 
@@ -74,13 +93,14 @@ export default function App() {
           onQuoteAdvisorContentChange={setQuoteAdvisorContentOn}
         />
 
-        {/* FAB — visible only when panel is collapsed */}
+        {/* Collapsed tab — visible only when panel is collapsed */}
         <button
           className={`${styles.fab} ${panelOpen ? styles.fabHidden : ''}`}
           onClick={() => setPanelOpen(true)}
-          aria-label="Expand panel"
+          aria-label="Open step navigator"
         >
           <span className={styles.fabArrow}>›</span>
+          <span className={styles.fabLabel}>Step navigator</span>
         </button>
 
         <main className={styles.content}>
@@ -89,9 +109,9 @@ export default function App() {
               quoteAdvisorLayout={quoteAdvisorLayout}
               currentStepId={currentStepId}
               onNavigate={handleNavigate}
-              onCanContinueChange={(can: boolean) => setNextBlocked(!can)}
               quoteAdvisorContentOn={quoteAdvisorContentOn}
-              onHasProductsChange={setHasProducts}
+              products={products}
+              onProductsChange={setProducts}
             />
           ) : (
             <div className={styles.placeholder}>

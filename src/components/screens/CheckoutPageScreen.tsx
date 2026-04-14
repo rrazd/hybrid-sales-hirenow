@@ -58,7 +58,7 @@ export default function CheckoutPageScreen({ onNavigate }: Props) {
 
             {/* Welcome card */}
             <div className={styles.card}>
-              <p className={styles.welcomeHeading}>Alex, thank you for choosing Full Service Hiring</p>
+              <p className={styles.welcomeHeading}>Alex, thank you for choosing Full-service hiring</p>
               <div className={styles.inlineFeedback}>
                 <div className={styles.lightbulbWrap}>
                   <img src={imgLightbulb} alt="" className={styles.lightbulbImg} />
@@ -130,7 +130,7 @@ export default function CheckoutPageScreen({ onNavigate }: Props) {
 
               <div className={styles.orderSection}>
                 <p className={styles.orderTitle}>Order Summary</p>
-                <p className={styles.orderSubtitle}>Full Service Hiring x1</p>
+                <p className={styles.orderSubtitle}>Full-service hiring x1</p>
               </div>
 
               <div className={styles.dueTodayRow}>
