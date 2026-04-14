@@ -5,7 +5,9 @@
  */
 
 import { useState } from 'react';
+import type { ProductRow } from './SolutionBuilderScreen';
 import styles from './CheckoutPageScreen.module.css';
+
 
 const imgLinkedIn   = 'https://www.figma.com/api/mcp/asset/0d4e6bb1-b7a8-47f9-9a03-2aff4be1f6eb';
 const imgLock       = 'https://www.figma.com/api/mcp/asset/d527716d-bb3c-4ddd-95b0-935723a7cc88';
@@ -18,9 +20,10 @@ const imgChevron    = 'https://www.figma.com/api/mcp/asset/5e9ef1e1-400b-4315-81
 
 interface Props {
   onNavigate?: (id: string) => void;
+  products?: ProductRow[];
 }
 
-export default function CheckoutPageScreen({ onNavigate }: Props) {
+export default function CheckoutPageScreen({ onNavigate, products = [] }: Props) {
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   return (
@@ -130,7 +133,7 @@ export default function CheckoutPageScreen({ onNavigate }: Props) {
 
               <div className={styles.orderSection}>
                 <p className={styles.orderTitle}>Order Summary</p>
-                <p className={styles.orderSubtitle}>Full-service hiring x1</p>
+                <p className={styles.orderSubtitle}>Full-service hiring ×{products.length || 1}</p>
               </div>
 
               <div className={styles.dueTodayRow}>
@@ -154,13 +157,15 @@ export default function CheckoutPageScreen({ onNavigate }: Props) {
 
               {detailsOpen && (
                 <div className={styles.orderDetails}>
-                  <div className={styles.lineItem}>
-                    <div className={styles.lineItemLeft}>
-                      <span className={styles.lineItemName}>Accountant</span>
-                      <span className={styles.lineItemSub}>15% of hire's salary</span>
+                  {products.map(p => (
+                    <div key={p.key} className={styles.lineItem}>
+                      <div className={styles.lineItemLeft}>
+                        <span className={styles.lineItemName}>{p.role ?? 'Role'}</span>
+                        <span className={styles.lineItemSub}>{p.feePct ?? 0}% of hire's salary</span>
+                      </div>
+                      <span className={styles.lineItemValue}>$0.00</span>
                     </div>
-                    <span className={styles.lineItemValue}>$0.00</span>
-                  </div>
+                  ))}
 
                   <div className={styles.orderDivider} />
 
