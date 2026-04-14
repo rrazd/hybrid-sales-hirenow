@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ConfigProvider, theme } from 'antd';
 import { flowSteps } from './data/flow';
 import ControlPanel from './components/ControlPanel/ControlPanel';
@@ -57,7 +57,12 @@ const DEFAULT_PRODUCT: ProductRow = {
 };
 
 export default function App() {
-  const [currentStepId, setCurrentStepId] = useState(flowSteps[0].id);
+  const getInitialStep = () => {
+    const hash = window.location.hash.slice(1);
+    return flowSteps.find(s => s.id === hash) ? hash : flowSteps[0].id;
+  };
+
+  const [currentStepId, setCurrentStepId] = useState(getInitialStep);
   const [panelOpen, setPanelOpen] = useState(true);
   const [quoteAdvisorLayout, setQuoteAdvisorLayout] = useState<QuoteAdvisorLayout>('floating');
   const [quoteAdvisorContentOn, setQuoteAdvisorContentOn] = useState(false);
@@ -72,7 +77,20 @@ export default function App() {
       setProducts([DEFAULT_PRODUCT]);
     }
     setCurrentStepId(id);
+    window.location.hash = id;
   };
+
+  // Sync state if user navigates with browser back/forward
+  useEffect(() => {
+    const onHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      if (flowSteps.find(s => s.id === hash)) {
+        setCurrentStepId(hash);
+      }
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   const currentStep = flowSteps.find(s => s.id === currentStepId) ?? flowSteps[0];
   const ScreenComponent = screenRegistry[currentStep.component];
