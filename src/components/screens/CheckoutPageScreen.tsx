@@ -191,7 +191,7 @@ export default function CheckoutPageScreen({ onNavigate, products = [] }: Props)
               <ul className={styles.timelineList}>
                 <li>Your plan starts today and services continue till <strong>Jan 1, 2027</strong>.</li>
                 <li>You will be <strong>invoiced</strong> on the hire's start date. Payment is due within <strong>30 days</strong> of the invoice date.</li>
-                <li>Your invoice will reflect the final amount due as a percentage of the hired candidate(s) first year salary.</li>
+                <li>Your invoice will reflect the final amount due as a percentage of the hired candidate(s) <strong>first year salary</strong>.</li>
               </ul>
 
               <div className={styles.orderDivider} />

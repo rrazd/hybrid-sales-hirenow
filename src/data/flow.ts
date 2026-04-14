@@ -98,7 +98,7 @@ export const flowSteps: FlowStep[] = [
     id: 'checkout-page',
     stepNumber: 10,
     label: 'Open checkout link (LBP)',
-    blurb: 'Alex is already logged into linkedin.com, he opens the link and sees the custom checkout page. He can clearly understand that he owes nothing now, what he will owe later if a hire is made. He clicks "Place order."',
+    blurb: 'Alex is already logged into linkedin.com, he opens the link and sees the custom checkout page. He can clearly understand that he owes nothing now. He clicks "Place order."',
     perspective: 'Alex',
     fidelity: 'high',
     component: 'CheckoutPageScreen',
