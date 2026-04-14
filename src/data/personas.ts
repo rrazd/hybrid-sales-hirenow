@@ -17,8 +17,8 @@ export interface PersonaConfig {
 
 export const personas: Record<Perspective, PersonaConfig> = {
   Alex: {
-    color: '#0A66C2',
-    bg: '#EBF4FF',
+    color: '#B45309',
+    bg: '#FFFBEB',
     role: 'LinkedIn Customer',
     avatar: {
       type: 'photo',
@@ -26,8 +26,8 @@ export const personas: Record<Perspective, PersonaConfig> = {
     },
   },
   Amy: {
-    color: '#057642',
-    bg: '#E7F3EC',
+    color: '#1D4ED8',
+    bg: '#EFF6FF',
     role: 'LinkedIn Sales Rep',
     avatar: {
       type: 'photo',
