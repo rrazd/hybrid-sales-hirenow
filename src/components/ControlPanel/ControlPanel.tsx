@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { flowSteps } from '../../data/flow';
 import type { Perspective } from '../../data/flow';
 import { personas } from '../../data/personas';
-import type { QuoteAdvisorLayout } from '../../App';
+import type { QuoteAdvisorLayout, FSHLayout } from '../../App';
 import styles from './ControlPanel.module.css';
 
 const imgLinkedInBadge  = 'https://www.figma.com/api/mcp/asset/f0e5db34-c9b6-425d-8fc0-0fb33a39bbb0';
@@ -19,6 +19,8 @@ interface ControlPanelProps {
   hasProducts?: boolean;
   quoteAdvisorContentOn?: boolean;
   onQuoteAdvisorContentChange?: (on: boolean) => void;
+  fshLayout?: FSHLayout;
+  onFSHLayoutChange?: (layout: FSHLayout) => void;
 }
 
 function Avatar({ perspective }: { perspective: Perspective }) {
@@ -63,6 +65,8 @@ export default function ControlPanel({
   hasProducts = false,
   quoteAdvisorContentOn = false,
   onQuoteAdvisorContentChange,
+  fshLayout = 'grouped',
+  onFSHLayoutChange,
 }: ControlPanelProps) {
   const [stepsOpen, setStepsOpen] = useState(false);
   const currentIdx = flowSteps.findIndex(s => s.id === currentStepId);
@@ -133,6 +137,27 @@ export default function ControlPanel({
           <p className={styles.blurbText} dangerouslySetInnerHTML={{ __html: currentStep.blurb }} />
         </div>
 
+        {/* FSH table layout toggle — only for step 7 */}
+        {currentStep.supportsFSHLayoutToggle && onFSHLayoutChange && (
+          <div className={styles.layoutSection}>
+            <p className={styles.layoutLabel}>FSH selection layout</p>
+            <div className={styles.layoutSegment}>
+              <button
+                className={`${styles.segmentBtn} ${fshLayout === 'grouped' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onFSHLayoutChange('grouped')}
+              >
+                Grouped
+              </button>
+              <button
+                className={`${styles.segmentBtn} ${fshLayout === 'sep-line' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onFSHLayoutChange('sep-line')}
+              >
+                Separate
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Quote Advisor layout picker — only for applicable steps */}
         {currentStep.supportsQuoteAdvisorToggle && onQuoteAdvisorLayoutChange && (
           <div className={styles.layoutSection}>
@@ -160,16 +185,16 @@ export default function ControlPanel({
             <p className={styles.layoutLabel}>Quote advisor content</p>
             <div className={styles.layoutSegment}>
               <button
-                className={`${styles.segmentBtn} ${quoteAdvisorContentOn ? styles.segmentBtnActive : ''}`}
-                onClick={() => onQuoteAdvisorContentChange(true)}
-              >
-                On
-              </button>
-              <button
                 className={`${styles.segmentBtn} ${!quoteAdvisorContentOn ? styles.segmentBtnActive : ''}`}
                 onClick={() => onQuoteAdvisorContentChange(false)}
               >
                 Off
+              </button>
+              <button
+                className={`${styles.segmentBtn} ${quoteAdvisorContentOn ? styles.segmentBtnActive : ''}`}
+                onClick={() => onQuoteAdvisorContentChange(true)}
+              >
+                On
               </button>
             </div>
           </div>

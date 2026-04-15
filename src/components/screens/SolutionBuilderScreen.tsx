@@ -6,10 +6,10 @@
  * Amy configures a quote for Alex in LinkedIn's internal sales tool.
  */
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Avatar, Button, Table, Tag, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import type { QuoteAdvisorLayout } from '../../App';
+import type { QuoteAdvisorLayout, FSHLayout } from '../../App';
 import { JOB_ROLES, ROLE_SALARIES } from '../../data/jobRoles';
 import styles from './SolutionBuilderScreen.module.css';
 
@@ -35,10 +35,95 @@ const imgCopyLinkIcon  = 'https://www.figma.com/api/mcp/asset/b709a829-291e-44e7
 const imgToastSuccess  = 'https://www.figma.com/api/mcp/asset/f28b7d85-bbf6-4e05-a89c-51b56632c4dd';
 const imgToastClose    = 'https://www.figma.com/api/mcp/asset/6d543344-4111-4a4f-8921-69fd28b64b55';
 const imgConfirmClose  = 'https://www.figma.com/api/mcp/asset/02a279a0-3e9a-4bb6-a57d-9ab09cef7b8b';
+const imgAddSmall      = 'https://www.figma.com/api/mcp/asset/678cf85e-c2af-45d6-9847-5b3a07238fbd';
 
 export type ProductRow = { key: string; role?: string; feePct?: number; salary?: number; feeAmount?: number };
 
 function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: string) => void): ColumnsType<ProductRow> {
+  return [
+    {
+      title: 'Product',
+      key: 'product',
+      onCell: (row) => row.role ? {} : { colSpan: 6 },
+      render: (_, row) => row.role ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
+          <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>
+            Full-service hiring
+          </span>
+          <span style={{ fontSize: 14, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.9)' }}>{row.role}</span>
+          <div className={styles.feeTooltipWrap}>
+            <span className={styles.calloutLink}>
+              <span className={styles.calloutLinkText}>Fee: {row.feePct}% of hire's salary</span>
+            </span>
+            <div className={styles.feeTooltip}>
+              Based on a <strong>forecasted</strong> Account salary of {fmt(row.salary ?? 0)}, LinkedIn's fee per hire would be {fmt(row.feeAmount ?? 0)}.
+            </div>
+          </div>
+        </div>
+      ) : (
+        <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.32px', lineHeight: 1.25 }}>
+          There aren't any products added, once there are you'll see them here.
+        </span>
+      ),
+    },
+    {
+      title: 'Quantity',
+      key: 'quantity',
+      width: 300,
+      align: 'right',
+      onCell: (row) => row.role ? {} : { colSpan: 0 },
+      render: (_, row) => row.role ? (
+        <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
+          <span className={styles.calloutLink}>
+            <span className={styles.calloutLinkText}>Covers all hires</span>
+          </span>
+          <div className={styles.feeTooltip}>
+            Any number of hires can be made during the agreed upon term
+          </div>
+        </div>
+      ) : null,
+    },
+    {
+      title: 'Rep discount',
+      key: 'repDiscount',
+      width: 120,
+      align: 'right',
+      onCell: (row) => row.role ? {} : { colSpan: 0 },
+      render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null,
+    },
+    {
+      title: 'Unit price',
+      key: 'unitPrice',
+      width: 120,
+      align: 'right',
+      onCell: (row) => row.role ? {} : { colSpan: 0 },
+      render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null,
+    },
+    {
+      title: 'Net price',
+      key: 'netPrice',
+      width: 160,
+      align: 'right',
+      onCell: (row) => row.role ? {} : { colSpan: 0 },
+      render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>$0.00 upfront</span> : null,
+    },
+    {
+      title: '',
+      key: 'actions',
+      width: 160,
+      align: 'right',
+      onCell: (row) => row.role ? {} : { colSpan: 0 },
+      render: (_, row) => row.role ? (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
+          <button className={styles.btnTertiary} onClick={() => onEdit(row)}>Edit</button>
+          <button className={styles.btnTertiary} onClick={() => onRemove(row.key)}>Remove</button>
+        </div>
+      ) : null,
+    },
+  ];
+}
+
+function buildSepLineProductColumns(): ColumnsType<ProductRow> {
   return [
     {
       title: 'Product',
@@ -61,55 +146,113 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
       ) : null,
     },
     {
-      title: 'Quantity',
-      key: 'quantity',
-      width: 240,
-      align: 'right',
+      title: 'Quantity', key: 'quantity', width: 300, align: 'right',
       render: (_, row) => row.role ? (
         <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
-          <span className={styles.calloutLink}>
-            <span className={styles.calloutLinkText}>Covers all hires</span>
-          </span>
-          <div className={styles.feeTooltip}>
-            Any number of hires can be made during the agreed upon term
-          </div>
+          <span className={styles.calloutLink}><span className={styles.calloutLinkText}>Covers all hires</span></span>
+          <div className={styles.feeTooltip}>Any number of hires can be made during the agreed upon term</div>
         </div>
       ) : null,
     },
-    {
-      title: 'Rep discount',
-      key: 'repDiscount',
-      width: 200,
-      align: 'right',
-      render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null,
-    },
-    {
-      title: 'Unit price',
-      key: 'unitPrice',
-      width: 176,
-      align: 'right',
-      render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null,
-    },
-    {
-      title: 'Net price',
-      key: 'netPrice',
-      width: 160,
-      align: 'right',
-      render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>$0.00 upfront</span> : null,
-    },
-    {
-      title: '',
-      key: 'actions',
-      width: 160,
-      align: 'right',
-      render: (_, row) => row.role ? (
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
-          <button className={styles.btnTertiary} onClick={() => onEdit(row)}>Edit</button>
-          <button className={styles.btnTertiary} onClick={() => onRemove(row.key)}>Remove</button>
-        </div>
-      ) : null,
-    },
+    { title: 'Rep discount', key: 'repDiscount', width: 120, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null },
+    { title: 'Unit price', key: 'unitPrice', width: 120, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null },
+    { title: 'Net price', key: 'netPrice', width: 160, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>$0.00 upfront</span> : null },
   ];
+}
+
+const TreeConnectorIcon = () => (
+  <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden style={{ flexShrink: 0, marginTop: 2 }}>
+    <path d="M2 0 L2 10 L11 10" stroke="rgba(0,0,0,0.45)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+interface GroupedProductTableProps {
+  products: ProductRow[];
+  onEdit: () => void;
+  onRemove: () => void;
+}
+function GroupedProductTable({ products, onEdit, onRemove }: GroupedProductTableProps) {
+  const isEmpty = products.length === 0;
+  const cellStyle: React.CSSProperties = { fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)', lineHeight: 1.25 };
+
+  return (
+    <div className={styles.groupedTableWrapper}>
+      <table className={styles.groupedTable}>
+        <colgroup>
+          <col />
+          <col style={{ width: 140 }} />
+          <col style={{ width: 140 }} />
+          <col style={{ width: 140 }} />
+          <col style={{ width: 160 }} />
+          <col style={{ width: 160 }} />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th style={{ textAlign: 'right' }}>Quantity</th>
+            <th style={{ textAlign: 'right' }}>Rep discount</th>
+            <th style={{ textAlign: 'right' }}>Unit price</th>
+            <th style={{ textAlign: 'right' }}>Net price</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {isEmpty ? (
+            <tr>
+              <td colSpan={6} className={styles.groupedEmptyTd}>
+                <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.32px', lineHeight: 1.25 }}>
+                  There aren't any products added, once there are you'll see them here.
+                </span>
+              </td>
+            </tr>
+          ) : (
+            <>
+              {/* Parent row */}
+              <tr className={styles.groupedParentTr}>
+                <td><span style={{ ...cellStyle, fontWeight: 600, whiteSpace: 'nowrap' }}>Full service hiring</span></td>
+                <td style={{ textAlign: 'right' }}>
+                  <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
+                    <span className={styles.calloutLink}><span className={styles.calloutLinkText}>Unlimited</span></span>
+                    <div className={styles.feeTooltip}>Any number of hires can be made during the agreed upon contract term.</div>
+                  </div>
+                </td>
+                <td style={{ textAlign: 'right' }}><span style={cellStyle}>--</span></td>
+                <td style={{ textAlign: 'right' }}><span style={cellStyle}>--</span></td>
+                <td style={{ textAlign: 'right' }}><span style={cellStyle}>$0.00 upfront</span></td>
+                <td>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
+                    <button className={styles.btnTertiary} onClick={onEdit}>Edit</button>
+                    <button className={styles.btnTertiary} onClick={onRemove}>Remove</button>
+                  </div>
+                </td>
+              </tr>
+              {/* Child rows */}
+              {products.map(p => (
+                <tr key={p.key} className={styles.groupedChildTr}>
+                  <td>
+                    <div className={styles.gtChildProductCell}>
+                      <TreeConnectorIcon />
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
+                        <span style={cellStyle}>{p.role}</span>
+                        <div className={styles.feeTooltipWrap}>
+                          <span className={styles.calloutLink}><span className={styles.calloutLinkText}>Fee per hire: {p.feePct}%</span></span>
+                          <div className={styles.feeTooltip}>
+                            The fee per hire is the percentage of the hire's first-year salary paid to LinkedIn.
+                            {p.role !== 'Miscellaneous' && <> For a forecasted salary of {fmt(p.salary ?? 0)} for {p.role}, the fee would be {fmt(p.feeAmount ?? 0)}.</>}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td /><td /><td /><td /><td />
+                </tr>
+              ))}
+            </>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 function buildReadOnlyProductColumns(): ColumnsType<ProductRow> {
@@ -132,7 +275,7 @@ function buildReadOnlyProductColumns(): ColumnsType<ProductRow> {
       ) : null,
     },
     {
-      title: 'Quantity', key: 'quantity', width: 240, align: 'right',
+      title: 'Quantity', key: 'quantity', width: 300, align: 'right',
       render: (_, row) => row.role ? (
         <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
           <span className={styles.calloutLink}><span className={styles.calloutLinkText}>Covers all hires</span></span>
@@ -140,8 +283,8 @@ function buildReadOnlyProductColumns(): ColumnsType<ProductRow> {
         </div>
       ) : null,
     },
-    { title: 'Rep discount', key: 'repDiscount', width: 200, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null },
-    { title: 'Unit price', key: 'unitPrice', width: 176, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null },
+    { title: 'Rep discount', key: 'repDiscount', width: 120, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null },
+    { title: 'Unit price', key: 'unitPrice', width: 120, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null },
     { title: 'Net price', key: 'netPrice', width: 160, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>$0.00 upfront</span> : null },
   ];
 }
@@ -151,32 +294,66 @@ interface RoleTypeaheadProps {
   value: string;
   onChange: (v: string) => void;
   onSelect: (role: string) => void;
+  onClear?: () => void;
   isSelected?: boolean;
   hasError?: boolean;
 }
-function RoleTypeahead({ value, onChange, onSelect, isSelected, hasError }: RoleTypeaheadProps) {
+function RoleTypeahead({ value, onChange, onSelect, onClear, isSelected, hasError }: RoleTypeaheadProps) {
   const [open, setOpen] = useState(false);
+  const [dropdownRect, setDropdownRect] = useState<{ top?: number; bottom?: number; left: number; width: number } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const matches = value.trim()
     ? JOB_ROLES.filter(r => r.toLowerCase().includes(value.toLowerCase()))
     : [];
 
+  const openDropdown = () => {
+    if (inputRef.current) {
+      const r = inputRef.current.getBoundingClientRect();
+      const DROPDOWN_HEIGHT = 240; // max visible height
+      const spaceBelow = window.innerHeight - r.bottom;
+      if (spaceBelow >= DROPDOWN_HEIGHT + 4) {
+        setDropdownRect({ top: r.bottom + 4, left: r.left, width: r.width });
+      } else {
+        setDropdownRect({ bottom: window.innerHeight - r.top + 4, left: r.left, width: r.width });
+      }
+    }
+    setOpen(true);
+  };
+
   return (
     <div style={{ position: 'relative', width: '100%' }}>
-      <input
-        ref={inputRef}
-        type="text"
-        value={value}
-        placeholder="Search by role name"
-        className={`${styles.fieldInput} ${hasError ? styles.fieldInputError : ''}`}
-        style={isSelected ? { color: 'rgba(0,0,0,0.9)' } : undefined}
-        onChange={e => { onChange(e.target.value); setOpen(true); }}
-        onFocus={() => { if (value) setOpen(true); }}
-        onBlur={() => setTimeout(() => setOpen(false), 150)}
-      />
-      {open && matches.length > 0 && (
-        <div className={styles.roleDropdown}>
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+        <input
+          ref={inputRef}
+          type="text"
+          value={value}
+          placeholder="Search by role name"
+          className={`${styles.fieldInput} ${hasError ? styles.fieldInputError : ''}`}
+          style={{ ...(isSelected ? { color: 'rgba(0,0,0,0.9)' } : {}), ...(isSelected ? { paddingRight: 40 } : {}) }}
+          onChange={e => { onChange(e.target.value); openDropdown(); }}
+          onFocus={() => { if (value) openDropdown(); }}
+          onBlur={() => setTimeout(() => setOpen(false), 150)}
+        />
+        {isSelected && onClear && (
+          <button
+            className={styles.typeaheadClearBtn}
+            onMouseDown={e => { e.preventDefault(); onClear(); }}
+            aria-label="Clear"
+            tabIndex={-1}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+              <circle cx="10" cy="10" r="10" fill="rgba(0,0,0,0.9)"/>
+              <path d="M6.5 6.5L13.5 13.5M13.5 6.5L6.5 13.5" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </button>
+        )}
+      </div>
+      {open && matches.length > 0 && dropdownRect && (
+        <div
+          className={styles.roleDropdown}
+          style={{ position: 'fixed', top: dropdownRect.top, bottom: dropdownRect.bottom, left: dropdownRect.left, width: dropdownRect.width }}
+        >
           {matches.map(role => (
             <div
               key={role}
@@ -240,6 +417,7 @@ interface SolutionBuilderScreenProps {
   onHasProductsChange?: (has: boolean) => void;
   products?: ProductRow[];
   onProductsChange?: (products: ProductRow[]) => void;
+  fshLayout?: FSHLayout;
 }
 
 export default function SolutionBuilderScreen({
@@ -251,18 +429,89 @@ export default function SolutionBuilderScreen({
   onHasProductsChange,
   products: productsProp = [],
   onProductsChange,
+  fshLayout = 'grouped',
 }: SolutionBuilderScreenProps) {
-  // Modal / product state
+  // Modal / product state — each layout maintains its own products
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [checkoutError, setCheckoutError] = useState(false);
-  const products = productsProp;
-  const setProducts = (updater: ProductRow[] | ((prev: ProductRow[]) => ProductRow[])) => {
-    const next = typeof updater === 'function' ? updater(products) : updater;
-    onProductsChange?.(next);
-  };
+  const [sepLineProducts, setSepLineProducts] = useState<ProductRow[]>(productsProp);
+  const [groupedProducts, setGroupedProducts] = useState<ProductRow[]>([]);
+  const products = fshLayout === 'sep-line' ? sepLineProducts : groupedProducts;
+
+  // Use a ref so setProducts is always stable and always routes to the current layout's setter
+  const fshLayoutRef = useRef(fshLayout);
+  useEffect(() => { fshLayoutRef.current = fshLayout; });
+  const setProducts = useCallback((updater: ProductRow[] | ((prev: ProductRow[]) => ProductRow[])) => {
+    if (fshLayoutRef.current === 'sep-line') {
+      setSepLineProducts(prev => typeof updater === 'function' ? updater(prev) : updater);
+    } else {
+      setGroupedProducts(prev => typeof updater === 'function' ? updater(prev) : updater);
+    }
+  }, []);
+
+  const [paymentTerm, setPaymentTerm] = useState<'NET30' | 'NET60' | 'NET90'>('NET30');
+  const [paymentTermOpen, setPaymentTermOpen] = useState(false);
+  const [paymentTermRect, setPaymentTermRect] = useState<{ top?: number; bottom?: number; left: number; width: number } | null>(null);
+  const paymentTermRef = useRef<HTMLDivElement>(null);
+
+  // Sync active layout's products to parent (for checkout page)
+  useEffect(() => {
+    onProductsChange?.(products);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sepLineProducts, groupedProducts, fshLayout]);
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+
+  // Grouped modal state
+  interface GroupedRole { id: string; roleQuery: string; role: string; feePct: string; }
+  const [groupedRoles, setGroupedRoles] = useState<GroupedRole[]>([]);
+  const pendingScrollId = useRef<string | null>(null);
+  const modalBodyRef = useRef<HTMLDivElement>(null);
+  const addGroupedRole = () => {
+    const newId = `gr-${Date.now()}`;
+    pendingScrollId.current = newId;
+    setGroupedRoles(prev => [...prev, { id: newId, roleQuery: '', role: '', feePct: String(DEFAULT_FEE_PCT) }]);
+  };
+  const removeGroupedRole = (id: string) => setGroupedRoles(prev => prev.filter(r => r.id !== id));
+
+  useEffect(() => {
+    const id = pendingScrollId.current;
+    if (!id || !modalBodyRef.current) return;
+    const card = modalBodyRef.current.querySelector<HTMLElement>(`[data-role-id="${id}"]`);
+    if (!card) return;
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const input = card.querySelector<HTMLInputElement>('input');
+    input?.focus();
+    pendingScrollId.current = null;
+  }, [groupedRoles]);
+  const updateGroupedRole = (id: string, patch: Partial<GroupedRole>) =>
+    setGroupedRoles(prev => prev.map(r => r.id === id ? { ...r, ...patch } : r));
+  const openEditGroupedModal = () => {
+    // Restore groupedRoles from saved products (skip index 0 which is always the misc row)
+    const restored: GroupedRole[] = products.slice(1).map((p, i) => ({
+      id: `gr-edit-${i}-${p.key}`,
+      roleQuery: p.role ?? '',
+      role: p.role ?? '',
+      feePct: String(p.feePct ?? DEFAULT_FEE_PCT),
+    }));
+    setGroupedRoles(restored);
+    setModalOpen(true);
+  };
+
+  const handleAddGroupedProduct = () => {
+    const miscSalary = ROLE_SALARIES['Miscellaneous'] ?? DEFAULT_SALARY;
+    const miscRow: ProductRow = { key: `fsh-misc-${Date.now()}`, role: 'Miscellaneous', feePct: DEFAULT_FEE_PCT, salary: miscSalary, feeAmount: Math.round(miscSalary * DEFAULT_FEE_PCT / 100) };
+    const addedRows: ProductRow[] = groupedRoles
+      .filter(r => r.role)
+      .map(r => {
+        const salary = ROLE_SALARIES[r.role] ?? DEFAULT_SALARY;
+        const pct = Math.max(0, parseFloat(r.feePct) || 0);
+        return { key: `fsh-${Date.now()}-${r.id}`, role: r.role, feePct: pct, salary, feeAmount: Math.round(salary * pct / 100) };
+      });
+    setProducts([miscRow, ...addedRows]);
+    setModalOpen(false);
+  };
 
   // Confirmation dialog state
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -294,8 +543,8 @@ export default function SolutionBuilderScreen({
       setFindersFee(String(row.feePct ?? DEFAULT_FEE_PCT));
       setModalOpen(true);
     },
-    (key) => setProducts(prev => prev.filter(p => p.key !== key)),
-  ), []);
+    (key) => setProducts((prev: ProductRow[]) => prev.filter((p: ProductRow) => p.key !== key)),
+  ), [setProducts]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -310,7 +559,9 @@ export default function SolutionBuilderScreen({
 
   useEffect(() => {
     if (showModal) {
-      if (!isEditingRef.current) {
+      if (fshLayout === 'grouped') {
+        // groupedRoles seeded by caller (openEditGroupedModal or fresh-add path)
+      } else if (!isEditingRef.current) {
         setRoleQuery('');
         setSelectedRole('');
         setFindersFee(String(DEFAULT_FEE_PCT));
@@ -318,7 +569,17 @@ export default function SolutionBuilderScreen({
       }
       isEditingRef.current = false;
     }
-  }, [showModal]);
+  }, [showModal, fshLayout]);
+
+  // Close modal when switching layouts
+  const prevFshLayoutRef = useRef(fshLayout);
+  useEffect(() => {
+    if (prevFshLayoutRef.current !== fshLayout) {
+      prevFshLayoutRef.current = fshLayout;
+      setModalOpen(false);
+      setEditingKey(null);
+    }
+  }, [fshLayout]);
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -334,7 +595,7 @@ export default function SolutionBuilderScreen({
       const pct = Math.max(0, parseFloat(findersFee) || 0);
       const fee = Math.round(salary * pct / 100);
       const row: ProductRow = { key: editingKey ?? `fsh-${Date.now()}`, role: selectedRole, feePct: pct, salary, feeAmount: fee };
-      setProducts(prev => editingKey ? prev.map(p => p.key === editingKey ? row : p) : [...prev, row]);
+      setProducts((prev: ProductRow[]) => editingKey ? prev.map((p: ProductRow) => p.key === editingKey ? row : p) : [...prev, row]);
       setEditingKey(null);
       setModalOpen(false);
     }
@@ -356,6 +617,7 @@ export default function SolutionBuilderScreen({
   const feePct = Math.max(0, parseFloat(findersFee) || 0);
   const feeAmount = Math.round(forecastedSalary * feePct / 100);
   const readOnlyColumns = useMemo(() => buildReadOnlyProductColumns(), []);
+  const sepLineColumns = useMemo(() => buildSepLineProductColumns(), []);
   const isFilled = currentStepId === 'solution-builder-filled';
 
   // ── Step 8: Checkout generated (read-only) ──────────────────
@@ -497,7 +759,7 @@ export default function SolutionBuilderScreen({
                   ))}
                   <div className={styles.billingField}>
                     <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 4 }}>Invoice payment term</Typography.Text>
-                    <Typography.Text style={{ fontSize: 16, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.32px' }}>NET30</Typography.Text>
+                    <Typography.Text style={{ fontSize: 16, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.32px' }}>{paymentTerm}</Typography.Text>
                   </div>
                 </div>
               </section>
@@ -644,21 +906,29 @@ export default function SolutionBuilderScreen({
                 Products
               </Typography.Title>
               <div className={styles.addProductWrapper} ref={menuRef}>
-                <Button
-                  className={styles.btnOutlined}
-                  style={{
-                    borderRadius: 24,
-                    fontSize: 14,
-                    fontWeight: 600,
-                    letterSpacing: '-0.15px',
-                    lineHeight: 1.25,
-                    padding: '7px 16px',
-                    height: 'auto',
-                  }}
-                  onClick={() => setModalOpen(true)}
-                >
-                  Add product
-                </Button>
+                <div className={fshLayout === 'grouped' && products.length > 0 ? styles.feeTooltipWrap : undefined}>
+                  <Button
+                    className={styles.btnOutlined}
+                    disabled={fshLayout === 'grouped' && products.length > 0}
+                    style={{
+                      borderRadius: 24,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      letterSpacing: '-0.15px',
+                      lineHeight: 1.25,
+                      padding: '7px 16px',
+                      height: 'auto',
+                    }}
+                    onClick={() => { setGroupedRoles([]); setModalOpen(true); }}
+                  >
+                    Add product
+                  </Button>
+                  {fshLayout === 'grouped' && products.length > 0 && (
+                    <div className={styles.feeTooltip} style={{ right: 0, left: 'auto', width: 320 }}>
+                      Only one product (Full-service hiring) is available, and it has already been added to this quote.
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             {checkoutError && products.length === 0 && (
@@ -675,26 +945,32 @@ export default function SolutionBuilderScreen({
               <div className={`${styles.totalsGuide} ${styles.totalsGuideLeft}`} />
               <div className={`${styles.totalsGuide} ${styles.totalsGuideRight}`} />
 
-              <Table<ProductRow>
-                columns={productColumns}
-                dataSource={products}
-                pagination={false}
-                locale={{
-                  emptyText: (
-                    <span style={{
-                      fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-                      fontSize: 14,
-                      fontWeight: 400,
-                      color: 'rgba(0,0,0,0.6)',
-                      letterSpacing: '-0.32px',
-                      lineHeight: 1.25,
-                    }}>
-                      There aren't any products added, once there are you'll see them here.
-                    </span>
-                  ),
-                }}
-                style={{ marginTop: 0 }}
-              />
+              {fshLayout === 'grouped' ? (
+                <GroupedProductTable
+                  products={products}
+                  onEdit={openEditGroupedModal}
+                  onRemove={() => setProducts([])}
+                />
+              ) : (
+                <Table<ProductRow>
+                  columns={productColumns}
+                  dataSource={products}
+                  locale={{
+                    emptyText: (
+                      <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.32px', lineHeight: 1.25 }}>
+                        There aren't any products added, once there are you'll see them here.
+                      </span>
+                    ),
+                  }}
+                  pagination={false}
+                  style={{ marginTop: 0 }}
+                  components={{
+                    table: (props: React.HTMLAttributes<HTMLTableElement>) => (
+                      <table {...props} style={{ ...props.style, tableLayout: 'fixed', width: '100%' }} />
+                    ),
+                  }}
+                />
+              )}
 
               {/* Totals block */}
               <div className={styles.totalsOuter}>
@@ -747,21 +1023,48 @@ export default function SolutionBuilderScreen({
                   </Typography.Text>
                 </div>
               ))}
-              {showFilled && (
-                <div className={styles.billingField}>
-                  <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 4 }}>
-                    Invoice payment term
-                  </Typography.Text>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <Typography.Text style={{ fontSize: 16, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.32px' }}>
-                      NET30
-                    </Typography.Text>
-                    <button className={styles.btnTertiary}>
-                      Edit
-                    </button>
-                  </div>
+              <div className={styles.billingField}>
+                <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 8 }}>
+                  Invoice payment term
+                </Typography.Text>
+                <div className={styles.paymentTermWrap} ref={paymentTermRef}>
+                  <button
+                    className={`${styles.paymentTermSelect} ${paymentTermOpen ? styles.paymentTermSelectOpen : ''}`}
+                    onClick={() => {
+                      if (!paymentTermOpen && paymentTermRef.current) {
+                        const r = paymentTermRef.current.getBoundingClientRect();
+                        const MENU_HEIGHT = 176; // 3 items × ~48px + 32px padding
+                        const spaceBelow = window.innerHeight - r.bottom;
+                        if (spaceBelow >= MENU_HEIGHT + 4) {
+                          setPaymentTermRect({ top: r.bottom + 4, left: r.left, width: r.width });
+                        } else {
+                          setPaymentTermRect({ bottom: window.innerHeight - r.top + 4, left: r.left, width: r.width });
+                        }
+                      }
+                      setPaymentTermOpen(o => !o);
+                    }}
+                    onBlur={() => setTimeout(() => setPaymentTermOpen(false), 150)}
+                  >
+                    {paymentTerm}
+                  </button>
+                  <svg className={styles.paymentTermCaret} width="14" height="7" viewBox="0 0 14 7" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <polygon points="0,0 14,0 7,7" fill="rgba(0,0,0,0.9)"/>
+                  </svg>
+                  {paymentTermOpen && paymentTermRect && (
+                    <div className={styles.paymentTermMenu} style={{ position: 'fixed', top: paymentTermRect.top, bottom: paymentTermRect.bottom, left: paymentTermRect.left, width: paymentTermRect.width }}>
+                      {(['NET30', 'NET60', 'NET90'] as const).map(opt => (
+                        <div
+                          key={opt}
+                          className={`${styles.paymentTermMenuItem} ${paymentTerm === opt ? styles.paymentTermMenuItemSelected : ''}`}
+                          onMouseDown={() => { setPaymentTerm(opt); setPaymentTermOpen(false); }}
+                        >
+                          {opt}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           </section>
 
@@ -788,8 +1091,8 @@ export default function SolutionBuilderScreen({
         )}
       </main>
 
-      {/* ── Modal: Full Service Hiring ──────────────────────── */}
-      {showModal && (
+      {/* ── Modal: Full Service Hiring (sep-line) ───────────── */}
+      {showModal && fshLayout !== 'grouped' && (
         <div className={styles.modalScrim}>
           <div className={styles.modal}>
             {/* Header */}
@@ -811,6 +1114,7 @@ export default function SolutionBuilderScreen({
                   value={roleQuery}
                   onChange={v => { setRoleQuery(v); if (v !== selectedRole) setSelectedRole(''); }}
                   onSelect={role => { setSelectedRole(role); setRoleQuery(role); setRoleError(false); }}
+                  onClear={() => { setRoleQuery(''); setSelectedRole(''); }}
                   isSelected={!!selectedRole}
                   hasError={roleError}
                 />
@@ -868,10 +1172,137 @@ export default function SolutionBuilderScreen({
                   style={{ borderRadius: 24, fontSize: 16, fontWeight: 600, letterSpacing: '-0.32px', padding: '12px 24px', height: 'auto' }}
                   onClick={handleAddProduct}
                 >
-                  {editingKey ? 'Save' : 'Add'}
+                  {editingKey ? 'Save' : 'Add to quote'}
                 </Button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal: Full Service Hiring (grouped) ────────────── */}
+      {showModal && fshLayout === 'grouped' && (
+        <div className={styles.modalScrim}>
+          <div className={`${styles.modal} ${styles.modalGrouped}`}>
+
+            {/* Header */}
+            <div className={styles.modalHeader}>
+              <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: 0, letterSpacing: '0.38px' }}>
+                Add Full-service hiring
+              </Typography.Title>
+              <button className={styles.modalCloseBtn} onClick={handleModalClose}>
+                <img src={imgCloseSmall} alt="Close" style={{ width: 12, height: 12, display: 'block' }} />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className={styles.modalBody} ref={modalBodyRef}>
+              <div className={styles.groupedRolesSection}>
+                <p className={styles.groupedRolesSectionTitle}>Roles</p>
+                <p className={styles.groupedRolesSectionSubtitle}>Headcount isn't fixed for roles, the contract covers all hires.</p>
+
+                {/* Default read-only Miscellaneous row */}
+                <div className={styles.groupedRoleCard}>
+                  <div className={styles.groupedRoleCardRow}>
+                    <div className={styles.groupedRoleCardLeft} style={{ alignItems: 'stretch' }}>
+                      <div className={styles.groupedRoleField} style={{ justifyContent: 'flex-start' }}>
+                        <label className={styles.fieldLabel} style={{ marginBottom: 4 }}>Role</label>
+                        <div className={styles.feeTooltipWrap}>
+                          <span className={styles.calloutLink}>
+                            <span className={styles.calloutLinkValueText} style={{ fontSize: 14 }}>Miscellaneous</span>
+                          </span>
+                          <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
+                        </div>
+                      </div>
+                      <div className={styles.groupedFeeField} style={{ justifyContent: 'flex-start' }}>
+                        <div className={styles.feeTooltipWrap} style={{ marginBottom: 4 }}>
+                          <span className={styles.calloutLink}>
+                            <span className={styles.calloutLinkLabelText}>Fee per hire</span>
+                          </span>
+                          <div className={styles.feeTooltip} style={{ left: 'auto', right: 0 }}>The fee per hire is the percentage of the hire's first-year salary paid to LinkedIn.</div>
+                        </div>
+                        <span className={styles.groupedReadOnlyValue} style={{ fontSize: 14 }}>{DEFAULT_FEE_PCT}%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {groupedRoles.map((entry) => (
+                  <div key={entry.id} data-role-id={entry.id} className={styles.groupedRoleCard}>
+                    {/* Labels row */}
+                    <div className={styles.groupedRoleCardLabels}>
+                      <div className={styles.groupedRoleField}>
+                        <label className={styles.fieldLabel}>Role</label>
+                      </div>
+                      <div className={styles.groupedFeeField}>
+                        <div className={styles.feeTooltipWrap}>
+                          <span className={`${styles.calloutLink} ${styles.calloutLinkLabel}`}>
+                            <span className={styles.calloutLinkLabelText}>Fee per hire</span>
+                          </span>
+                          <div className={styles.feeTooltip} style={{ left: 'auto', right: 0 }}>The fee per hire is the percentage of the hire's first-year salary paid to LinkedIn.</div>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Inputs + Remove row */}
+                    <div className={styles.groupedRoleCardRow}>
+                      <div className={styles.groupedRoleCardLeft}>
+                        <div className={styles.groupedRoleField}>
+                          <RoleTypeahead
+                            value={entry.roleQuery}
+                            onChange={v => updateGroupedRole(entry.id, { roleQuery: v, role: v !== entry.role ? '' : entry.role })}
+                            onSelect={role => updateGroupedRole(entry.id, { role, roleQuery: role })}
+                            onClear={() => updateGroupedRole(entry.id, { roleQuery: '', role: '' })}
+                            isSelected={!!entry.role}
+                            hasError={false}
+                          />
+                        </div>
+                        <div className={styles.groupedFeeField}>
+                          <div className={styles.feeInputWrap}>
+                            <input
+                              type="text"
+                              value={entry.feePct}
+                              className={styles.feeInput}
+                              onChange={e => updateGroupedRole(entry.id, { feePct: e.target.value.replace(/[^0-9.]/g, '') })}
+                            />
+                            <span className={styles.feePrefix}>%</span>
+                          </div>
+                        </div>
+                      </div>
+                      <button className={styles.groupedRemoveBtn} onClick={() => removeGroupedRole(entry.id)}>
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
+                <button className={styles.groupedAddRoleBtn} onClick={addGroupedRole}>
+                  <img src={imgAddSmall} alt="" style={{ width: 12, height: 12 }} />
+                  <span>Add role</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className={styles.modalFooter}>
+              <div className={styles.modalDivider} />
+              <div className={styles.modalActions}>
+                <Button
+                  className={styles.btnCancel}
+                  style={{ borderRadius: 24, fontSize: 16, fontWeight: 600, letterSpacing: '-0.32px', padding: '12px 24px', height: 'auto' }}
+                  onClick={handleModalClose}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="primary"
+                  style={{ borderRadius: 24, fontSize: 16, fontWeight: 600, letterSpacing: '-0.32px', padding: '12px 24px', height: 'auto' }}
+                  onClick={handleAddGroupedProduct}
+                >
+                  Add to quote
+                </Button>
+              </div>
+            </div>
+
           </div>
         </div>
       )}

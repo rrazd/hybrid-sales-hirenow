@@ -9,6 +9,7 @@ export interface FlowStep {
   fidelity: 'low' | 'high';
   component: string; // component name, used for routing
   supportsQuoteAdvisorToggle?: boolean; // show layout picker in control panel
+  supportsFSHLayoutToggle?: boolean;    // show FSH table layout picker in control panel
 }
 
 export const flowSteps: FlowStep[] = [
@@ -24,7 +25,7 @@ export const flowSteps: FlowStep[] = [
   {
     id: 'plan-selection',
     stepNumber: 2,
-    label: 'Choose a Plan',
+    label: 'Choose a Plan (LTS)',
     blurb: 'Alex selects Full service hiring plan and clicks Submit.',
     perspective: 'Alex',
     fidelity: 'low',
@@ -75,6 +76,7 @@ export const flowSteps: FlowStep[] = [
     fidelity: 'high',
     component: 'SolutionBuilderScreen',
     supportsQuoteAdvisorToggle: true,
+    supportsFSHLayoutToggle: true,
   },
   {
     id: 'solution-builder-filled',

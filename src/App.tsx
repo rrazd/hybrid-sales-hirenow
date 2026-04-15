@@ -16,6 +16,7 @@ import OrderConfirmationScreen from './components/screens/OrderConfirmationScree
 import styles from './App.module.css';
 
 export type QuoteAdvisorLayout = 'in-card' | 'floating';
+export type FSHLayout = 'sep-line' | 'grouped';
 
 // Screen registry — add new screens here as they are built
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,6 +66,7 @@ export default function App() {
   const [currentStepId, setCurrentStepId] = useState(getInitialStep);
   const [panelOpen, setPanelOpen] = useState(true);
   const [quoteAdvisorLayout, setQuoteAdvisorLayout] = useState<QuoteAdvisorLayout>('floating');
+  const [fshLayout, setFSHLayout] = useState<FSHLayout>('grouped');
   const [quoteAdvisorContentOn, setQuoteAdvisorContentOn] = useState(false);
   const [products, setProducts] = useState<ProductRow[]>([]);
 
@@ -109,6 +111,8 @@ export default function App() {
           hasProducts={hasProducts}
           quoteAdvisorContentOn={quoteAdvisorContentOn}
           onQuoteAdvisorContentChange={setQuoteAdvisorContentOn}
+          fshLayout={fshLayout}
+          onFSHLayoutChange={setFSHLayout}
         />
 
         {/* Collapsed tab — visible only when panel is collapsed */}
@@ -130,6 +134,7 @@ export default function App() {
               quoteAdvisorContentOn={quoteAdvisorContentOn}
               products={products}
               onProductsChange={setProducts}
+              fshLayout={fshLayout}
             />
           ) : (
             <div className={styles.placeholder}>

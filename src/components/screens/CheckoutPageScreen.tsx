@@ -133,7 +133,7 @@ export default function CheckoutPageScreen({ onNavigate, products = [] }: Props)
 
               <div className={styles.orderSection}>
                 <p className={styles.orderTitle}>Order summary</p>
-                <p className={styles.orderSubtitle}>Full-service hiring x{products.length || 1}</p>
+                <p className={styles.orderSubtitle}>Full-service hiring</p>
               </div>
 
               <div className={styles.dueTodayRow}>
@@ -159,10 +159,7 @@ export default function CheckoutPageScreen({ onNavigate, products = [] }: Props)
                 <div className={styles.orderDetails}>
                   {products.map(p => (
                     <div key={p.key} className={styles.lineItem}>
-                      <div className={styles.lineItemLeft}>
-                        <span className={styles.lineItemName}>{p.role ?? 'Role'}</span>
-                        <span className={styles.lineItemSub}>{p.feePct ?? 0}% of hire's salary</span>
-                      </div>
+                      <span className={styles.lineItemName}>{p.role ?? 'Role'} ({p.feePct ?? 0}% of hire's salary)</span>
                       <span className={styles.lineItemValue}>$0.00</span>
                     </div>
                   ))}
