@@ -480,9 +480,11 @@ export default function SolutionBuilderScreen({
     if (!id || !modalBodyRef.current) return;
     const card = modalBodyRef.current.querySelector<HTMLElement>(`[data-role-id="${id}"]`);
     if (!card) return;
-    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Scroll to bottom so the new card and the "Add role" button are both visible
+    modalBodyRef.current.scrollTo({ top: modalBodyRef.current.scrollHeight, behavior: 'smooth' });
     const input = card.querySelector<HTMLInputElement>('input');
-    input?.focus();
+    // preventScroll: true stops the browser from overriding our scroll position on focus
+    input?.focus({ preventScroll: true });
     pendingScrollId.current = null;
   }, [groupedRoles]);
   const updateGroupedRole = (id: string, patch: Partial<GroupedRole>) =>
