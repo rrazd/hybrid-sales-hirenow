@@ -471,6 +471,7 @@ export default function SolutionBuilderScreen({
   // Grouped modal state
   interface GroupedRole { id: string; roleQuery: string; role: string; feePct: string; }
   const [groupedRoles, setGroupedRoles] = useState<GroupedRole[]>([]);
+  const [groupedRoleErrors, setGroupedRoleErrors] = useState<Set<string>>(new Set());
   const pendingScrollId = useRef<string | null>(null);
   const modalBodyRef = useRef<HTMLDivElement>(null);
   const addGroupedRole = () => {
@@ -478,7 +479,10 @@ export default function SolutionBuilderScreen({
     pendingScrollId.current = newId;
     setGroupedRoles(prev => [...prev, { id: newId, roleQuery: '', role: '', feePct: String(DEFAULT_FEE_PCT) }]);
   };
-  const removeGroupedRole = (id: string) => setGroupedRoles(prev => prev.filter(r => r.id !== id));
+  const removeGroupedRole = (id: string) => {
+    setGroupedRoles(prev => prev.filter(r => r.id !== id));
+    setGroupedRoleErrors(prev => { const next = new Set(prev); next.delete(id); return next; });
+  };
 
   useEffect(() => {
     const id = pendingScrollId.current;
@@ -492,8 +496,10 @@ export default function SolutionBuilderScreen({
     input?.focus({ preventScroll: true });
     pendingScrollId.current = null;
   }, [groupedRoles]);
-  const updateGroupedRole = (id: string, patch: Partial<GroupedRole>) =>
+  const updateGroupedRole = (id: string, patch: Partial<GroupedRole>) => {
     setGroupedRoles(prev => prev.map(r => r.id === id ? { ...r, ...patch } : r));
+    if (patch.role) setGroupedRoleErrors(prev => { const next = new Set(prev); next.delete(id); return next; });
+  };
   const openEditGroupedModal = () => {
     // Restore groupedRoles from saved products (skip index 0 which is always the misc row)
     const restored: GroupedRole[] = products.slice(1).map((p, i) => ({
@@ -507,6 +513,11 @@ export default function SolutionBuilderScreen({
   };
 
   const handleAddGroupedProduct = () => {
+    const emptyIds = new Set(groupedRoles.filter(r => !r.role).map(r => r.id));
+    if (emptyIds.size > 0) {
+      setGroupedRoleErrors(emptyIds);
+      return;
+    }
     const miscSalary = ROLE_SALARIES['Miscellaneous'] ?? DEFAULT_SALARY;
     const miscRow: ProductRow = { key: `fsh-misc-${Date.now()}`, role: 'Miscellaneous', feePct: DEFAULT_FEE_PCT, salary: miscSalary, feeAmount: Math.round(miscSalary * DEFAULT_FEE_PCT / 100) };
     const addedRows: ProductRow[] = groupedRoles
@@ -516,6 +527,7 @@ export default function SolutionBuilderScreen({
         const pct = Math.max(0, parseFloat(r.feePct) || 0);
         return { key: `fsh-${Date.now()}-${r.id}`, role: r.role, feePct: pct, salary, feeAmount: Math.round(salary * pct / 100) };
       });
+    setGroupedRoleErrors(new Set());
     setProducts([miscRow, ...addedRows]);
     setModalOpen(false);
   };
@@ -591,6 +603,7 @@ export default function SolutionBuilderScreen({
   const handleModalClose = () => {
     setModalOpen(false);
     setEditingKey(null);
+    setGroupedRoleErrors(new Set());
   };
 
   const handleAddProduct = () => {
@@ -1235,11 +1248,11 @@ export default function SolutionBuilderScreen({
                 </div>
 
                 {groupedRoles.map((entry) => (
-                  <div key={entry.id} data-role-id={entry.id} className={styles.groupedRoleCard}>
+                  <div key={entry.id} data-role-id={entry.id} className={`${styles.groupedRoleCard} ${groupedRoleErrors.has(entry.id) ? styles.groupedRoleCardError : ''}`}>
                     {/* Labels row */}
                     <div className={styles.groupedRoleCardLabels}>
                       <div className={styles.groupedRoleField}>
-                        <label className={styles.fieldLabel}>Role</label>
+                        <label className={`${styles.fieldLabel} ${groupedRoleErrors.has(entry.id) ? styles.fieldLabelError : ''}`}>Role</label>
                       </div>
                       <div className={styles.groupedFeeField}>
                         <div className={styles.feeTooltipWrap}>
@@ -1260,8 +1273,16 @@ export default function SolutionBuilderScreen({
                             onSelect={role => updateGroupedRole(entry.id, { role, roleQuery: role })}
                             onClear={() => updateGroupedRole(entry.id, { roleQuery: '', role: '' })}
                             isSelected={!!entry.role}
-                            hasError={false}
+                            hasError={groupedRoleErrors.has(entry.id)}
                           />
+                          {groupedRoleErrors.has(entry.id) && (
+                            <div className={styles.fieldError}>
+                              <div className={styles.fieldErrorIcon}>
+                                <img src={imgSignalErrorSm} alt="" className={styles.fieldErrorIconImg} />
+                              </div>
+                              <span>Add a role</span>
+                            </div>
+                          )}
                         </div>
                         <div className={styles.groupedFeeField}>
                           <div className={styles.feeInputWrap}>

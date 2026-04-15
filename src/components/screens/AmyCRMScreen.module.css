@@ -63,7 +63,7 @@
    top: 321/540 = 59.44%, height: 27/540 = 5%, width: 76/960 = 7.92% */
 .overlayRect {
   position: absolute;
-  top: 59.44%;
+  top: 60.18%;
   height: 5%;
   width: 7.92%;
   background: white;
@@ -74,7 +74,7 @@
    top: 329/540 = 60.93%; font-size scales with container width via cqw */
 .overlayText {
   position: absolute;
-  top: 60.93%;
+  top: 61.67%;
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.842cqw;
   font-weight: 600;

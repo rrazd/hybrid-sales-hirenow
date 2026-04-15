@@ -914,6 +914,10 @@
   line-height: 1.25;
 }
 
+.fieldLabelError {
+  color: #cf0007;
+}
+
 .fieldInputWrap {
   width: 100%;
 }
@@ -961,7 +965,7 @@
   font-size: 14px;
   font-weight: 400;
   color: #cf0007;
-  margin: 0;
+  margin: 4px 0 0;
   line-height: 1.25;
 }
 
@@ -1150,6 +1154,10 @@
   padding: 16px 24px;
 }
 
+.groupedRoleCardError {
+  padding-bottom: 38px;
+}
+
 .groupedRoleCardLabels {
   display: flex;
   gap: 32px;
@@ -1174,6 +1182,15 @@
   flex-direction: column;
   width: 320px;
   flex-shrink: 0;
+  position: relative;
+}
+
+.groupedRoleField .fieldError {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  white-space: nowrap;
 }
 
 .groupedFeeField {
