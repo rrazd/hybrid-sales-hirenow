@@ -418,6 +418,8 @@ interface SolutionBuilderScreenProps {
   products?: ProductRow[];
   onProductsChange?: (products: ProductRow[]) => void;
   fshLayout?: FSHLayout;
+  paymentTerm?: 'NET30' | 'NET60' | 'NET90';
+  onPaymentTermChange?: (term: 'NET30' | 'NET60' | 'NET90') => void;
 }
 
 export default function SolutionBuilderScreen({
@@ -430,6 +432,8 @@ export default function SolutionBuilderScreen({
   products: productsProp = [],
   onProductsChange,
   fshLayout = 'grouped',
+  paymentTerm: paymentTermProp = 'NET30',
+  onPaymentTermChange,
 }: SolutionBuilderScreenProps) {
   // Modal / product state — each layout maintains its own products
   const [menuOpen, setMenuOpen] = useState(false);
@@ -450,7 +454,8 @@ export default function SolutionBuilderScreen({
     }
   }, []);
 
-  const [paymentTerm, setPaymentTerm] = useState<'NET30' | 'NET60' | 'NET90'>('NET30');
+  const paymentTerm = paymentTermProp;
+  const setPaymentTerm = (t: 'NET30' | 'NET60' | 'NET90') => onPaymentTermChange?.(t);
   const [paymentTermOpen, setPaymentTermOpen] = useState(false);
   const [paymentTermRect, setPaymentTermRect] = useState<{ top?: number; bottom?: number; left: number; width: number } | null>(null);
   const paymentTermRef = useRef<HTMLDivElement>(null);

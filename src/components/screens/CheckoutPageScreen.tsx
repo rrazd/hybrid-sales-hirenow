@@ -21,9 +21,10 @@ const imgChevron    = 'https://www.figma.com/api/mcp/asset/5e9ef1e1-400b-4315-81
 interface Props {
   onNavigate?: (id: string) => void;
   products?: ProductRow[];
+  paymentTerm?: 'NET30' | 'NET60' | 'NET90';
 }
 
-export default function CheckoutPageScreen({ onNavigate, products = [] }: Props) {
+export default function CheckoutPageScreen({ onNavigate, products = [], paymentTerm = 'NET30' }: Props) {
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   return (
@@ -187,7 +188,7 @@ export default function CheckoutPageScreen({ onNavigate, products = [] }: Props)
 
               <ul className={styles.timelineList}>
                 <li>Your plan starts today and services continue till <strong>Jan 1, 2027</strong>.</li>
-                <li>You will be <strong>invoiced</strong> on the hire's start date. Payment is due within <strong>30 days</strong> of the invoice date.</li>
+                <li>You will be <strong>invoiced</strong> on the hire's start date. Payment is due within <strong>{paymentTerm === 'NET30' ? 30 : paymentTerm === 'NET60' ? 60 : 90} days</strong> of the invoice date.</li>
                 <li>Your invoice will reflect the final amount due as a percentage of the hired candidate(s) <strong>first year salary</strong>.</li>
               </ul>
 

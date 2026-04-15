@@ -17,6 +17,7 @@ import styles from './App.module.css';
 
 export type QuoteAdvisorLayout = 'in-card' | 'floating';
 export type FSHLayout = 'sep-line' | 'grouped';
+export type PaymentTerm = 'NET30' | 'NET60' | 'NET90';
 
 // Screen registry — add new screens here as they are built
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,6 +70,7 @@ export default function App() {
   const [fshLayout, setFSHLayout] = useState<FSHLayout>('grouped');
   const [quoteAdvisorContentOn, setQuoteAdvisorContentOn] = useState(false);
   const [products, setProducts] = useState<ProductRow[]>([]);
+  const [paymentTerm, setPaymentTerm] = useState<PaymentTerm>('NET30');
 
   const hasProducts = products.length > 0;
   // Step 7 requires at least one product to continue
@@ -135,6 +137,8 @@ export default function App() {
               products={products}
               onProductsChange={setProducts}
               fshLayout={fshLayout}
+              paymentTerm={paymentTerm}
+              onPaymentTermChange={setPaymentTerm}
             />
           ) : (
             <div className={styles.placeholder}>
