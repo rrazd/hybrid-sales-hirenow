@@ -268,6 +268,12 @@
   overflow: hidden;
 }
 
+.cardReadOnly :global(.ant-table-wrapper),
+.cardReadOnly .groupedTableWrapper {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .card :global(.ant-table-tbody tr:last-child td),
 .cardReadOnly :global(.ant-table-tbody tr:last-child td) {
   border-bottom: none !important;
@@ -364,6 +370,19 @@
 
 .totalsGuideRight {
   right: 160px; /* right edge of Net price column (actions 160px) */
+}
+
+/* Grouped read-only: no actions column, Net price is last */
+.totalsGuideLeftGrouped {
+  right: 160px;
+}
+
+.totalsGuideRightGrouped {
+  right: 0;
+}
+
+.totalsOuterGrouped {
+  padding-right: 0;
 }
 
 .totalsBlock {

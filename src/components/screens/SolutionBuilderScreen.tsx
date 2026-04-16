@@ -168,12 +168,14 @@ const TreeConnectorIcon = () => (
 
 interface GroupedProductTableProps {
   products: ProductRow[];
-  onEdit: () => void;
-  onRemove: () => void;
+  onEdit?: () => void;
+  onRemove?: () => void;
+  readOnly?: boolean;
 }
-function GroupedProductTable({ products, onEdit, onRemove }: GroupedProductTableProps) {
+function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: GroupedProductTableProps) {
   const isEmpty = products.length === 0;
   const cellStyle: React.CSSProperties = { fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)', lineHeight: 1.25 };
+  const colCount = readOnly ? 5 : 6;
 
   return (
     <div className={styles.groupedTableWrapper}>
@@ -184,7 +186,7 @@ function GroupedProductTable({ products, onEdit, onRemove }: GroupedProductTable
           <col style={{ width: 140 }} />
           <col style={{ width: 140 }} />
           <col style={{ width: 160 }} />
-          <col style={{ width: 160 }} />
+          {!readOnly && <col style={{ width: 160 }} />}
         </colgroup>
         <thead>
           <tr>
@@ -193,13 +195,13 @@ function GroupedProductTable({ products, onEdit, onRemove }: GroupedProductTable
             <th style={{ textAlign: 'right' }}>Rep discount</th>
             <th style={{ textAlign: 'right' }}>Unit price</th>
             <th style={{ textAlign: 'right' }}>Net price</th>
-            <th />
+            {!readOnly && <th />}
           </tr>
         </thead>
         <tbody>
           {isEmpty ? (
             <tr>
-              <td colSpan={6} className={styles.groupedEmptyTd}>
+              <td colSpan={colCount} className={styles.groupedEmptyTd}>
                 <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.32px', lineHeight: 1.25 }}>
                   There aren't any products added, once there are you'll see them here.
                 </span>
@@ -219,12 +221,14 @@ function GroupedProductTable({ products, onEdit, onRemove }: GroupedProductTable
                 <td style={{ textAlign: 'right' }}><span style={cellStyle}>--</span></td>
                 <td style={{ textAlign: 'right' }}><span style={cellStyle}>--</span></td>
                 <td style={{ textAlign: 'right' }}><span style={cellStyle}>$0.00 upfront</span></td>
-                <td>
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
-                    <button className={styles.btnTertiary} onClick={onEdit}>Edit</button>
-                    <button className={styles.btnTertiary} onClick={onRemove}>Remove</button>
-                  </div>
-                </td>
+                {!readOnly && (
+                  <td>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
+                      <button className={styles.btnTertiary} onClick={onEdit}>Edit</button>
+                      <button className={styles.btnTertiary} onClick={onRemove}>Remove</button>
+                    </div>
+                  </td>
+                )}
               </tr>
               {/* Child rows */}
               {products.map(p => (
@@ -244,7 +248,8 @@ function GroupedProductTable({ products, onEdit, onRemove }: GroupedProductTable
                       </div>
                     </div>
                   </td>
-                  <td /><td /><td /><td /><td />
+                  <td /><td /><td /><td />
+                  {!readOnly && <td />}
                 </tr>
               ))}
             </>
@@ -655,39 +660,46 @@ export default function SolutionBuilderScreen({
           <Avatar src={imgAmyAvatar} size={32} style={{ flexShrink: 0 }} />
         </header>
 
-        {/* Sub-header */}
+        {/* Sub-header — same structure as step 7, status updated */}
         <div className={styles.subHeader}>
           <div className={styles.subHeaderLeft}>
             <div className={styles.breadcrumbs}>
               <span className={styles.breadcrumbItem}>Quotes</span>
-              <div className={styles.chevronWrap}><img src={imgChevron} alt="" className={styles.chevronInner} /></div>
-            </div>
-            <div className={styles.quoteAndCrm}>
-              <div className={styles.quoteRow}>
-                <Typography.Title level={3} style={{ margin: 0, fontSize: 24, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '0.36px' }}>
-                  Q123213
-                </Typography.Title>
-                <Tag
-                  style={{
-                    background: '#fde2bc',
-                    border: 'none',
-                    borderRadius: 4,
-                    color: 'rgba(0,0,0,0.9)',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-                    fontSize: 16,
-                    fontWeight: 600,
-                    letterSpacing: '-0.32px',
-                    lineHeight: 1.25,
-                    padding: '1px 4px',
-                    margin: 0,
-                  }}
-                >
-                  Checkout in progress
-                </Tag>
+              <div className={styles.chevronWrap}>
+                <img src={imgChevron} alt="" className={styles.chevronInner} />
               </div>
-              <div className={styles.crmLink}>
-                <span className={styles.crmLinkText}>HireNow CRM</span>
-                <div className={styles.linkIconWrap}><img src={imgLinkExternal} alt="" className={styles.linkIconInner} /></div>
+            </div>
+            <div className={styles.quoteRow}>
+              <Typography.Title level={3} style={{ margin: 0, fontSize: 24, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '0.36px' }}>
+                Q123213
+              </Typography.Title>
+              <Tag
+                style={{
+                  background: '#fde2bc',
+                  border: 'none',
+                  borderRadius: 4,
+                  color: 'rgba(0,0,0,0.9)',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
+                  fontSize: 16,
+                  fontWeight: 600,
+                  letterSpacing: '-0.32px',
+                  lineHeight: 1.25,
+                  padding: '4px 8px',
+                  margin: 0,
+                }}
+              >
+                Checkout in progress
+              </Tag>
+            </div>
+          </div>
+          <div className={styles.subHeaderRight}>
+            <div className={styles.navSaved} style={{ visibility: 'hidden' }} aria-hidden>
+              <span>All changes saved</span>
+            </div>
+            <div className={styles.crmLink}>
+              <span className={styles.crmLinkText}>HireNow CRM</span>
+              <div className={styles.linkIconWrap}>
+                <img src={imgLinkExternal} alt="" className={styles.linkIconInner} />
               </div>
             </div>
           </div>
@@ -734,15 +746,19 @@ export default function SolutionBuilderScreen({
               <section className={styles.section}>
                 <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>Products</Typography.Title>
                 <div className={styles.tableWithGuides}>
-                  <div className={`${styles.totalsGuide} ${styles.totalsGuideLeft}`} />
-                  <div className={`${styles.totalsGuide} ${styles.totalsGuideRight}`} />
-                  <Table<ProductRow>
-                    columns={readOnlyColumns}
-                    dataSource={products}
-                    pagination={false}
-                    style={{ marginTop: 0 }}
-                  />
-                  <div className={styles.totalsOuter}>
+                  <div className={`${styles.totalsGuide} ${styles.totalsGuideLeftGrouped}`} />
+                  <div className={`${styles.totalsGuide} ${styles.totalsGuideRightGrouped}`} />
+                  {fshLayout === 'grouped' ? (
+                    <GroupedProductTable products={products} readOnly />
+                  ) : (
+                    <Table<ProductRow>
+                      columns={readOnlyColumns}
+                      dataSource={products}
+                      pagination={false}
+                      style={{ marginTop: 0 }}
+                    />
+                  )}
+                  <div className={`${styles.totalsOuter} ${styles.totalsOuterGrouped}`}>
                     <div className={styles.totalsBlock}>
                       <div className={`${styles.totalsRow} ${styles.totalsRowGray}`}>
                         <span className={styles.totalsLabel}>Total discount (0%)</span>
