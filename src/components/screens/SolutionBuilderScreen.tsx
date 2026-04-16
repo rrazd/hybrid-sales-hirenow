@@ -629,7 +629,8 @@ export default function SolutionBuilderScreen({
   const feeAmount = Math.round(forecastedSalary * feePct / 100);
   const readOnlyColumns = useMemo(() => buildReadOnlyProductColumns(), []);
   const sepLineColumns = useMemo(() => buildSepLineProductColumns(), []);
-  const isFilled = currentStepId === 'solution-builder-filled';
+  const isFilled = currentStepId === 'solution-builder-filled' || currentStepId === 'solution-builder-complete';
+  const isComplete = currentStepId === 'solution-builder-complete';
 
   // ── Step 8: Checkout generated (read-only) ──────────────────
   if (isFilled) {
@@ -661,7 +662,7 @@ export default function SolutionBuilderScreen({
               </Typography.Title>
               <Tag
                 style={{
-                  background: '#fde2bc',
+                  background: isComplete ? '#d4edda' : '#fde2bc',
                   border: 'none',
                   borderRadius: 4,
                   color: 'rgba(0,0,0,0.9)',
@@ -674,7 +675,7 @@ export default function SolutionBuilderScreen({
                   margin: 0,
                 }}
               >
-                Checkout in progress
+                {isComplete ? 'Checkout complete' : 'Checkout in progress'}
               </Tag>
             </div>
           </div>
@@ -700,29 +701,31 @@ export default function SolutionBuilderScreen({
               <div className={styles.heroLeft}>
                 <img src={imgAlexHero} alt="Alex" className={styles.heroAvatar} />
                 <div>
-                  <p className={styles.heroTitle}>Alex Rodrigo's checkout generated</p>
-                  <p className={styles.heroExpiry}>Expires on 02/13/2026 (in 30 days)</p>
+                  <p className={styles.heroTitle}>{isComplete ? 'Alex Rodrigo has placed the order.' : 'Alex Rodrigo\'s checkout generated'}</p>
+                  {!isComplete && <p className={styles.heroExpiry}>Expires on 02/13/2026 (in 30 days)</p>}
                 </div>
               </div>
-              <div className={styles.heroActions}>
-                <Button
-                  className={styles.btnCancel}
-                  style={{ borderRadius: 24, fontSize: 16, fontWeight: 600, letterSpacing: '-0.32px', padding: '12px 24px', height: 'auto' }}
-                  onClick={() => setConfirmOpen(true)}
-                >
-                  Edit quote
-                </Button>
-                <Button
-                  type="primary"
-                  style={{ borderRadius: 24, fontSize: 16, fontWeight: 600, letterSpacing: '-0.32px', padding: '12px 24px', height: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}
-                  onClick={showToast}
-                >
-                  <div style={{ position: 'relative', width: 20, height: 20, flexShrink: 0 }}>
-                    <img src={imgCopyLinkIcon} alt="" style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', display: 'block' }} />
-                  </div>
-                  Copy checkout link
-                </Button>
-              </div>
+              {!isComplete && (
+                <div className={styles.heroActions}>
+                  <Button
+                    className={styles.btnCancel}
+                    style={{ borderRadius: 24, fontSize: 16, fontWeight: 600, letterSpacing: '-0.32px', padding: '12px 24px', height: 'auto' }}
+                    onClick={() => setConfirmOpen(true)}
+                  >
+                    Edit quote
+                  </Button>
+                  <Button
+                    type="primary"
+                    style={{ borderRadius: 24, fontSize: 16, fontWeight: 600, letterSpacing: '-0.32px', padding: '12px 24px', height: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}
+                    onClick={showToast}
+                  >
+                    <div style={{ position: 'relative', width: 20, height: 20, flexShrink: 0 }}>
+                      <img src={imgCopyLinkIcon} alt="" style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', display: 'block' }} />
+                    </div>
+                    Copy checkout link
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Main card: Products + Billing */}
@@ -809,7 +812,7 @@ export default function SolutionBuilderScreen({
               </div>
               <div className={styles.confirmDivider} />
               <div className={styles.confirmButtons}>
-                <button className={styles.confirmBtnCancel} onClick={() => setConfirmOpen(false)}>Keep checkout link</button>
+                <button className={styles.confirmBtnCancel} onClick={() => setConfirmOpen(false)}>Cancel</button>
                 <button className={styles.confirmBtnContinue} onClick={() => { setConfirmOpen(false); onNavigate?.('solution-builder'); }}>Edit quote</button>
               </div>
             </div>

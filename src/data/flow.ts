@@ -123,5 +123,14 @@ export const flowSteps: FlowStep[] = [
     fidelity: 'high',
     component: 'OrderConfirmationScreen',
   },
+  {
+    id: 'solution-builder-complete',
+    stepNumber: 13,
+    label: 'Status in Solution Builder (LBP)',
+    blurb: 'Amy sees that the status of the quote has been now updated to "Checkout complete" and she can no longer take any actions on this quote.',
+    perspective: 'Amy',
+    fidelity: 'high',
+    component: 'SolutionBuilderScreen',
+  },
   // Additional steps will be added as screens are fed in
 ];

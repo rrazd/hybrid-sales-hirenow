@@ -13,7 +13,18 @@
       "Bash(gh auth:*)",
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit -m ':*)"
+      "Bash(git commit -m ':*)",
+      "WebFetch(domain:github-pages-docs.linkedin-pages.com)",
+      "Bash(git push:*)",
+      "Bash(gh api:*)",
+      "Bash(gh repo:*)",
+      "Bash(git remote:*)",
+      "Bash(sed -n '12,18p' /Users/rrazdan/workspace/hybridSelling/src/components/screens/PhoneModalScreen.module.css)",
+      "Bash(sed -n '12,18p' /Users/rrazdan/workspace/hybridSelling/src/components/screens/JobPlanScreen.module.css)",
+      "WebFetch(domain:stripe.com)",
+      "Bash(node -e \"const t = require\\('/Users/rrazdan/workspace/hybridSelling/node_modules/antd/lib/table/style/index.js'\\); console.log\\(JSON.stringify\\(t\\)\\)\")",
+      "Bash(node:*)",
+      "WebFetch(domain:www.hugeinc.com)"
     ]
   }
 }

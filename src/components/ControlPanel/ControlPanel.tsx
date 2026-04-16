@@ -73,7 +73,7 @@ export default function ControlPanel({
   const [stepsOpen, setStepsOpen] = useState(false);
   const currentIdx = flowSteps.findIndex(s => s.id === currentStepId);
   const currentStep = flowSteps[currentIdx] ?? flowSteps[1];
-  const totalNumberedSteps = flowSteps.filter(s => s.stepNumber > 0).length;
+  const totalNumberedSteps = Math.max(...flowSteps.map(s => s.stepNumber));
   const perspective = currentStep.perspective;
   const persona = personas[perspective];
 

@@ -52,7 +52,7 @@ const linkedInTheme = {
 
 // Steps that need at least one product to make sense
 const STEPS_NEEDING_PRODUCTS = new Set([
-  'solution-builder-filled', 'checkout', 'checkout-page', 'order-confirmation',
+  'solution-builder-filled', 'solution-builder-complete', 'checkout', 'checkout-page', 'order-confirmation',
 ]);
 
 const DEFAULT_PRODUCT: ProductRow = {

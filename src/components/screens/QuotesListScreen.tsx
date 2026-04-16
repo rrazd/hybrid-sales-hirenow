@@ -13,6 +13,7 @@ const imgGenericAvatar  = 'https://www.figma.com/api/mcp/asset/66a1f931-a306-420
 const STATUS_BG: Record<string, string> = {
   'Quote in progress':    'rgba(0,0,0,0.08)',
   'Checkout in progress': '#fde2bc',
+  'Checkout complete':    '#d4edda',
 };
 
 const rows = [
@@ -35,7 +36,9 @@ interface Props {
 }
 
 export default function QuotesListScreen({ onNavigate, onReturn, fromStepId }: Props) {
-  const alexStatus = fromStepId === 'solution-builder-filled' ? 'Checkout in progress' : 'Quote in progress';
+  const alexStatus = fromStepId === 'solution-builder-complete' ? 'Checkout complete'
+    : fromStepId === 'solution-builder-filled' ? 'Checkout in progress'
+    : 'Quote in progress';
   return (
     <div className={styles.page}>
 
