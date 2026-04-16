@@ -210,6 +210,13 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
               >
                 Agree and activate for $0
               </button>
+
+              <button
+                className={styles.editQuoteBtn}
+                onClick={() => onNavigate?.('solution-builder-filled')}
+              >
+                Edit quote
+              </button>
             </div>
           </div>
 

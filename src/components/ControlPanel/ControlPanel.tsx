@@ -72,7 +72,8 @@ export default function ControlPanel({
 }: ControlPanelProps) {
   const [stepsOpen, setStepsOpen] = useState(false);
   const currentIdx = flowSteps.findIndex(s => s.id === currentStepId);
-  const currentStep = flowSteps[currentIdx] ?? flowSteps[0];
+  const currentStep = flowSteps[currentIdx] ?? flowSteps[1];
+  const totalNumberedSteps = flowSteps.filter(s => s.stepNumber > 0).length;
   const perspective = currentStep.perspective;
   const persona = personas[perspective];
 
@@ -111,7 +112,7 @@ export default function ControlPanel({
             className={styles.stepPickerBtn}
             onClick={() => setStepsOpen(o => !o)}
           >
-            <span className={styles.blurbLabel}>Step {currentStep.stepNumber} of {flowSteps.length}</span>
+            <span className={styles.blurbLabel}>Step {currentStep.stepNumber} of {totalNumberedSteps}</span>
             <svg
               className={`${styles.stepPickerChevron} ${stepsOpen ? styles.stepPickerChevronOpen : ''}`}
               width="10" height="6" viewBox="0 0 10 6" fill="none"

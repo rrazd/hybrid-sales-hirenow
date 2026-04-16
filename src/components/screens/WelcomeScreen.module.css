@@ -1,0 +1,277 @@
+/* ── Page ───────────────────────────────────────────────── */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #FAFAF9;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #111;
+}
+
+/* ── Top bar ────────────────────────────────────────────── */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  padding: 0 64px;
+  flex-shrink: 0;
+}
+
+.heroTop {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.logoRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  width: 18px;
+  height: 18px;
+  display: block;
+  filter: brightness(0) opacity(0.65);
+}
+
+.logoLabel {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.35);
+}
+
+/* ── Hero title block ───────────────────────────────────── */
+
+.heroBottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 0 56px;
+}
+
+.title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(52px, 6vw, 76px);
+  font-weight: 700;
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'WONK' 1;
+  color: #0D1117;
+  margin: 0;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+
+.subtitleRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.subtitleLine {
+  width: 32px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.subtitle {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.38);
+  margin: 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.subtitle strong {
+  color: rgba(0, 0, 0, 0.52);
+  font-weight: 600;
+}
+
+/* ── Body ───────────────────────────────────────────────── */
+
+.body {
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 64px 80px;
+}
+
+.intro {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 0 0 28px;
+  text-align: center;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+/* ── Persona cards ──────────────────────────────────────── */
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  column-gap: 14px;
+  row-gap: 0;
+  margin-bottom: 32px;
+}
+
+.card {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: default;
+  user-select: none;
+  pointer-events: none;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 24px 16px;
+}
+
+.avatarWrap {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatarBadge {
+  position: absolute;
+  bottom: -3px;
+  right: -5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid #FAFAF9;
+  display: block;
+}
+
+.cardName {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 24px;
+  font-weight: 700;
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'WONK' 1;
+  color: var(--card-color);
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.cardRole {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.38);
+  margin: 5px 0 0;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cardDesc {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: rgba(0, 0, 0, 0.54);
+  margin: 0;
+  padding: 0 24px 22px;
+  align-self: start;
+}
+
+.jtbdBlock {
+  padding: 16px 24px 24px;
+  background: rgba(0, 0, 0, 0.025);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.jtbdLabel {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--card-color);
+  opacity: 0.7;
+  margin: 0 0 6px;
+}
+
+.jtbdText {
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(0, 0, 0, 0.52);
+  margin: 0;
+  font-style: italic;
+}
+
+/* ── CTA ────────────────────────────────────────────────── */
+
+.ctaRow {
+  display: flex;
+  justify-content: center;
+  padding-top: 0;
+}
+
+.ctaBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 52px;
+  background: #0D1117;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  transition: background 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25), 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.ctaBtn:hover {
+  background: #1a2030;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.ctaBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 63, 103, 0.2);
+}
+
+.ctaArrow {
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+
+.ctaBtn:hover .ctaArrow {
+  transform: translateX(3px);
+}

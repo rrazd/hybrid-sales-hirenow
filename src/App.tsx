@@ -14,6 +14,7 @@ import CheckoutScreen from './components/screens/CheckoutScreen';
 import CheckoutPageScreen from './components/screens/CheckoutPageScreen';
 import OrderConfirmationScreen from './components/screens/OrderConfirmationScreen';
 import QuotesListScreen from './components/screens/QuotesListScreen';
+import WelcomeScreen from './components/screens/WelcomeScreen';
 import styles from './App.module.css';
 
 type SubView = 'quotes-list' | null;
@@ -65,7 +66,7 @@ const DEFAULT_PRODUCT: ProductRow = {
 export default function App() {
   const getInitialStep = () => {
     const hash = window.location.hash.slice(1);
-    return flowSteps.find(s => s.id === hash) ? hash : flowSteps[0].id;
+    return flowSteps.find(s => s.id === hash) ? hash : 'welcome';
   };
 
   const [currentStepId, setCurrentStepId] = useState(getInitialStep);
@@ -106,7 +107,16 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  const currentStep = flowSteps.find(s => s.id === currentStepId) ?? flowSteps[0];
+  // Welcome screen renders full-page, no control panel
+  if (currentStepId === 'welcome') {
+    return (
+      <ConfigProvider theme={linkedInTheme}>
+        <WelcomeScreen onBegin={() => handleNavigate('post-job')} />
+      </ConfigProvider>
+    );
+  }
+
+  const currentStep = flowSteps.find(s => s.id === currentStepId) ?? flowSteps[1];
   const ScreenComponent = screenRegistry[currentStep.component];
 
   return (

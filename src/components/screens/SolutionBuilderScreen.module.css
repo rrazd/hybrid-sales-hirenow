@@ -467,10 +467,10 @@
   border: 1px solid rgba(0, 0, 0, 0.75);
   border-radius: 4px;
   padding: 12px 40px 12px 16px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.9);
-  letter-spacing: -0.32px;
+  letter-spacing: -0.15px;
   line-height: 1.25;
   background: white;
   cursor: pointer;
@@ -503,10 +503,10 @@
   display: flex;
   align-items: center;
   padding: 6.5px 16px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.75);
-  letter-spacing: -0.32px;
+  letter-spacing: -0.15px;
   line-height: 1.25;
   cursor: pointer;
 }
@@ -1309,8 +1309,10 @@
 .groupedTable thead th:last-child { padding-left: 8px; padding-right: 8px; }
 .groupedTable thead th:nth-child(n+2):not(:last-child) { text-align: right; }
 .groupedTable tbody td:nth-child(n+2):not(:last-child) { text-align: right; }
-.groupedTable thead th:nth-child(3) { padding-right: 8px; }
-.groupedTable tbody td:nth-child(3) { padding-right: 8px; }
+.groupedTable thead th:nth-child(2) { padding-right: 100px; }
+.groupedTable tbody td:nth-child(2) { padding-right: 100px; }
+.groupedTable thead th:nth-child(3) { padding-right: 16px; }
+.groupedTable tbody td:nth-child(3) { padding-right: 16px; }
 .groupedTable thead th:nth-child(4) { padding-right: 40px; }
 .groupedTable tbody td:nth-child(4) { padding-right: 40px; }
 
@@ -1323,18 +1325,19 @@
 }
 .groupedTable tbody tr:last-child td { border-bottom: none; }
 .groupedTable tbody td:last-child { padding-left: 8px; padding-right: 8px; }
+.groupedTable tbody td:nth-child(3) { padding-right: 16px; }
 
 /* Parent data row */
-.groupedParentTr td { padding-top: 16px; padding-bottom: 12px; border-bottom: none !important; }
+.groupedParentTr td { padding-top: 16px; padding-bottom: 6px; border-bottom: none !important; }
 
 /* Child rows */
 .groupedChildTr td {
-  padding-top: 8px;
-  padding-bottom: 16px;
+  padding-top: 4px;
+  padding-bottom: 14px;
   vertical-align: top;
   border-bottom: none !important;
 }
-.groupedChildTr:last-child td { padding-bottom: 24px !important; }
+.groupedChildTr:last-child td { padding-bottom: 18px !important; }
 
 /* Empty state */
 .groupedEmptyTd {
@@ -1347,13 +1350,8 @@
 .gtChildProductCell {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-}
-
-.gtChildProductCell {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
+  padding-left: 4px;
 }
 
 /* ─── Step 8: Checkout generated ────────────────────────────── */

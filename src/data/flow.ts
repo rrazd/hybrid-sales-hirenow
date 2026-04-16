@@ -14,6 +14,15 @@ export interface FlowStep {
 
 export const flowSteps: FlowStep[] = [
   {
+    id: 'welcome',
+    stepNumber: 0,
+    label: 'Welcome',
+    blurb: 'Overview of the prototype and the two personas — Alex and Amy — whose connected journey you\'ll follow.',
+    perspective: 'Alex',
+    fidelity: 'high',
+    component: 'WelcomeScreen',
+  },
+  {
     id: 'post-job',
     stepNumber: 1,
     label: 'Post a job (LTS)',
@@ -71,7 +80,7 @@ export const flowSteps: FlowStep[] = [
     id: 'solution-builder',
     stepNumber: 7,
     label: 'Build quote in Solution Builder (LBP)',
-    blurb: "In Solution Builder Amy can configure a tailored quote based on talking to Alex. For MVP the customer is already preselected and cannot be edited. The value is determined based on the Lead detail page she navigated here from.<br><br>To proceed please add <strong>1+ products</strong> and ensure no errors on page.",
+    blurb: "In Solution Builder Amy can configure a tailored quote based on talking to Alex. For MVP the customer is already preselected and cannot be edited. The value is determined based on the Lead detail page she navigated here from.<br><br>To proceed please add a product and ensure no errors on page.",
     perspective: 'Amy',
     fidelity: 'high',
     component: 'SolutionBuilderScreen',

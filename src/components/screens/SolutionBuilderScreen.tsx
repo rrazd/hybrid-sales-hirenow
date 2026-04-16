@@ -50,10 +50,10 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
           <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>
             Full-service hiring
           </span>
-          <span style={{ fontSize: 14, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.9)' }}>{row.role}</span>
+          <span style={{ fontSize: 12, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.6)' }}>{row.role}</span>
           <div className={styles.feeTooltipWrap}>
             <span className={styles.calloutLink}>
-              <span className={styles.calloutLinkText}>Fee: {row.feePct}% of hire's salary</span>
+              <span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{row.feePct}% fee per hire</span>
             </span>
             <div className={styles.feeTooltip}>
               Based on a <strong>forecasted</strong> Account salary of {fmt(row.salary ?? 0)}, LinkedIn's fee per hire would be {fmt(row.feeAmount ?? 0)}.
@@ -69,7 +69,7 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
     {
       title: 'Quantity',
       key: 'quantity',
-      width: 300,
+      width: 348,
       align: 'right',
       onCell: (row) => row.role ? {} : { colSpan: 0 },
       render: (_, row) => row.role ? (
@@ -82,22 +82,6 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
           </div>
         </div>
       ) : null,
-    },
-    {
-      title: 'Rep discount',
-      key: 'repDiscount',
-      width: 120,
-      align: 'right',
-      onCell: (row) => row.role ? {} : { colSpan: 0 },
-      render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null,
-    },
-    {
-      title: 'Unit price',
-      key: 'unitPrice',
-      width: 120,
-      align: 'right',
-      onCell: (row) => row.role ? {} : { colSpan: 0 },
-      render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null,
     },
     {
       title: 'Net price',
@@ -133,10 +117,10 @@ function buildSepLineProductColumns(): ColumnsType<ProductRow> {
           <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>
             Full-service hiring
           </span>
-          <span style={{ fontSize: 14, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.9)' }}>{row.role}</span>
+          <span style={{ fontSize: 12, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.6)' }}>{row.role}</span>
           <div className={styles.feeTooltipWrap}>
             <span className={styles.calloutLink}>
-              <span className={styles.calloutLinkText}>Fee: {row.feePct}% of hire's salary</span>
+              <span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{row.feePct}% fee per hire</span>
             </span>
             <div className={styles.feeTooltip}>
               Based on a <strong>forecasted</strong> Account salary of {fmt(row.salary ?? 0)}, LinkedIn's fee per hire would be {fmt(row.feeAmount ?? 0)}.
@@ -146,7 +130,7 @@ function buildSepLineProductColumns(): ColumnsType<ProductRow> {
       ) : null,
     },
     {
-      title: 'Quantity', key: 'quantity', width: 300, align: 'right',
+      title: 'Quantity', key: 'quantity', width: 348, align: 'right',
       render: (_, row) => row.role ? (
         <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
           <span className={styles.calloutLink}><span className={styles.calloutLinkText}>Covers all hires</span></span>
@@ -154,15 +138,13 @@ function buildSepLineProductColumns(): ColumnsType<ProductRow> {
         </div>
       ) : null,
     },
-    { title: 'Rep discount', key: 'repDiscount', width: 120, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null },
-    { title: 'Unit price', key: 'unitPrice', width: 120, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null },
     { title: 'Net price', key: 'netPrice', width: 160, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>$0.00 upfront</span> : null },
   ];
 }
 
-const TreeConnectorIcon = () => (
-  <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden style={{ flexShrink: 0, marginTop: 2 }}>
-    <path d="M2 0 L2 10 L11 10" stroke="rgba(0,0,0,0.45)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+const HierarchyIndicator = () => (
+  <svg width="7" height="10" viewBox="0 0 7 10" fill="none" aria-hidden style={{ flexShrink: 0, marginTop: 4 }}>
+    <path d="M1 0 L1 7 L7 7" stroke="rgba(0,0,0,0.18)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
@@ -175,16 +157,14 @@ interface GroupedProductTableProps {
 function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: GroupedProductTableProps) {
   const isEmpty = products.length === 0;
   const cellStyle: React.CSSProperties = { fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)', lineHeight: 1.25 };
-  const colCount = readOnly ? 5 : 6;
+  const colCount = readOnly ? 3 : 4;
 
   return (
     <div className={styles.groupedTableWrapper}>
       <table className={styles.groupedTable}>
         <colgroup>
           <col />
-          <col style={{ width: 140 }} />
-          <col style={{ width: 140 }} />
-          <col style={{ width: 140 }} />
+          <col style={{ width: 188 }} />
           <col style={{ width: 160 }} />
           {!readOnly && <col style={{ width: 160 }} />}
         </colgroup>
@@ -192,8 +172,6 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: G
           <tr>
             <th>Product</th>
             <th style={{ textAlign: 'right' }}>Quantity</th>
-            <th style={{ textAlign: 'right' }}>Rep discount</th>
-            <th style={{ textAlign: 'right' }}>Unit price</th>
             <th style={{ textAlign: 'right' }}>Net price</th>
             {!readOnly && <th />}
           </tr>
@@ -218,8 +196,6 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: G
                     <div className={styles.feeTooltip}>Any number of hires can be made during the agreed upon contract term.</div>
                   </div>
                 </td>
-                <td style={{ textAlign: 'right' }}><span style={cellStyle}>--</span></td>
-                <td style={{ textAlign: 'right' }}><span style={cellStyle}>--</span></td>
                 <td style={{ textAlign: 'right' }}><span style={cellStyle}>$0.00 upfront</span></td>
                 {!readOnly && (
                   <td>
@@ -235,11 +211,11 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: G
                 <tr key={p.key} className={styles.groupedChildTr}>
                   <td>
                     <div className={styles.gtChildProductCell}>
-                      <TreeConnectorIcon />
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
-                        <span style={cellStyle}>{p.role}</span>
+                      <HierarchyIndicator />
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'flex-start' }}>
+                        <span style={{ ...cellStyle, fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>{p.role}</span>
                         <div className={styles.feeTooltipWrap}>
-                          <span className={styles.calloutLink}><span className={styles.calloutLinkText}>Fee per hire: {p.feePct}%</span></span>
+                          <span className={styles.calloutLink}><span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{p.feePct}% fee per hire</span></span>
                           <div className={styles.feeTooltip}>
                             The fee per hire is the percentage of the hire's first-year salary paid to LinkedIn.
                             {p.role !== 'Miscellaneous' && <> For a forecasted salary of {fmt(p.salary ?? 0)} for {p.role}, the fee would be {fmt(p.feeAmount ?? 0)}.</>}
@@ -248,7 +224,7 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: G
                       </div>
                     </div>
                   </td>
-                  <td /><td /><td /><td />
+                  <td /><td />
                   {!readOnly && <td />}
                 </tr>
               ))}
@@ -269,10 +245,10 @@ function buildReadOnlyProductColumns(): ColumnsType<ProductRow> {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
           <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>Full-service hiring</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.role}</span>
+            <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.role}</span>
             <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.9)' }}>∙</span>
             <div className={styles.feeTooltipWrap}>
-              <span className={styles.calloutLink}><span className={styles.calloutLinkText}>Fee: {row.feePct}% of hire's salary</span></span>
+              <span className={styles.calloutLink}><span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{row.feePct}% fee per hire</span></span>
               <div className={styles.feeTooltip}>Based on a <strong>forecasted</strong> Account salary of {fmt(row.salary ?? 0)}, LinkedIn's fee per hire would be {fmt(row.feeAmount ?? 0)}.</div>
             </div>
           </div>
@@ -280,7 +256,7 @@ function buildReadOnlyProductColumns(): ColumnsType<ProductRow> {
       ) : null,
     },
     {
-      title: 'Quantity', key: 'quantity', width: 300, align: 'right',
+      title: 'Quantity', key: 'quantity', width: 348, align: 'right',
       render: (_, row) => row.role ? (
         <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
           <span className={styles.calloutLink}><span className={styles.calloutLinkText}>Covers all hires</span></span>
@@ -288,8 +264,6 @@ function buildReadOnlyProductColumns(): ColumnsType<ProductRow> {
         </div>
       ) : null,
     },
-    { title: 'Rep discount', key: 'repDiscount', width: 120, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null },
-    { title: 'Unit price', key: 'unitPrice', width: 120, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>--</span> : null },
     { title: 'Net price', key: 'netPrice', width: 160, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>$0.00 upfront</span> : null },
   ];
 }
@@ -445,7 +419,7 @@ export default function SolutionBuilderScreen({
   const menuRef = useRef<HTMLDivElement>(null);
   const [checkoutError, setCheckoutError] = useState(false);
   const [sepLineProducts, setSepLineProducts] = useState<ProductRow[]>(productsProp);
-  const [groupedProducts, setGroupedProducts] = useState<ProductRow[]>([]);
+  const [groupedProducts, setGroupedProducts] = useState<ProductRow[]>(productsProp);
   const products = fshLayout === 'sep-line' ? sepLineProducts : groupedProducts;
 
   // Use a ref so setProducts is always stable and always routes to the current layout's setter
@@ -724,7 +698,7 @@ export default function SolutionBuilderScreen({
                   style={{ borderRadius: 24, fontSize: 16, fontWeight: 600, letterSpacing: '-0.32px', padding: '12px 24px', height: 'auto' }}
                   onClick={() => setConfirmOpen(true)}
                 >
-                  Cancel and edit
+                  Edit quote
                 </Button>
                 <Button
                   type="primary"
@@ -790,12 +764,12 @@ export default function SolutionBuilderScreen({
                   ].map(({ label, value }) => (
                     <div key={label} className={styles.billingField}>
                       <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 4 }}>{label}</Typography.Text>
-                      <Typography.Text style={{ fontSize: 16, color: 'rgba(0,0,0,0.9)', display: 'block', letterSpacing: '-0.32px' }}>{value}</Typography.Text>
+                      <Typography.Text style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', display: 'block', letterSpacing: '-0.15px' }}>{value}</Typography.Text>
                     </div>
                   ))}
                   <div className={styles.billingField}>
                     <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 4 }}>Invoice payment term</Typography.Text>
-                    <Typography.Text style={{ fontSize: 16, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.32px' }}>{paymentTerm}</Typography.Text>
+                    <Typography.Text style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px' }}>{paymentTerm}</Typography.Text>
                   </div>
                 </div>
               </section>
@@ -816,16 +790,15 @@ export default function SolutionBuilderScreen({
                 </div>
               </button>
               <div className={styles.confirmHeader}>
-                <p className={styles.confirmHeading}>Cancel and edit</p>
+                <p className={styles.confirmHeading}>Edit quote</p>
               </div>
               <div className={styles.confirmBody}>
-                <p className={styles.confirmBodyText}>This will deactivate the current checkout link, so it can no longer be used.</p>
-                <p className={styles.confirmBodyText}>You'll return to the quote editor to make changes and generate a new link.</p>
+                <p className={styles.confirmBodyText}><strong>This will deactivate the current checkout link</strong>, so it can no longer be used. You'll return to the quote editor to make changes and generate a new link.</p>
               </div>
               <div className={styles.confirmDivider} />
               <div className={styles.confirmButtons}>
-                <button className={styles.confirmBtnCancel} onClick={() => setConfirmOpen(false)}>Keep link and quote</button>
-                <button className={styles.confirmBtnContinue} onClick={() => { setConfirmOpen(false); onNavigate?.('solution-builder'); }}>Cancel link and edit</button>
+                <button className={styles.confirmBtnCancel} onClick={() => setConfirmOpen(false)}>Keep checkout link</button>
+                <button className={styles.confirmBtnContinue} onClick={() => { setConfirmOpen(false); onNavigate?.('solution-builder'); }}>Edit quote</button>
               </div>
             </div>
           </div>
@@ -928,7 +901,7 @@ export default function SolutionBuilderScreen({
                 <Typography.Text style={{ fontSize: 16, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.32px', lineHeight: 1.25, display: 'block' }}>
                   Alex Rodrigo
                 </Typography.Text>
-                <Typography.Text style={{ fontSize: 12, fontWeight: 400, color: 'rgba(0,0,0,0.6)', lineHeight: 1.25, display: 'block' }}>
+                <Typography.Text style={{ fontSize: 14, fontWeight: 400, color: 'rgba(0,0,0,0.6)', lineHeight: 1.25, display: 'block' }}>
                   arodrigo@gmail.com
                 </Typography.Text>
               </div>
@@ -1054,7 +1027,7 @@ export default function SolutionBuilderScreen({
                   <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 4 }}>
                     {label}
                   </Typography.Text>
-                  <Typography.Text style={{ fontSize: 16, color: 'rgba(0,0,0,0.9)', display: 'block', letterSpacing: '-0.32px' }}>
+                  <Typography.Text style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', display: 'block', letterSpacing: '-0.15px' }}>
                     {value}
                   </Typography.Text>
                 </div>
