@@ -439,9 +439,21 @@ export default function SolutionBuilderScreen({
   const [paymentTermRect, setPaymentTermRect] = useState<{ top?: number; bottom?: number; left: number; width: number } | null>(null);
   const paymentTermRef = useRef<HTMLDivElement>(null);
 
+  // Saving indicator state
+  const [saving, setSaving] = useState(false);
+  const savingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isMountedSave = useRef(false);
+
   // Sync active layout's products to parent (for checkout page)
   useEffect(() => {
     onProductsChange?.(products);
+    if (isMountedSave.current) {
+      setSaving(true);
+      if (savingTimer.current) clearTimeout(savingTimer.current);
+      savingTimer.current = setTimeout(() => setSaving(false), 1200);
+    } else {
+      isMountedSave.current = true;
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sepLineProducts, groupedProducts, fshLayout]);
   const [editingKey, setEditingKey] = useState<string | null>(null);
@@ -668,7 +680,7 @@ export default function SolutionBuilderScreen({
           </div>
           <div className={styles.subHeaderRight}>
             <div className={styles.navSaved} style={{ visibility: 'hidden' }} aria-hidden>
-              <span>All changes saved</span>
+              <span>{saving ? 'Saving...' : 'All changes saved'}</span>
             </div>
             <div className={styles.crmLink}>
               <span className={styles.crmLinkText}>HireNow CRM</span>
@@ -873,8 +885,8 @@ export default function SolutionBuilderScreen({
           </div>
         </div>
         <div className={styles.subHeaderRight}>
-          <div className={styles.navSaved}>
-            <span>All changes saved</span>
+          <div className={`${styles.navSaved} ${saving ? styles.navSaving : ''}`}>
+            <span>{saving ? 'Saving...' : 'All changes saved'}</span>
           </div>
           <div className={styles.crmLink}>
             <span className={styles.crmLinkText}>HireNow CRM</span>
