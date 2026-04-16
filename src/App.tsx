@@ -13,7 +13,10 @@ import SolutionBuilderScreen from './components/screens/SolutionBuilderScreen';
 import CheckoutScreen from './components/screens/CheckoutScreen';
 import CheckoutPageScreen from './components/screens/CheckoutPageScreen';
 import OrderConfirmationScreen from './components/screens/OrderConfirmationScreen';
+import QuotesListScreen from './components/screens/QuotesListScreen';
 import styles from './App.module.css';
+
+type SubView = 'quotes-list' | null;
 
 export type QuoteAdvisorLayout = 'in-card' | 'floating';
 export type FSHLayout = 'sep-line' | 'grouped';
@@ -32,6 +35,7 @@ const screenRegistry: Record<string, React.ComponentType<any>> = {
   CheckoutScreen,
   CheckoutPageScreen,
   OrderConfirmationScreen,
+  QuotesListScreen,
 };
 
 // LinkedIn ANT theme overrides
@@ -65,6 +69,7 @@ export default function App() {
   };
 
   const [currentStepId, setCurrentStepId] = useState(getInitialStep);
+  const [subView, setSubView] = useState<SubView>(null);
   const [panelOpen, setPanelOpen] = useState(true);
   const [quoteAdvisorLayout, setQuoteAdvisorLayout] = useState<QuoteAdvisorLayout>('floating');
   const [fshLayout, setFSHLayout] = useState<FSHLayout>('grouped');
@@ -77,6 +82,11 @@ export default function App() {
   const nextBlocked = currentStepId === 'solution-builder' && !hasProducts;
 
   const handleNavigate = (id: string) => {
+    if (id === 'quotes-list') {
+      setSubView('quotes-list');
+      return;
+    }
+    setSubView(null);
     if (STEPS_NEEDING_PRODUCTS.has(id) && products.length === 0) {
       setProducts([DEFAULT_PRODUCT]);
     }
@@ -115,6 +125,11 @@ export default function App() {
           onQuoteAdvisorContentChange={setQuoteAdvisorContentOn}
           fshLayout={fshLayout}
           onFSHLayoutChange={setFSHLayout}
+          onReset={() => {
+            setFSHLayout('grouped');
+            setQuoteAdvisorLayout('floating');
+            setQuoteAdvisorContentOn(false);
+          }}
         />
 
         {/* Collapsed tab — visible only when panel is collapsed */}
@@ -128,7 +143,9 @@ export default function App() {
         </button>
 
         <main className={styles.content}>
-          {ScreenComponent ? (
+          {subView === 'quotes-list' ? (
+            <QuotesListScreen onNavigate={handleNavigate} onReturn={() => setSubView(null)} fromStepId={currentStepId} />
+          ) : ScreenComponent ? (
             <ScreenComponent
               quoteAdvisorLayout={quoteAdvisorLayout}
               currentStepId={currentStepId}

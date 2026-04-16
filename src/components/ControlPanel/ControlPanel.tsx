@@ -21,6 +21,7 @@ interface ControlPanelProps {
   onQuoteAdvisorContentChange?: (on: boolean) => void;
   fshLayout?: FSHLayout;
   onFSHLayoutChange?: (layout: FSHLayout) => void;
+  onReset?: () => void;
 }
 
 function Avatar({ perspective }: { perspective: Perspective }) {
@@ -67,6 +68,7 @@ export default function ControlPanel({
   onQuoteAdvisorContentChange,
   fshLayout = 'grouped',
   onFSHLayoutChange,
+  onReset,
 }: ControlPanelProps) {
   const [stepsOpen, setStepsOpen] = useState(false);
   const currentIdx = flowSteps.findIndex(s => s.id === currentStepId);
@@ -87,6 +89,7 @@ export default function ControlPanel({
             ‹
           </button>
         )}
+
 
         {/* Perspective Indicator — fades to white, no hard divider */}
         <div
@@ -136,6 +139,18 @@ export default function ControlPanel({
 
           <p className={styles.blurbText} dangerouslySetInnerHTML={{ __html: currentStep.blurb }} />
         </div>
+
+        {/* Restore recommended settings — top of config area */}
+        {(currentStep.supportsFSHLayoutToggle || currentStep.supportsQuoteAdvisorToggle) && onReset && (
+          <div className={styles.resetSection}>
+            <button className={styles.resetBtn} onClick={onReset}>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                <path d="M1.5 6A4.5 4.5 0 1 0 3.2 2.5M1.5 1v2h2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Restore recommended settings
+            </button>
+          </div>
+        )}
 
         {/* FSH table layout toggle — only for step 7 */}
         {currentStep.supportsFSHLayoutToggle && onFSHLayoutChange && (

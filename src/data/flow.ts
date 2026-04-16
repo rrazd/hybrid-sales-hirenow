@@ -80,7 +80,7 @@ export const flowSteps: FlowStep[] = [
   },
   {
     id: 'solution-builder-filled',
-    stepNumber: 8,
+    stepNumber: 9,
     label: 'Checkout link in Solution Builder (LBP)',
     blurb: 'The view updates, the checkout link has been generated. She sees the status of this quote move from "Quote in progress". A read only view of the order is shown. Amy shares the checkout link with Alex.',
     perspective: 'Amy',
@@ -89,7 +89,7 @@ export const flowSteps: FlowStep[] = [
   },
   {
     id: 'checkout',
-    stepNumber: 9,
+    stepNumber: 10,
     label: 'Email checkout link (LBP)',
     blurb: 'Alex opens the link that Amy has shared with him via email.',
     perspective: 'Alex',
@@ -98,7 +98,7 @@ export const flowSteps: FlowStep[] = [
   },
   {
     id: 'checkout-page',
-    stepNumber: 10,
+    stepNumber: 11,
     label: 'Open checkout link (LBP)',
     blurb: 'Alex is already logged into linkedin.com, he opens the link and sees the custom checkout page. He can clearly understand that he owes nothing now. He clicks "Place order."',
     perspective: 'Alex',
@@ -107,7 +107,7 @@ export const flowSteps: FlowStep[] = [
   },
   {
     id: 'order-confirmation',
-    stepNumber: 11,
+    stepNumber: 12,
     label: 'Order success (LBP)',
     blurb: 'Alex sees a confirmation/success page where he can view his order number and order summary (this is important to have since we don\'t have Admin Center UX for MVP).',
     perspective: 'Alex',

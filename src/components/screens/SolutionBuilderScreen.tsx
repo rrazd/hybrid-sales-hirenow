@@ -664,7 +664,7 @@ export default function SolutionBuilderScreen({
         <div className={styles.subHeader}>
           <div className={styles.subHeaderLeft}>
             <div className={styles.breadcrumbs}>
-              <span className={styles.breadcrumbItem}>Quotes</span>
+              <button className={styles.breadcrumbItem} onClick={() => onNavigate?.('quotes-list')}>Quotes</button>
               <div className={styles.chevronWrap}>
                 <img src={imgChevron} alt="" className={styles.chevronInner} />
               </div>
@@ -724,7 +724,7 @@ export default function SolutionBuilderScreen({
                   style={{ borderRadius: 24, fontSize: 16, fontWeight: 600, letterSpacing: '-0.32px', padding: '12px 24px', height: 'auto' }}
                   onClick={() => setConfirmOpen(true)}
                 >
-                  Cancel link and edit quote
+                  Cancel and edit
                 </Button>
                 <Button
                   type="primary"
@@ -816,7 +816,7 @@ export default function SolutionBuilderScreen({
                 </div>
               </button>
               <div className={styles.confirmHeader}>
-                <p className={styles.confirmHeading}>Cancel current checkout link and edit quote?</p>
+                <p className={styles.confirmHeading}>Cancel and edit</p>
               </div>
               <div className={styles.confirmBody}>
                 <p className={styles.confirmBodyText}>This will deactivate the current checkout link, so it can no longer be used.</p>
@@ -825,7 +825,7 @@ export default function SolutionBuilderScreen({
               <div className={styles.confirmDivider} />
               <div className={styles.confirmButtons}>
                 <button className={styles.confirmBtnCancel} onClick={() => setConfirmOpen(false)}>Keep link and quote</button>
-                <button className={styles.confirmBtnContinue} onClick={() => { setConfirmOpen(false); onNavigate?.('solution-builder'); }}>Cancel link and edit quote</button>
+                <button className={styles.confirmBtnContinue} onClick={() => { setConfirmOpen(false); onNavigate?.('solution-builder'); }}>Cancel link and edit</button>
               </div>
             </div>
           </div>
@@ -871,7 +871,7 @@ export default function SolutionBuilderScreen({
       <div className={styles.subHeader}>
         <div className={styles.subHeaderLeft}>
           <div className={styles.breadcrumbs}>
-            <span className={styles.breadcrumbItem}>Quotes</span>
+            <button className={styles.breadcrumbItem} onClick={() => onNavigate?.('quotes-list')}>Quotes</button>
             <div className={styles.chevronWrap}>
               <img src={imgChevron} alt="" className={styles.chevronInner} />
             </div>
