@@ -22,7 +22,7 @@ export const personas: Record<Perspective, PersonaConfig> = {
     role: 'LinkedIn Customer',
     avatar: {
       type: 'photo',
-      photoImage: 'https://www.figma.com/api/mcp/asset/9ed20f34-1b35-48e5-8eab-2a7e246a0e21',
+      photoImage: '/alex-avatar.png',
     },
   },
   Amy: {
@@ -31,7 +31,7 @@ export const personas: Record<Perspective, PersonaConfig> = {
     role: 'LinkedIn Sales Rep',
     avatar: {
       type: 'photo',
-      photoImage: 'https://www.figma.com/api/mcp/asset/cd74ed31-5008-466a-ab58-8394a1083f25',
+      photoImage: '/amy-avatar.png',
     },
   },
 };

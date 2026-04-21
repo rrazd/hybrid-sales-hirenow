@@ -20,21 +20,21 @@ function fmt(n: number) {
   return '$' + n.toLocaleString('en-US');
 }
 
-const imgNavLogo       = 'https://www.figma.com/api/mcp/asset/545cc161-0813-417c-87b2-8106774bd214';
-const imgAmyAvatar     = 'https://www.figma.com/api/mcp/asset/45195051-c50e-47c1-a044-9948975abdd0';
-const imgAlexAvatar    = 'https://www.figma.com/api/mcp/asset/d05543e3-2db6-4495-90f4-f53dfee213a4';
+const imgNavLogo       = '/linkedin-logo.svg';
+const imgAmyAvatar     = '/amy-avatar.png';
+const imgAlexAvatar    = '/alex-avatar.png';
 const imgAlexHero      = 'https://www.figma.com/api/mcp/asset/05256d12-4662-4a99-bba6-d052c6f35f15';
 const imgCheckIcon     = 'https://www.figma.com/api/mcp/asset/252c479f-5ead-4a4d-b549-3ab7d7800642';
 const imgChevron       = 'https://www.figma.com/api/mcp/asset/8625bbe4-1fee-44ed-b49d-1d4322e32b44';
-const imgLinkExternal  = 'https://www.figma.com/api/mcp/asset/131ace80-59cc-485b-a2d2-d55ebadc0bf9';
+const imgLinkExternal  = 'https://www.figma.com/api/mcp/asset/27f853cf-8d03-418d-8ba2-512a6b7589a3';
 const imgSignalSuccess = 'https://www.figma.com/api/mcp/asset/aae46a4b-1016-43a3-85bb-3a52c255c7a0';
-const imgCloseSmall    = 'https://www.figma.com/api/mcp/asset/560fce82-de18-4add-8b60-76f31c37abcd';
+const imgCloseSmall    = 'https://www.figma.com/api/mcp/asset/a5be571a-9b5a-4b47-8fc5-67853f09c724';
 const imgSignalNotice  = 'https://www.figma.com/api/mcp/asset/d0ac7d69-84ee-4ff1-8323-70b4b9b2f8f8';
-const imgSignalErrorSm = 'https://www.figma.com/api/mcp/asset/853282d5-dbd0-4563-95e1-aaad9cffb021';
-const imgCopyLinkIcon  = 'https://www.figma.com/api/mcp/asset/b709a829-291e-44e7-b56e-e360f76e9de4';
-const imgToastSuccess  = 'https://www.figma.com/api/mcp/asset/f28b7d85-bbf6-4e05-a89c-51b56632c4dd';
-const imgToastClose    = 'https://www.figma.com/api/mcp/asset/6d543344-4111-4a4f-8921-69fd28b64b55';
-const imgConfirmClose  = 'https://www.figma.com/api/mcp/asset/02a279a0-3e9a-4bb6-a57d-9ab09cef7b8b';
+const imgSignalErrorSm = 'https://www.figma.com/api/mcp/asset/da459368-7e79-4f2a-9389-86d21f37b18b';
+const imgCopyLinkIcon  = 'https://www.figma.com/api/mcp/asset/bf15c9e2-17dd-4f44-ba36-8129d94213d1';
+const imgToastSuccess  = 'https://www.figma.com/api/mcp/asset/19040906-95e3-4347-b441-f0487c8b725d';
+const imgToastClose    = 'https://www.figma.com/api/mcp/asset/a5be571a-9b5a-4b47-8fc5-67853f09c724';
+const imgConfirmClose  = 'https://www.figma.com/api/mcp/asset/a5be571a-9b5a-4b47-8fc5-67853f09c724';
 const imgAddSmall      = 'https://www.figma.com/api/mcp/asset/678cf85e-c2af-45d6-9847-5b3a07238fbd';
 
 export type ProductRow = { key: string; role?: string; feePct?: number; salary?: number; feeAmount?: number };
@@ -50,7 +50,16 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
           <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>
             Full-service hiring
           </span>
-          <span style={{ fontSize: 12, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.6)' }}>{row.role}</span>
+          {row.role === 'Miscellaneous' ? (
+            <div className={styles.feeTooltipWrap}>
+              <span className={styles.calloutLink}>
+                <span className={styles.calloutLinkValueText} style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>Miscellaneous</span>
+              </span>
+              <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
+            </div>
+          ) : (
+            <span style={{ fontSize: 12, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.6)' }}>{row.role}</span>
+          )}
           <div className={styles.feeTooltipWrap}>
             <span className={styles.calloutLink}>
               <span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{row.feePct}% fee per hire</span>
@@ -117,7 +126,16 @@ function buildSepLineProductColumns(): ColumnsType<ProductRow> {
           <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>
             Full-service hiring
           </span>
-          <span style={{ fontSize: 12, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.6)' }}>{row.role}</span>
+          {row.role === 'Miscellaneous' ? (
+            <div className={styles.feeTooltipWrap}>
+              <span className={styles.calloutLink}>
+                <span className={styles.calloutLinkValueText} style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>Miscellaneous</span>
+              </span>
+              <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
+            </div>
+          ) : (
+            <span style={{ fontSize: 12, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.6)' }}>{row.role}</span>
+          )}
           <div className={styles.feeTooltipWrap}>
             <span className={styles.calloutLink}>
               <span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{row.feePct}% fee per hire</span>
@@ -157,8 +175,6 @@ interface GroupedProductTableProps {
 function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: GroupedProductTableProps) {
   const isEmpty = products.length === 0;
   const cellStyle: React.CSSProperties = { fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)', lineHeight: 1.25 };
-  const colCount = readOnly ? 3 : 4;
-
   return (
     <div className={styles.groupedTableWrapper}>
       <table className={styles.groupedTable}>
@@ -166,20 +182,20 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: G
           <col />
           <col style={{ width: 188 }} />
           <col style={{ width: 160 }} />
-          {!readOnly && <col style={{ width: 160 }} />}
+          <col style={{ width: 160 }} />
         </colgroup>
         <thead>
           <tr>
             <th>Product</th>
             <th style={{ textAlign: 'right' }}>Quantity</th>
             <th style={{ textAlign: 'right' }}>Net price</th>
-            {!readOnly && <th />}
+            <th />
           </tr>
         </thead>
         <tbody>
           {isEmpty ? (
             <tr>
-              <td colSpan={colCount} className={styles.groupedEmptyTd}>
+              <td colSpan={4} className={styles.groupedEmptyTd}>
                 <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.32px', lineHeight: 1.25 }}>
                   There aren't any products added, once there are you'll see them here.
                 </span>
@@ -197,14 +213,14 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: G
                   </div>
                 </td>
                 <td style={{ textAlign: 'right' }}><span style={cellStyle}>$0.00 upfront</span></td>
-                {!readOnly && (
-                  <td>
+                <td>
+                  {!readOnly && (
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
                       <button className={styles.btnTertiary} onClick={onEdit}>Edit</button>
                       <button className={styles.btnTertiary} onClick={onRemove}>Remove</button>
                     </div>
-                  </td>
-                )}
+                  )}
+                </td>
               </tr>
               {/* Child rows */}
               {products.map(p => (
@@ -213,7 +229,16 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: G
                     <div className={styles.gtChildProductCell}>
                       <HierarchyIndicator />
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'flex-start' }}>
-                        <span style={{ ...cellStyle, fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>{p.role}</span>
+                        {p.role === 'Miscellaneous' ? (
+                          <div className={styles.feeTooltipWrap}>
+                            <span className={styles.calloutLink}>
+                              <span className={styles.calloutLinkValueText} style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>Miscellaneous</span>
+                            </span>
+                            <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
+                          </div>
+                        ) : (
+                          <span style={{ ...cellStyle, fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>{p.role}</span>
+                        )}
                         <div className={styles.feeTooltipWrap}>
                           <span className={styles.calloutLink}><span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{p.feePct}% fee per hire</span></span>
                           <div className={styles.feeTooltip}>
@@ -224,8 +249,7 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: G
                       </div>
                     </div>
                   </td>
-                  <td /><td />
-                  {!readOnly && <td />}
+                  <td /><td /><td />
                 </tr>
               ))}
             </>
@@ -245,7 +269,16 @@ function buildReadOnlyProductColumns(): ColumnsType<ProductRow> {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
           <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>Full-service hiring</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.role}</span>
+            {row.role === 'Miscellaneous' ? (
+              <div className={styles.feeTooltipWrap}>
+                <span className={styles.calloutLink}>
+                  <span className={styles.calloutLinkValueText} style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>Miscellaneous</span>
+                </span>
+                <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
+              </div>
+            ) : (
+              <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.role}</span>
+            )}
             <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.9)' }}>∙</span>
             <div className={styles.feeTooltipWrap}>
               <span className={styles.calloutLink}><span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{row.feePct}% fee per hire</span></span>
@@ -283,7 +316,7 @@ function RoleTypeahead({ value, onChange, onSelect, onClear, isSelected, hasErro
   const inputRef = useRef<HTMLInputElement>(null);
 
   const matches = value.trim()
-    ? JOB_ROLES.filter(r => r.toLowerCase().includes(value.toLowerCase()))
+    ? JOB_ROLES.filter(r => r !== 'Miscellaneous' && r.toLowerCase().includes(value.toLowerCase()))
     : [];
 
   const openDropdown = () => {
@@ -492,8 +525,8 @@ export default function SolutionBuilderScreen({
     if (patch.role) setGroupedRoleErrors(prev => { const next = new Set(prev); next.delete(id); return next; });
   };
   const openEditGroupedModal = () => {
-    // Restore groupedRoles from saved products (skip index 0 which is always the misc row)
-    const restored: GroupedRole[] = products.slice(1).map((p, i) => ({
+    // Restore groupedRoles from saved products (skip last which is always the misc row)
+    const restored: GroupedRole[] = products.slice(0, -1).map((p, i) => ({
       id: `gr-edit-${i}-${p.key}`,
       roleQuery: p.role ?? '',
       role: p.role ?? '',
@@ -519,7 +552,7 @@ export default function SolutionBuilderScreen({
         return { key: `fsh-${Date.now()}-${r.id}`, role: r.role, feePct: pct, salary, feeAmount: Math.round(salary * pct / 100) };
       });
     setGroupedRoleErrors(new Set());
-    setProducts([miscRow, ...addedRows]);
+    setProducts([...addedRows, miscRow]);
     setModalOpen(false);
   };
 
@@ -650,12 +683,6 @@ export default function SolutionBuilderScreen({
         {/* Sub-header — same structure as step 7, status updated */}
         <div className={styles.subHeader}>
           <div className={styles.subHeaderLeft}>
-            <div className={styles.breadcrumbs}>
-              <button className={styles.breadcrumbItem} onClick={() => onNavigate?.('quotes-list')}>Quotes</button>
-              <div className={styles.chevronWrap}>
-                <img src={imgChevron} alt="" className={styles.chevronInner} />
-              </div>
-            </div>
             <div className={styles.quoteRow}>
               <Typography.Title level={3} style={{ margin: 0, fontSize: 24, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '0.36px' }}>
                 Q123213
@@ -680,9 +707,6 @@ export default function SolutionBuilderScreen({
             </div>
           </div>
           <div className={styles.subHeaderRight}>
-            <div className={styles.navSaved} style={{ visibility: 'hidden' }} aria-hidden>
-              <span>{saving ? 'Saving...' : 'All changes saved'}</span>
-            </div>
             <div className={styles.crmLink}>
               <span className={styles.crmLinkText}>HireNow CRM</span>
               <div className={styles.linkIconWrap}>
@@ -858,12 +882,6 @@ export default function SolutionBuilderScreen({
       {/* ── 2. Sub-header ───────────────────────────────────── */}
       <div className={styles.subHeader}>
         <div className={styles.subHeaderLeft}>
-          <div className={styles.breadcrumbs}>
-            <button className={styles.breadcrumbItem} onClick={() => onNavigate?.('quotes-list')}>Quotes</button>
-            <div className={styles.chevronWrap}>
-              <img src={imgChevron} alt="" className={styles.chevronInner} />
-            </div>
-          </div>
           <div className={styles.quoteRow}>
             <Typography.Title level={3} style={{ margin: 0, fontSize: 24, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '0.36px' }}>
               Q123213
@@ -887,22 +905,16 @@ export default function SolutionBuilderScreen({
             </Tag>
           </div>
         </div>
-        <div className={styles.subHeaderRight}>
-          <div className={`${styles.navSaved} ${saving ? styles.navSaving : ''}`}>
-            <span>{saving ? 'Saving...' : 'All changes saved'}</span>
-          </div>
-          <div className={styles.crmLink}>
-            <span className={styles.crmLinkText}>HireNow CRM</span>
-            {/* LinkExternalSmall: 16×16 outer, inner image 13×13 at left:3px top:1px */}
-            <div className={styles.linkIconWrap}>
-              <img src={imgLinkExternal} alt="" className={styles.linkIconInner} />
-            </div>
+        <div className={styles.crmLink}>
+          <span className={styles.crmLinkText}>HireNow CRM</span>
+          <div className={styles.linkIconWrap}>
+            <img src={imgLinkExternal} alt="" className={styles.linkIconInner} />
           </div>
         </div>
       </div>
 
       {/* ── 3. Main Scrollable Area ──────────────────────────── */}
-      <main className={`${styles.main} ${quoteAdvisorLayout === 'floating' ? styles.mainWithFloat : ''}`}>
+      <main className={styles.main}>
         <div className={styles.card}>
 
           {/* ── Section A: Customer ─────────────────────────── */}
@@ -943,7 +955,7 @@ export default function SolutionBuilderScreen({
                       padding: '7px 16px',
                       height: 'auto',
                     }}
-                    onClick={() => { setGroupedRoles([]); setModalOpen(true); }}
+                    onClick={() => { setGroupedRoles([{ id: `gr-${Date.now()}`, roleQuery: '', role: '', feePct: String(DEFAULT_FEE_PCT) }]); setModalOpen(true); }}
                   >
                     Add product
                   </Button>
@@ -1092,27 +1104,7 @@ export default function SolutionBuilderScreen({
             </div>
           </section>
 
-          {/* ── Section D: Quote Advisor — hidden when floating ── */}
-          {quoteAdvisorLayout === 'in-card' && (
-            <section className={`${styles.section} ${styles.sectionDivider}`}>
-              <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: '0 0 8px' }}>
-                Quote advisor
-              </Typography.Title>
-              <QuoteAdvisorContent contentOn={quoteAdvisorContentOn} products={products} />
-            </section>
-          )}
-
         </div>
-
-        {/* Floating Quote Advisor panel — to the right of the card */}
-        {quoteAdvisorLayout === 'floating' && (
-          <div className={styles.floatingAdvisor}>
-            <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: '0 0 24px' }}>
-              Quote advisor
-            </Typography.Title>
-            <QuoteAdvisorContent contentOn={quoteAdvisorContentOn} products={products} />
-          </div>
-        )}
       </main>
 
       {/* ── Modal: Full Service Hiring (sep-line) ───────────── */}
@@ -1133,7 +1125,7 @@ export default function SolutionBuilderScreen({
             <div className={styles.modalBody}>
               {/* Role typeahead */}
               <div className={styles.modalField}>
-                <label className={styles.fieldLabel}>Role</label>
+                <label className={styles.fieldLabel}>Role name</label>
                 <RoleTypeahead
                   value={roleQuery}
                   onChange={v => { setRoleQuery(v); if (v !== selectedRole) setSelectedRole(''); }}
@@ -1222,41 +1214,17 @@ export default function SolutionBuilderScreen({
             {/* Body */}
             <div className={styles.modalBody} ref={modalBodyRef}>
               <div className={styles.groupedRolesSection}>
-                <p className={styles.groupedRolesSectionTitle}>Roles</p>
-                <p className={styles.groupedRolesSectionSubtitle}>Headcount isn't fixed for roles, the contract covers all hires.</p>
-
-                {/* Default read-only Miscellaneous row */}
-                <div className={styles.groupedRoleCard}>
-                  <div className={styles.groupedRoleCardRow}>
-                    <div className={styles.groupedRoleCardLeft} style={{ alignItems: 'stretch' }}>
-                      <div className={styles.groupedRoleField} style={{ justifyContent: 'flex-start' }}>
-                        <label className={styles.fieldLabel} style={{ marginBottom: 4 }}>Role</label>
-                        <div className={styles.feeTooltipWrap}>
-                          <span className={styles.calloutLink}>
-                            <span className={styles.calloutLinkValueText} style={{ fontSize: 14 }}>Miscellaneous</span>
-                          </span>
-                          <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
-                        </div>
-                      </div>
-                      <div className={styles.groupedFeeField} style={{ justifyContent: 'flex-start' }}>
-                        <div className={styles.feeTooltipWrap} style={{ marginBottom: 4 }}>
-                          <span className={styles.calloutLink}>
-                            <span className={styles.calloutLinkLabelText}>Fee per hire</span>
-                          </span>
-                          <div className={styles.feeTooltip} style={{ left: 'auto', right: 0 }}>The fee per hire is the percentage of the hire's first-year salary paid to LinkedIn.</div>
-                        </div>
-                        <span className={styles.groupedReadOnlyValue} style={{ fontSize: 14 }}>{DEFAULT_FEE_PCT}%</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className={styles.groupedRolesSectionHeader}>
+                  <p className={styles.groupedRolesSectionTitle}>Roles</p>
+                  <p className={styles.groupedRolesSectionSubtitle}>Headcount isn't fixed for roles, the contract covers all hires.</p>
                 </div>
 
-                {groupedRoles.map((entry) => (
+                {groupedRoles.map((entry, entryIdx) => (
                   <div key={entry.id} data-role-id={entry.id} className={`${styles.groupedRoleCard} ${groupedRoleErrors.has(entry.id) ? styles.groupedRoleCardError : ''}`}>
                     {/* Labels row */}
                     <div className={styles.groupedRoleCardLabels}>
                       <div className={styles.groupedRoleField}>
-                        <label className={`${styles.fieldLabel} ${groupedRoleErrors.has(entry.id) ? styles.fieldLabelError : ''}`}>Role</label>
+                        <label className={`${styles.fieldLabel} ${groupedRoleErrors.has(entry.id) ? styles.fieldLabelError : ''}`}>Role name</label>
                       </div>
                       <div className={styles.groupedFeeField}>
                         <div className={styles.feeTooltipWrap}>
@@ -1300,16 +1268,18 @@ export default function SolutionBuilderScreen({
                           </div>
                         </div>
                       </div>
-                      <button className={styles.groupedRemoveBtn} onClick={() => removeGroupedRole(entry.id)}>
-                        Remove
-                      </button>
+                      {entryIdx > 0 && (
+                        <button className={styles.groupedRemoveBtn} onClick={() => removeGroupedRole(entry.id)}>
+                          Remove
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
 
                 <button className={styles.groupedAddRoleBtn} onClick={addGroupedRole}>
                   <img src={imgAddSmall} alt="" style={{ width: 12, height: 12 }} />
-                  <span>Add role</span>
+                  <span>Add another role</span>
                 </button>
               </div>
             </div>

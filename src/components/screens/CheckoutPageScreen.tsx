@@ -9,13 +9,13 @@ import type { ProductRow } from './SolutionBuilderScreen';
 import styles from './CheckoutPageScreen.module.css';
 
 
-const imgLinkedIn   = 'https://www.figma.com/api/mcp/asset/0d4e6bb1-b7a8-47f9-9a03-2aff4be1f6eb';
-const imgLock       = 'https://www.figma.com/api/mcp/asset/d527716d-bb3c-4ddd-95b0-935723a7cc88';
-const imgQuestion   = 'https://www.figma.com/api/mcp/asset/2306ff4e-542d-44be-9181-32476097fbad';
-const imgAlexAvatar = 'https://www.figma.com/api/mcp/asset/d05543e3-2db6-4495-90f4-f53dfee213a4';
-const imgLightbulb  = 'https://www.figma.com/api/mcp/asset/8a44dad0-e90e-475c-adbf-60b2088bc0e1';
-const imgAmyAvatar  = 'https://www.figma.com/api/mcp/asset/ac2dcc5d-283a-4cf6-a368-dfcd532954fa';
-const imgIn14       = 'https://www.figma.com/api/mcp/asset/7f2e4030-eeec-46af-8c50-f1e41ed52dab';
+const imgLinkedIn   = '/linkedin-logo.svg';
+const imgLock       = '/lock.svg';
+const imgQuestion   = '/question.svg';
+const imgAlexAvatar = '/alex-avatar.png';
+const imgLightbulb  = '/lightbulb.svg';
+const imgAmyAvatar  = '/amy-avatar.png';
+const imgIn14       = '/linkedin-in14.svg';
 const imgChevron    = 'https://www.figma.com/api/mcp/asset/5e9ef1e1-400b-4315-81a0-7efb478b84de';
 
 interface Props {
@@ -211,12 +211,6 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
                 Agree and activate for $0
               </button>
 
-              <button
-                className={styles.editQuoteBtn}
-                onClick={() => onNavigate?.('solution-builder-filled')}
-              >
-                Edit quote
-              </button>
             </div>
           </div>
 

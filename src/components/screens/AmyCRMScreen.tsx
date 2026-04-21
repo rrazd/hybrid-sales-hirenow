@@ -10,9 +10,9 @@ import { useState } from 'react';
 import NotLbpRibbon from '../NotLbpRibbon/NotLbpRibbon';
 import styles from './AmyCRMScreen.module.css';
 
-const imgCRM = 'https://www.figma.com/api/mcp/asset/28b2948b-64a7-4ea2-a475-6d3c46ca5a3e';
+const imgCRM = '/crm-screenshot.png';
 // Amy's photo overlaid on the CRM nav avatar (top-right of the app header)
-const imgAmy = 'https://www.figma.com/api/mcp/asset/cd74ed31-5008-466a-ab58-8394a1083f25';
+const imgAmy = '/amy-avatar.png';
 
 export default function AmyCRMScreen() {
   const [loaded, setLoaded] = useState(false);

@@ -5,8 +5,8 @@ import { personas } from '../../data/personas';
 import type { QuoteAdvisorLayout, FSHLayout } from '../../App';
 import styles from './ControlPanel.module.css';
 
-const imgLinkedInBadge  = 'https://www.figma.com/api/mcp/asset/f0e5db34-c9b6-425d-8fc0-0fb33a39bbb0';
-const imgCompanyBadge   = 'https://www.figma.com/api/mcp/asset/a5d7769e-39cd-4070-aeb2-c8248f4359cc';
+const imgLinkedInBadge  = '/linkedin-in21.svg';
+const imgCompanyBadge   = '/company-badge.svg';
 
 interface ControlPanelProps {
   currentStepId: string;

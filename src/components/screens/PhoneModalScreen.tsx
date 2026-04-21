@@ -11,11 +11,11 @@ import { useState } from 'react';
 import NotLbpRibbon from '../NotLbpRibbon/NotLbpRibbon';
 import styles from './PhoneModalScreen.module.css';
 
-const imgLiLogo     = 'https://www.figma.com/api/mcp/asset/0aee8371-362c-4a77-9024-6587bcbb5e5e';
-const imgOval       = 'https://www.figma.com/api/mcp/asset/ed604ebc-a502-4c4a-89ce-7c666d5bc332';
-const imgLeftCard   = 'https://www.figma.com/api/mcp/asset/a68f4754-e709-4025-a05f-ad1f646549e7';
-const imgRadioOuter = 'https://www.figma.com/api/mcp/asset/e4cd980e-ba3e-41ce-834b-cd2e96c121fd';
-const imgRadioInner = 'https://www.figma.com/api/mcp/asset/3e5b536f-bf82-4baf-b3c3-d58580899fec';
+const imgLiLogo     = '/linkedin-logo.svg';
+const imgOval       = '/oval-avatar.svg';
+const imgLeftCard   = '/plan-left-card.svg';
+const imgRadioOuter = '/radio-outer.svg';
+const imgRadioInner = '/radio-inner.svg';
 
 const TOTAL_IMGS = 5;
 

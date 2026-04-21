@@ -7,35 +7,35 @@
 import styles from './OrderConfirmationScreen.module.css';
 
 /* ── Nav assets (shared with CheckoutPageScreen) ── */
-const imgLinkedIn   = 'https://www.figma.com/api/mcp/asset/0d4e6bb1-b7a8-47f9-9a03-2aff4be1f6eb';
-const imgLock       = 'https://www.figma.com/api/mcp/asset/d527716d-bb3c-4ddd-95b0-935723a7cc88';
-const imgQuestion   = 'https://www.figma.com/api/mcp/asset/2306ff4e-542d-44be-9181-32476097fbad';
-const imgAlexAvatar = 'https://www.figma.com/api/mcp/asset/d05543e3-2db6-4495-90f4-f53dfee213a4';
+const imgLinkedIn   = '/linkedin-logo.svg';
+const imgLock       = '/lock.svg';
+const imgQuestion   = '/question.svg';
+const imgAlexAvatar = '/alex-avatar.png';
 
 /* ── Success illustration assets ── */
-const imgVector  = 'https://www.figma.com/api/mcp/asset/1aeb4e80-8b74-4b08-b08d-e9a919a11ae1';
-const imgGroup   = 'https://www.figma.com/api/mcp/asset/e1c45c16-42dd-48a8-a43a-dc3238a4c0bd';
-const imgGroup1  = 'https://www.figma.com/api/mcp/asset/434ba9c3-391a-4810-a15a-5487b68edd0a';
-const imgGroup2  = 'https://www.figma.com/api/mcp/asset/1f84be24-8291-4b6a-990d-41b784b5049d';
-const imgGroup3  = 'https://www.figma.com/api/mcp/asset/9bd4a718-3aea-4e6d-99cc-539cda8f9f3b';
-const imgGroup4  = 'https://www.figma.com/api/mcp/asset/b09a3339-5856-474c-8941-351b41d0ff71';
-const imgVector1 = 'https://www.figma.com/api/mcp/asset/2563a351-6e46-4b3a-ac55-6bf3bf2f9bd5';
-const imgVector2 = 'https://www.figma.com/api/mcp/asset/abc19477-dba9-44f1-88c5-20ebe5ae6ead';
-const imgVector3 = 'https://www.figma.com/api/mcp/asset/5b93fbb5-620f-4a84-8dce-6e3c698d3081';
-const imgGroup5  = 'https://www.figma.com/api/mcp/asset/b61a1ebd-0ac7-4f73-a8c9-e5f8f5a5b2d1';
-const imgVector4 = 'https://www.figma.com/api/mcp/asset/df0c4be1-9172-4f06-a153-7f06279bdb80';
-const imgVector5 = 'https://www.figma.com/api/mcp/asset/af17baf8-5a6b-4ca2-92b4-42e7170c708d';
-const imgGroup6  = 'https://www.figma.com/api/mcp/asset/a420496b-ffb8-4b9a-b88a-9bfabf1e624b';
-const imgVector6 = 'https://www.figma.com/api/mcp/asset/130a4af9-0843-4e55-aa22-d86dc9f3d684';
-const imgVector7 = 'https://www.figma.com/api/mcp/asset/efa4cd38-5a58-4881-a9a4-c8e11e64c979';
-const imgGroup7  = 'https://www.figma.com/api/mcp/asset/f58707d0-9d1d-49bf-a60f-bab80bcfa8c5';
-const imgGroup8  = 'https://www.figma.com/api/mcp/asset/6ca84fd1-0dbf-46c1-a47d-2f78815805b8';
-const imgGroup9  = 'https://www.figma.com/api/mcp/asset/31229081-c3e2-4b1e-a298-1fa4d14f5c8f';
+const imgVector  = 'https://www.figma.com/api/mcp/asset/42d99c1c-81fa-40f6-9868-403373b7e904';
+const imgGroup   = 'https://www.figma.com/api/mcp/asset/3e53750e-5225-4d91-af58-f551d43495b9';
+const imgGroup1  = 'https://www.figma.com/api/mcp/asset/c178684e-c166-4158-91ca-c963316df66d';
+const imgGroup2  = 'https://www.figma.com/api/mcp/asset/20720654-07ee-4115-899a-5c56a9820ec0';
+const imgGroup3  = 'https://www.figma.com/api/mcp/asset/8e1d6cf9-ec52-4471-b99c-d57624739fd3';
+const imgGroup4  = 'https://www.figma.com/api/mcp/asset/2340a61c-884a-42c9-b87e-9a07939999f6';
+const imgVector1 = 'https://www.figma.com/api/mcp/asset/dea13ded-c967-4bf7-a815-f98eafd5eb65';
+const imgVector2 = 'https://www.figma.com/api/mcp/asset/b841fbaf-1652-4e69-bcb2-53825c4c7c8d';
+const imgVector3 = 'https://www.figma.com/api/mcp/asset/18709474-99fe-4936-8757-f3b8c3c5bd84';
+const imgGroup5  = 'https://www.figma.com/api/mcp/asset/62ff7193-021e-48e7-b32e-cf90b78dd6a5';
+const imgVector4 = 'https://www.figma.com/api/mcp/asset/a5b34c4f-22e7-4751-b662-de891617af4b';
+const imgVector5 = 'https://www.figma.com/api/mcp/asset/95687782-b2c3-4ab4-9958-5fcb7eb776a3';
+const imgGroup6  = 'https://www.figma.com/api/mcp/asset/fdfbf5d9-bbca-4119-aa15-b71be2ea2749';
+const imgVector6 = 'https://www.figma.com/api/mcp/asset/7c878c56-3536-4857-a9fc-86dfeec775f4';
+const imgVector7 = 'https://www.figma.com/api/mcp/asset/c5f26c30-e10d-4530-ad69-dc995b517a67';
+const imgGroup7  = 'https://www.figma.com/api/mcp/asset/b9971f5c-eb26-49e7-bb54-b23fd19ddfcc';
+const imgGroup8  = 'https://www.figma.com/api/mcp/asset/c0abf545-a390-4a7c-9a8f-b78031c8935f';
+const imgGroup9  = 'https://www.figma.com/api/mcp/asset/4eaccf5e-58d2-4369-a799-51a13298294e';
 
 /* ── Card assets ── */
 const imgDownload  = 'https://www.figma.com/api/mcp/asset/054629a4-2b2a-4eab-ae11-da6a3c427a22';
-const imgAmyAvatar = 'https://www.figma.com/api/mcp/asset/6c864e6b-f6b4-487d-a091-15da274c0033';
-const imgIn14      = 'https://www.figma.com/api/mcp/asset/e030b837-dbe9-4b59-966b-c8790754cec0';
+const imgAmyAvatar = '/amy-avatar.png';
+const imgIn14      = '/linkedin-in14.svg';
 
 const abs: React.CSSProperties = { position: 'absolute', display: 'block', maxWidth: 'none', width: '100%', height: '100%' };
 

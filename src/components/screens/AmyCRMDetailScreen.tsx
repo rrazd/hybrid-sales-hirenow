@@ -10,9 +10,9 @@ import { useState } from 'react';
 import NotLbpRibbon from '../NotLbpRibbon/NotLbpRibbon';
 import styles from './AmyCRMDetailScreen.module.css';
 
-const imgBackground = 'https://www.figma.com/api/mcp/asset/66b6f021-c3bd-49dd-a397-eeff9e6031d2';
-const imgExternalIcon = 'https://www.figma.com/api/mcp/asset/dd4dc101-0c81-4417-a6c7-67cbd5c2cc6c';
-const imgAmy = 'https://www.figma.com/api/mcp/asset/cd74ed31-5008-466a-ab58-8394a1083f25';
+const imgBackground = '/crm-detail-bg.png';
+const imgExternalIcon = 'https://www.figma.com/api/mcp/asset/27f853cf-8d03-418d-8ba2-512a6b7589a3';
+const imgAmy = '/amy-avatar.png';
 
 // Gray placeholder rects — Figma px → % of 950×533 canvas
 const grayRects = [

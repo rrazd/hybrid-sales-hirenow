@@ -1,9 +1,9 @@
 import { personas } from '../../data/personas';
 import styles from './WelcomeScreen.module.css';
 
-const imgLinkedInLogo   = 'https://www.figma.com/api/mcp/asset/545cc161-0813-417c-87b2-8106774bd214';
-const imgLinkedInBadge  = 'https://www.figma.com/api/mcp/asset/f0e5db34-c9b6-425d-8fc0-0fb33a39bbb0';
-const imgCompanyBadge   = 'https://www.figma.com/api/mcp/asset/a5d7769e-39cd-4070-aeb2-c8248f4359cc';
+const imgLinkedInLogo   = '/linkedin-logo.svg';
+const imgLinkedInBadge  = '/linkedin-in21.svg';
+const imgCompanyBadge   = '/company-badge.svg';
 
 interface Props {
   onBegin: () => void;

@@ -12,11 +12,11 @@ import { useState } from 'react';
 import NotLbpRibbon from '../NotLbpRibbon/NotLbpRibbon';
 import styles from './PlanSelectionScreen.module.css';
 
-const imgLiLogo   = 'https://www.figma.com/api/mcp/asset/33a0fea2-cb9b-4f02-b5de-8de8e1f56fd1';
-const imgOval     = 'https://www.figma.com/api/mcp/asset/ced5659c-ee25-4b9a-be5d-e630af5693f4';
-const imgLeftCard = 'https://www.figma.com/api/mcp/asset/90df0103-9956-4b00-9126-3e83608ba625';
-const imgRadioOuter = 'https://www.figma.com/api/mcp/asset/93bd0089-3246-40d8-aceb-8affe98ff85b';
-const imgRadioInner = 'https://www.figma.com/api/mcp/asset/68113085-97dd-47d6-a506-6c627e96223b';
+const imgLiLogo   = '/linkedin-logo.svg';
+const imgOval     = '/oval-avatar.svg';
+const imgLeftCard = '/plan-left-card.svg';
+const imgRadioOuter = '/radio-outer.svg';
+const imgRadioInner = '/radio-inner.svg';
 
 const TOTAL_IMGS = 5;
 

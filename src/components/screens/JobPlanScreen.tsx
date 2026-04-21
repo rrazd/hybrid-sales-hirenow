@@ -12,8 +12,8 @@ import { useState } from 'react';
 import NotLbpRibbon from '../NotLbpRibbon/NotLbpRibbon';
 import styles from './JobPlanScreen.module.css';
 
-const imgLiLogo = 'https://www.figma.com/api/mcp/asset/ed972e76-6b27-4ddb-b7e0-8e264fad03f7';
-const imgOval   = 'https://www.figma.com/api/mcp/asset/06d349bc-eb95-4296-b6b0-47df1a5dd783';
+const imgLiLogo = '/linkedin-logo.svg';
+const imgOval   = '/oval-avatar.svg';
 
 function StatusBadge({ label }: { label: string }) {
   return <span className={styles.badge}>{label}</span>;

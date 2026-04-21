@@ -7,8 +7,8 @@
 import NotLbpRibbon from '../NotLbpRibbon/NotLbpRibbon';
 import styles from './PostJobScreen.module.css';
 
-const imgLiLogo = 'https://www.figma.com/api/mcp/asset/72a264bb-b811-4b0e-a4a9-6b6df1f40216';
-const imgOval = 'https://www.figma.com/api/mcp/asset/8b35dc2f-fef2-489c-916d-2d9e652e06f4';
+const imgLiLogo = '/linkedin-logo.svg';
+const imgOval = '/oval-avatar.svg';
 
 export default function PostJobScreen() {
   return (

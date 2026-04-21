@@ -5,9 +5,9 @@
 
 import styles from './QuotesListScreen.module.css';
 
-const imgNavLogo        = 'https://www.figma.com/api/mcp/asset/545cc161-0813-417c-87b2-8106774bd214';
-const imgAmyAvatar      = 'https://www.figma.com/api/mcp/asset/45195051-c50e-47c1-a044-9948975abdd0';
-const imgAlexAvatar     = 'https://www.figma.com/api/mcp/asset/77aae924-da43-449f-9f00-b91425d692fc';
+const imgNavLogo        = '/linkedin-logo.svg';
+const imgAmyAvatar      = '/amy-avatar.png';
+const imgAlexAvatar     = '/alex-avatar.png';
 const imgGenericAvatar  = 'https://www.figma.com/api/mcp/asset/66a1f931-a306-420d-a917-71eb3f261124';
 
 const STATUS_BG: Record<string, string> = {
