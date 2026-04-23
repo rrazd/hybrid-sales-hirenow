@@ -151,13 +151,35 @@
   color: #1f1f1f;
   letter-spacing: 0.38px;
   line-height: 1.25;
-  margin: 0 0 24px;
+  margin: 0;
 }
 
 .billingForm {
   display: flex;
   flex-direction: column;
+  gap: 32px;
+}
+
+.billingSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.billingFields {
+  display: flex;
+  flex-direction: column;
   gap: 24px;
+}
+
+.billingSubsection {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  margin: 0 0 4px;
 }
 
 .billingField {
@@ -294,6 +316,12 @@
   font-weight: 600;
   color: rgba(0, 0, 0, 0.9);
   background: rgba(0, 0, 0, 0.04);
+}
+
+.billingDivider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin: 0;
 }
 
 .billingCaretWrap {

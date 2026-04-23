@@ -89,102 +89,114 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
 
             {/* Billing information card */}
             <div className={styles.billingCard}>
-              <p className={styles.billingTitle}>Enter your billing information</p>
               <div className={styles.billingForm}>
 
-                {/* Invoice recipient email */}
-                <div className={styles.billingField}>
-                  <label className={styles.billingLabel}>Invoice recipient email</label>
-                  <input className={styles.billingInput} style={{ width: 248 }} type="email" />
-                </div>
+                <p className={styles.billingTitle}>Enter your billing information</p>
 
-                {/* First name + Last name */}
-                <div className={styles.billingRow} style={{ gap: 16 }}>
-                  <div className={styles.billingField}>
-                    <label className={styles.billingLabel}>First name</label>
-                    <input className={styles.billingInput} style={{ width: 248 }} type="text" />
-                  </div>
-                  <div className={styles.billingField}>
-                    <label className={styles.billingLabel}>Last name</label>
-                    <input className={styles.billingInput} style={{ width: 248 }} type="text" />
-                  </div>
-                </div>
+                {/* Billing address subsection */}
+                <div className={styles.billingSection}>
+                  <p className={styles.billingSubsection}>Billing address</p>
+                  <div className={styles.billingFields}>
 
-                {/* Country/region */}
-                <div className={styles.billingField}>
-                  <label className={styles.billingLabel}>Country/region</label>
-                  <div className={styles.billingSelect} style={{ width: 320 }}>
-                    <span className={styles.billingSelectValue}>United States</span>
-                    <div className={styles.billingCaretWrap}>
-                      <img src={imgCaret} alt="" className={styles.billingCaretImg} />
+                    {/* First name + Last name */}
+                    <div className={styles.billingRow} style={{ gap: 16 }}>
+                      <div className={styles.billingField}>
+                        <label className={styles.billingLabel}>First name</label>
+                        <input className={styles.billingInput} style={{ width: 248 }} type="text" />
+                      </div>
+                      <div className={styles.billingField}>
+                        <label className={styles.billingLabel}>Last name</label>
+                        <input className={styles.billingInput} style={{ width: 248 }} type="text" />
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                {/* Address line 1 */}
-                <div className={styles.billingField}>
-                  <label className={styles.billingLabel}>Address line 1</label>
-                  <input className={styles.billingInput} style={{ width: 512 }} type="text" />
-                </div>
-
-                {/* Address line 2 */}
-                <div className={styles.billingField}>
-                  <label className={styles.billingLabel}>Address line 2 (optional)</label>
-                  <input className={styles.billingInput} style={{ width: 512 }} type="text" />
-                </div>
-
-                {/* City + State/province */}
-                <div className={styles.billingRow} style={{ gap: 12, width: 512 }}>
-                  <div className={styles.billingField} style={{ flex: 1 }}>
-                    <label className={styles.billingLabel}>City</label>
-                    <input className={styles.billingInput} style={{ width: '100%' }} type="text" />
-                  </div>
-                  <div className={styles.billingField} style={{ flex: 1 }}>
-                    <label className={styles.billingLabel}>State/province</label>
-                    <div className={styles.stateWrap} ref={stateRef} style={{ width: '100%' }}>
-                      <button
-                        className={`${styles.stateSelect} ${stateOpen ? styles.stateSelectOpen : ''}`}
-                        onClick={() => {
-                          if (!stateOpen && stateRef.current) {
-                            const r = stateRef.current.getBoundingClientRect();
-                            const MENU_HEIGHT = 240;
-                            const spaceBelow = window.innerHeight - r.bottom;
-                            if (spaceBelow >= MENU_HEIGHT + 4) {
-                              setStateRect({ top: r.bottom + 4, left: r.left, width: r.width });
-                            } else {
-                              setStateRect({ bottom: window.innerHeight - r.top + 4, left: r.left, width: r.width });
-                            }
-                          }
-                          setStateOpen(o => !o);
-                        }}
-                        onBlur={() => setTimeout(() => setStateOpen(false), 150)}
-                      >
-                        {stateValue}
-                      </button>
-                      <svg className={styles.stateCaret} width="14" height="7" viewBox="0 0 14 7" fill="none" aria-hidden>
-                        <polygon points="0,0 14,0 7,7" fill="rgba(0,0,0,0.9)" />
-                      </svg>
-                      {stateOpen && stateRect && (
-                        <div className={styles.stateMenu} style={{ position: 'fixed', top: stateRect.top, bottom: stateRect.bottom, left: stateRect.left, width: stateRect.width }}>
-                          {US_STATES.map(s => (
-                            <div
-                              key={s}
-                              className={`${styles.stateMenuItem} ${stateValue === s ? styles.stateMenuItemSelected : ''}`}
-                              onMouseDown={() => { setStateValue(s); setStateOpen(false); }}
-                            >
-                              {s}
-                            </div>
-                          ))}
+                    {/* Country/region */}
+                    <div className={styles.billingField}>
+                      <label className={styles.billingLabel}>Country/region</label>
+                      <div className={styles.billingSelect} style={{ width: 320 }}>
+                        <span className={styles.billingSelectValue}>United States</span>
+                        <div className={styles.billingCaretWrap}>
+                          <img src={imgCaret} alt="" className={styles.billingCaretImg} />
                         </div>
-                      )}
+                      </div>
                     </div>
+
+                    {/* Address line 1 */}
+                    <div className={styles.billingField}>
+                      <label className={styles.billingLabel}>Address line 1</label>
+                      <input className={styles.billingInput} style={{ width: 512 }} type="text" />
+                    </div>
+
+                    {/* Address line 2 */}
+                    <div className={styles.billingField}>
+                      <label className={styles.billingLabel}>Address line 2 (optional)</label>
+                      <input className={styles.billingInput} style={{ width: 512 }} type="text" />
+                    </div>
+
+                    {/* City + State/province */}
+                    <div className={styles.billingRow} style={{ gap: 12, width: 512 }}>
+                      <div className={styles.billingField} style={{ flex: 1 }}>
+                        <label className={styles.billingLabel}>City</label>
+                        <input className={styles.billingInput} style={{ width: '100%' }} type="text" />
+                      </div>
+                      <div className={styles.billingField} style={{ flex: 1 }}>
+                        <label className={styles.billingLabel}>State/province</label>
+                        <div className={styles.stateWrap} ref={stateRef} style={{ width: '100%' }}>
+                          <button
+                            className={`${styles.stateSelect} ${stateOpen ? styles.stateSelectOpen : ''}`}
+                            onClick={() => {
+                              if (!stateOpen && stateRef.current) {
+                                const r = stateRef.current.getBoundingClientRect();
+                                const MENU_HEIGHT = 240;
+                                const spaceBelow = window.innerHeight - r.bottom;
+                                if (spaceBelow >= MENU_HEIGHT + 4) {
+                                  setStateRect({ top: r.bottom + 4, left: r.left, width: r.width });
+                                } else {
+                                  setStateRect({ bottom: window.innerHeight - r.top + 4, left: r.left, width: r.width });
+                                }
+                              }
+                              setStateOpen(o => !o);
+                            }}
+                            onBlur={() => setTimeout(() => setStateOpen(false), 150)}
+                          >
+                            {stateValue}
+                          </button>
+                          <svg className={styles.stateCaret} width="14" height="7" viewBox="0 0 14 7" fill="none" aria-hidden>
+                            <polygon points="0,0 14,0 7,7" fill="rgba(0,0,0,0.9)" />
+                          </svg>
+                          {stateOpen && stateRect && (
+                            <div className={styles.stateMenu} style={{ position: 'fixed', top: stateRect.top, bottom: stateRect.bottom, left: stateRect.left, width: stateRect.width }}>
+                              {US_STATES.map(s => (
+                                <div
+                                  key={s}
+                                  className={`${styles.stateMenuItem} ${stateValue === s ? styles.stateMenuItemSelected : ''}`}
+                                  onMouseDown={() => { setStateValue(s); setStateOpen(false); }}
+                                >
+                                  {s}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Postal code */}
+                    <div className={styles.billingField}>
+                      <label className={styles.billingLabel}>Postal code</label>
+                      <input className={styles.billingInput} style={{ width: 250 }} type="text" />
+                    </div>
+
                   </div>
                 </div>
 
-                {/* Postal code */}
-                <div className={styles.billingField}>
-                  <label className={styles.billingLabel}>Postal code</label>
-                  <input className={styles.billingInput} style={{ width: 250 }} type="text" />
+                {/* Invoice details subsection */}
+                <div className={styles.billingSection} style={{ paddingTop: 20 }}>
+                  <p className={styles.billingSubsection}>Invoice details</p>
+                  <div className={styles.billingField}>
+                    <label className={styles.billingLabel}>Invoice recipient email</label>
+                    <input className={styles.billingInput} style={{ width: 248 }} type="email" />
+                  </div>
                 </div>
 
               </div>
