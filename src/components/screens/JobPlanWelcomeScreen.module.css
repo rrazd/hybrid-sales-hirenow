@@ -1,0 +1,256 @@
+/* ─── Page root ──────────────────────────────────────────────── */
+.pageWrapper {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 24px;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+/* ─── Browser wrap — relative ancestor for NOT LBP ribbon ───── */
+.browserWrap {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+}
+
+/* ─── macOS tab bar ──────────────────────────────────────────── */
+.tabBar {
+  background: white;
+  border-radius: 10px 10px 0 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.trafficLights {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dotRed,
+.dotYellow,
+.dotGreen {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dotRed    { background: #ff5f57; }
+.dotYellow { background: #febc2e; }
+.dotGreen  { background: #28c840; }
+
+/* ─── LinkedIn browser ───────────────────────────────────────── */
+.browser {
+  background: #fdfaf5;
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── LinkedIn nav ───────────────────────────────────────────── */
+.linkedInNav {
+  background: #788fa5;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+.navLogo {
+  background: #c0d1e2;
+  height: 14px;
+  width: 148px;
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+
+.navIcons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.navIcon {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.navAvatar {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+/* ─── Three-column body ──────────────────────────────────────── */
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 480px;
+}
+
+/* ─── Left sidebar ───────────────────────────────────────────── */
+.sidebar {
+  width: 17%;
+  flex-shrink: 0;
+  background: #fdfaf5;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.sidebarTop {
+  display: flex;
+  flex-direction: column;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.filterBar {
+  height: 8px;
+  border-radius: 100px;
+  background: #e9e5df;
+  width: 100%;
+}
+
+.filterBarActive {
+  background: #958b7b;
+}
+
+/* ─── Center: job list ───────────────────────────────────────── */
+.jobList {
+  width: 29%;
+  flex-shrink: 0;
+  background: white;
+  border-left: 7px solid #788fa5;
+  border-right: 7px solid #788fa5;
+  display: flex;
+  flex-direction: column;
+}
+
+.jobRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.jobRowActive {
+  background: #f4f2ee;
+}
+
+.jobAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #c0d1e2;
+  flex-shrink: 0;
+}
+
+.jobBars {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bar {
+  height: 10px;
+  border-radius: 100px;
+  background: #e9e5df;
+  width: 100%;
+}
+
+.barShort {
+  height: 10px;
+  border-radius: 100px;
+  background: #e9e5df;
+  width: 60%;
+}
+
+.barBlue {
+  background: #c0d1e2;
+}
+
+.barBlueShort {
+  background: #c0d1e2;
+  width: 45%;
+}
+
+/* ─── Right: welcome panel ───────────────────────────────────── */
+.welcomePanel {
+  flex: 1;
+  background: white;
+  border-left: 7px solid #788fa5;
+  border-right: 7px solid #788fa5;
+  border-bottom: 7px solid #788fa5;
+  border-radius: 0 0 10px 0;
+  padding: 56px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.welcomeHeading {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.32px;
+  line-height: 1.25;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.welcomeBars {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.welcomeBar {
+  height: 14px;
+  border-radius: 100px;
+  background: #e9e5df;
+  width: 100%;
+}
+
+.welcomeBarHalf {
+  height: 14px;
+  border-radius: 100px;
+  background: #e9e5df;
+  width: 50%;
+}
+
+.payNowBtn {
+  align-self: flex-start;
+  background: #687a8c;
+  border: none;
+  border-radius: 280px;
+  padding: 8px 28px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.13px;
+  cursor: default;
+}

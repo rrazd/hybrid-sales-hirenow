@@ -30,12 +30,12 @@ const imgLinkExternal  = 'https://www.figma.com/api/mcp/asset/27f853cf-8d03-418d
 const imgSignalSuccess = 'https://www.figma.com/api/mcp/asset/aae46a4b-1016-43a3-85bb-3a52c255c7a0';
 const imgCloseSmall    = 'https://www.figma.com/api/mcp/asset/a5be571a-9b5a-4b47-8fc5-67853f09c724';
 const imgSignalNotice  = 'https://www.figma.com/api/mcp/asset/d0ac7d69-84ee-4ff1-8323-70b4b9b2f8f8';
-const imgSignalErrorSm = 'https://www.figma.com/api/mcp/asset/da459368-7e79-4f2a-9389-86d21f37b18b';
+const imgSignalErrorSm = 'https://www.figma.com/api/mcp/asset/109cb881-5d81-4285-970f-7c394fc44a9c';
 const imgCopyLinkIcon  = 'https://www.figma.com/api/mcp/asset/bf15c9e2-17dd-4f44-ba36-8129d94213d1';
 const imgToastSuccess  = 'https://www.figma.com/api/mcp/asset/19040906-95e3-4347-b441-f0487c8b725d';
 const imgToastClose    = 'https://www.figma.com/api/mcp/asset/a5be571a-9b5a-4b47-8fc5-67853f09c724';
 const imgConfirmClose  = 'https://www.figma.com/api/mcp/asset/a5be571a-9b5a-4b47-8fc5-67853f09c724';
-const imgAddSmall      = 'https://www.figma.com/api/mcp/asset/678cf85e-c2af-45d6-9847-5b3a07238fbd';
+const imgAddSmall      = 'https://www.figma.com/api/mcp/asset/d4066de0-1299-4fff-aca2-da5342ba060f';
 
 export type ProductRow = { key: string; role?: string; feePct?: number; salary?: number; feeAmount?: number };
 
@@ -298,6 +298,7 @@ function buildReadOnlyProductColumns(): ColumnsType<ProductRow> {
       ) : null,
     },
     { title: 'Net price', key: 'netPrice', width: 160, align: 'right', render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>$0.00 upfront</span> : null },
+    { title: '', key: 'actions', width: 160, render: () => null },
   ];
 }
 
@@ -496,6 +497,7 @@ export default function SolutionBuilderScreen({
   interface GroupedRole { id: string; roleQuery: string; role: string; feePct: string; }
   const [groupedRoles, setGroupedRoles] = useState<GroupedRole[]>([]);
   const [groupedRoleErrors, setGroupedRoleErrors] = useState<Set<string>>(new Set());
+  const [groupedFeeErrors, setGroupedFeeErrors] = useState<Set<string>>(new Set());
   const pendingScrollId = useRef<string | null>(null);
   const modalBodyRef = useRef<HTMLDivElement>(null);
   const addGroupedRole = () => {
@@ -506,6 +508,7 @@ export default function SolutionBuilderScreen({
   const removeGroupedRole = (id: string) => {
     setGroupedRoles(prev => prev.filter(r => r.id !== id));
     setGroupedRoleErrors(prev => { const next = new Set(prev); next.delete(id); return next; });
+    setGroupedFeeErrors(prev => { const next = new Set(prev); next.delete(id); return next; });
   };
 
   useEffect(() => {
@@ -523,6 +526,7 @@ export default function SolutionBuilderScreen({
   const updateGroupedRole = (id: string, patch: Partial<GroupedRole>) => {
     setGroupedRoles(prev => prev.map(r => r.id === id ? { ...r, ...patch } : r));
     if (patch.role) setGroupedRoleErrors(prev => { const next = new Set(prev); next.delete(id); return next; });
+    if (patch.feePct !== undefined) setGroupedFeeErrors(prev => { const next = new Set(prev); next.delete(id); return next; });
   };
   const openEditGroupedModal = () => {
     // Restore groupedRoles from saved products (skip last which is always the misc row)
@@ -536,10 +540,17 @@ export default function SolutionBuilderScreen({
     setModalOpen(true);
   };
 
+  const isValidFee = (feePct: string) => {
+    const n = parseFloat(feePct);
+    return Number.isFinite(n) && Number.isInteger(n) && n >= 1 && n <= 100;
+  };
+
   const handleAddGroupedProduct = () => {
     const emptyIds = new Set(groupedRoles.filter(r => !r.role).map(r => r.id));
-    if (emptyIds.size > 0) {
+    const badFeeIds = new Set(groupedRoles.filter(r => !isValidFee(r.feePct)).map(r => r.id));
+    if (emptyIds.size > 0 || badFeeIds.size > 0) {
       setGroupedRoleErrors(emptyIds);
+      setGroupedFeeErrors(badFeeIds);
       return;
     }
     const miscSalary = ROLE_SALARIES['Miscellaneous'] ?? DEFAULT_SALARY;
@@ -552,6 +563,7 @@ export default function SolutionBuilderScreen({
         return { key: `fsh-${Date.now()}-${r.id}`, role: r.role, feePct: pct, salary, feeAmount: Math.round(salary * pct / 100) };
       });
     setGroupedRoleErrors(new Set());
+    setGroupedFeeErrors(new Set());
     setProducts([...addedRows, miscRow]);
     setModalOpen(false);
   };
@@ -628,6 +640,7 @@ export default function SolutionBuilderScreen({
     setModalOpen(false);
     setEditingKey(null);
     setGroupedRoleErrors(new Set());
+    setGroupedFeeErrors(new Set());
   };
 
   const handleAddProduct = () => {
@@ -759,8 +772,8 @@ export default function SolutionBuilderScreen({
               <section className={styles.section}>
                 <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>Products</Typography.Title>
                 <div className={styles.tableWithGuides}>
-                  <div className={`${styles.totalsGuide} ${styles.totalsGuideLeftGrouped}`} />
-                  <div className={`${styles.totalsGuide} ${styles.totalsGuideRightGrouped}`} />
+                  <div className={`${styles.totalsGuide} ${styles.totalsGuideLeft}`} />
+                  <div className={`${styles.totalsGuide} ${styles.totalsGuideRight}`} />
                   {fshLayout === 'grouped' ? (
                     <GroupedProductTable products={products} readOnly />
                   ) : (
@@ -769,9 +782,14 @@ export default function SolutionBuilderScreen({
                       dataSource={products}
                       pagination={false}
                       style={{ marginTop: 0 }}
+                      components={{
+                        table: (props: React.HTMLAttributes<HTMLTableElement>) => (
+                          <table {...props} style={{ ...props.style, tableLayout: 'fixed', width: '100%' }} />
+                        ),
+                      }}
                     />
                   )}
-                  <div className={`${styles.totalsOuter} ${styles.totalsOuterGrouped}`}>
+                  <div className={styles.totalsOuter}>
                     <div className={styles.totalsBlock}>
                       <div className={`${styles.totalsRow} ${styles.totalsRowGray}`}>
                         <span className={styles.totalsLabel}>Total discount (0%)</span>
@@ -800,16 +818,13 @@ export default function SolutionBuilderScreen({
                     { label: 'Start date', value: 'Signing date' },
                     { label: 'Term', value: '12 months' },
                     { label: 'Payment method', value: 'Invoice' },
+                    { label: 'Payment terms', value: paymentTerm },
                   ].map(({ label, value }) => (
                     <div key={label} className={styles.billingField}>
                       <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 4 }}>{label}</Typography.Text>
                       <Typography.Text style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', display: 'block', letterSpacing: '-0.15px' }}>{value}</Typography.Text>
                     </div>
                   ))}
-                  <div className={styles.billingField}>
-                    <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 4 }}>Invoice payment term</Typography.Text>
-                    <Typography.Text style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px' }}>{paymentTerm}</Typography.Text>
-                  </div>
                 </div>
               </section>
 
@@ -1038,38 +1053,25 @@ export default function SolutionBuilderScreen({
               Billing
             </Typography.Title>
             <div className={styles.billingRow}>
-              {(showFilled
-                ? [
-                    { label: 'Start date', value: 'Signing date' },
-                    { label: 'Term', value: '12 months' },
-                    { label: 'Payment method', value: 'Invoice' },
-                  ]
-                : [
-                    { label: 'Start date', value: '--' },
-                    { label: 'Term', value: '--' },
-                    { label: 'Payment method', value: '--' },
-                  ]
-              ).map(({ label, value }) => (
+              {[
+                { label: 'Start date', value: showFilled ? 'Signing date' : '--' },
+                { label: 'Term', value: showFilled ? '12 months' : '--' },
+                { label: 'Payment method', value: showFilled ? 'Invoice' : '--' },
+              ].map(({ label, value }) => (
                 <div key={label} className={styles.billingField}>
-                  <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 4 }}>
-                    {label}
-                  </Typography.Text>
-                  <Typography.Text style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', display: 'block', letterSpacing: '-0.15px' }}>
-                    {value}
-                  </Typography.Text>
+                  <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 4 }}>{label}</Typography.Text>
+                  <Typography.Text style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', display: 'block', letterSpacing: '-0.15px' }}>{value}</Typography.Text>
                 </div>
               ))}
-              <div className={styles.billingField}>
-                <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 8 }}>
-                  Invoice payment term
-                </Typography.Text>
+              {showFilled && <div className={styles.billingField}>
+                <Typography.Text style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', display: 'block', marginBottom: 4 }}>Payment terms</Typography.Text>
                 <div className={styles.paymentTermWrap} ref={paymentTermRef}>
                   <button
                     className={`${styles.paymentTermSelect} ${paymentTermOpen ? styles.paymentTermSelectOpen : ''}`}
                     onClick={() => {
                       if (!paymentTermOpen && paymentTermRef.current) {
                         const r = paymentTermRef.current.getBoundingClientRect();
-                        const MENU_HEIGHT = 176; // 3 items × ~48px + 32px padding
+                        const MENU_HEIGHT = 176;
                         const spaceBelow = window.innerHeight - r.bottom;
                         if (spaceBelow >= MENU_HEIGHT + 4) {
                           setPaymentTermRect({ top: r.bottom + 4, left: r.left, width: r.width });
@@ -1100,7 +1102,7 @@ export default function SolutionBuilderScreen({
                     </div>
                   )}
                 </div>
-              </div>
+              </div>}
             </div>
           </section>
 
@@ -1220,7 +1222,7 @@ export default function SolutionBuilderScreen({
                 </div>
 
                 {groupedRoles.map((entry, entryIdx) => (
-                  <div key={entry.id} data-role-id={entry.id} className={`${styles.groupedRoleCard} ${groupedRoleErrors.has(entry.id) ? styles.groupedRoleCardError : ''}`}>
+                  <div key={entry.id} data-role-id={entry.id} className={`${styles.groupedRoleCard} ${(groupedRoleErrors.has(entry.id) || groupedFeeErrors.has(entry.id)) ? styles.groupedRoleCardError : ''}`}>
                     {/* Labels row */}
                     <div className={styles.groupedRoleCardLabels}>
                       <div className={styles.groupedRoleField}>
@@ -1257,7 +1259,7 @@ export default function SolutionBuilderScreen({
                           )}
                         </div>
                         <div className={styles.groupedFeeField}>
-                          <div className={styles.feeInputWrap}>
+                          <div className={`${styles.feeInputWrap} ${groupedFeeErrors.has(entry.id) ? styles.feeInputWrapError : ''}`}>
                             <input
                               type="text"
                               value={entry.feePct}
@@ -1266,6 +1268,14 @@ export default function SolutionBuilderScreen({
                             />
                             <span className={styles.feePrefix}>%</span>
                           </div>
+                          {groupedFeeErrors.has(entry.id) && (
+                            <div className={styles.fieldError}>
+                              <div className={styles.fieldErrorIcon}>
+                                <img src={imgSignalErrorSm} alt="" className={styles.fieldErrorIconImg} />
+                              </div>
+                              <span>{entry.feePct.trim() === '' ? 'Enter a fee per hire.' : 'Enter a whole number from 1 to 100.'}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                       {entryIdx > 0 && (

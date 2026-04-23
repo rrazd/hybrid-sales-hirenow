@@ -5,11 +5,17 @@
  */
 
 import styles from './CheckoutScreen.module.css';
+import NotLbpRibbon from '../NotLbpRibbon/NotLbpRibbon';
 
 export default function CheckoutScreen() {
   return (
     <div className={styles.page}>
-      <img src="/checkout-email.png" alt="Gmail email from Amy with checkout link" className={styles.screenshot} />
+      <div className={styles.imgWrap}>
+        <img src="/checkout-email.png" alt="Gmail email from Amy with checkout link" className={styles.screenshot} />
+        <div className={styles.ribbonAnchor}>
+          <NotLbpRibbon />
+        </div>
+      </div>
     </div>
   );
 }

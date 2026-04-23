@@ -108,4 +108,5 @@
   width: 100%;
   height: 100%;
   display: block;
+  filter: invert(31%) sepia(60%) saturate(600%) hue-rotate(185deg) brightness(90%);
 }

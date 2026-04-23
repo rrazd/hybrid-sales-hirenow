@@ -228,15 +228,17 @@ export default function ControlPanel({
           ) : (
             <div className={styles.btnSpacer} />
           )}
-          <button
-            className={styles.btnNext}
-            onClick={() => onNavigate(flowSteps[currentIdx + 1].id)}
-            disabled={currentIdx === flowSteps.length - 1 || nextDisabled}
-            aria-label={`Go to step ${currentIdx + 2}`}
-          >
-            <span>Continue</span>
-            <span className={styles.btnArrow} aria-hidden>→</span>
-          </button>
+          {currentIdx < flowSteps.length - 1 && (
+            <button
+              className={styles.btnNext}
+              onClick={() => onNavigate(flowSteps[currentIdx + 1].id)}
+              disabled={nextDisabled}
+              aria-label={`Go to step ${currentIdx + 2}`}
+            >
+              <span>Continue</span>
+              <span className={styles.btnArrow} aria-hidden>→</span>
+            </button>
+          )}
         </div>
 
       </div>

@@ -9,9 +9,25 @@
   overflow-y: auto;
 }
 
-.screenshot {
+.imgWrap {
+  position: relative;
   width: 100%;
   max-width: 960px;
+  overflow: hidden;
+  border-radius: 12px 12px 12px 0;
+  clip-path: inset(0 round 12px 12px 12px 0);
+}
+
+.ribbonAnchor {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 0;
+  height: 0;
+}
+
+.screenshot {
+  width: 100%;
   height: auto;
   display: block;
 }

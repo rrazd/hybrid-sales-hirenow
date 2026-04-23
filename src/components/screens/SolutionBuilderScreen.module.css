@@ -451,20 +451,27 @@
 }
 
 /* ─── Section C: Billing ─────────────────────────────────────── */
+.billingRows {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .billingRow {
   display: flex;
-  gap: 24px;
+  gap: 32px;
 }
 
 .billingField {
   width: 160px;
+  flex-shrink: 0;
 }
 
 .paymentTermWrap {
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 120px;
 }
 
 .paymentTermSelect {
@@ -992,29 +999,29 @@
 
 .fieldError {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
-  color: #cf0007;
+  color: #cb112d;
   margin: 4px 0 0;
   line-height: 1.25;
 }
 
 .fieldErrorIcon {
   position: relative;
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
 }
 
 .fieldErrorIconImg {
   position: absolute;
-  left: 2px;
-  top: 2px;
-  width: 20px;
-  height: 20px;
+  left: 1px;
+  top: 1px;
+  width: 14px;
+  height: 14px;
   display: block;
 }
 
@@ -1080,6 +1087,10 @@
 .feeInputWrap:focus-within {
   border-color: #0a66c2;
   border-width: 2px;
+}
+
+.feeInputWrapError {
+  border-color: #cb112d;
 }
 
 .feePrefix {
@@ -1236,11 +1247,20 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  width: 73px;
+  width: 83px;
+  position: relative;
+}
+
+.groupedFeeField .fieldError {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  white-space: nowrap;
 }
 
 .groupedFeeField .feeInputWrap {
-  width: 73px;
+  width: 83px;
 }
 
 
@@ -1352,8 +1372,7 @@
 
 /* Empty state */
 .groupedEmptyTd {
-  height: 105px !important;
-  padding: 0 0 0 16px !important;
+  padding: 24px 16px !important;
   vertical-align: middle !important;
   text-align: left !important;
 }

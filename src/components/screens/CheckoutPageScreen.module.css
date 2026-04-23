@@ -15,6 +15,9 @@
   justify-content: center;
   padding: 11px 24px;
   flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .navInner {
@@ -133,6 +136,182 @@
   gap: 32px;
 }
 
+/* ─── Billing information card ───────────────────────────────── */
+.billingCard {
+  background: white;
+  border-radius: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 32px;
+}
+
+.billingTitle {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f1f1f;
+  letter-spacing: 0.38px;
+  line-height: 1.25;
+  margin: 0 0 24px;
+}
+
+.billingForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.billingField {
+  display: flex;
+  flex-direction: column;
+}
+
+.billingLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  margin: 0 0 8px;
+}
+
+.billingInput {
+  height: 48px;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  flex-shrink: 0;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  background: white;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.billingInput:focus {
+  border-color: #0a66c2;
+  box-shadow: 0 0 0 1px #0a66c2;
+}
+
+.billingRow {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.billingSelect {
+  height: 48px;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+
+.billingSelectValue {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+}
+
+/* ─── State/province dropdown ─────────────────────────────────── */
+.stateWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.stateSelect {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  padding: 12px 40px 12px 16px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  background: white;
+  cursor: pointer;
+  outline: none;
+  text-align: left;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.stateSelect:hover,
+.stateSelectOpen {
+  border: 2px solid rgba(0, 0, 0, 0.9);
+  padding: 11px 39px 11px 15px;
+}
+
+.statePlaceholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.stateCaret {
+  position: absolute;
+  right: 13px;
+  pointer-events: none;
+}
+
+.stateMenu {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 1px rgba(140, 140, 140, 0.2), 0px 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 8px 0;
+  z-index: 1000;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.stateMenuItem {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.75);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.stateMenuItem:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.stateMenuItemSelected {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.billingCaretWrap {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.billingCaretImg {
+  position: absolute;
+  left: 5px;
+  top: 9px;
+  width: 14px;
+  height: 7px;
+  display: block;
+}
+
 /* ─── Cards ──────────────────────────────────────────────────── */
 .card {
   background: white;
@@ -205,6 +384,8 @@
   margin-bottom: 24px;
   /* Kept in DOM for accessibility but visually covered by bars */
   visibility: hidden;
+  max-height: 192px;
+  overflow: hidden;
 }
 
 .faqItem {
@@ -237,7 +418,7 @@
   left: 32px;
   top: 76px; /* below heading + margin */
   width: calc(100% - 64px);
-  height: 282px;
+  height: 195px;
 }
 
 .faqBarGroup {
@@ -250,7 +431,7 @@
 }
 
 .faqBar {
-  height: 21px;
+  height: 12px;
   border-radius: 30px;
 }
 
@@ -519,7 +700,89 @@
 .orderDetails {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
+}
+
+.orderLineSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.orderLineHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.orderLineHeaderLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+}
+
+.calloutLink {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-self: flex-start;
+  border-bottom: 2px dotted rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+
+.calloutLink:hover {
+  border-bottom-color: rgba(0, 0, 0, 0.9);
+}
+
+.calloutLinkLabelText {
+  border-bottom: 1px solid transparent;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.calloutLink:hover .calloutLinkLabelText {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.feeTooltipWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.feeTooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  width: 288px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 1px rgba(140, 140, 140, 0.2), 0px 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: normal;
+  text-align: left;
+  z-index: 500;
+  pointer-events: none;
+}
+
+.feeTooltipWrap:hover .feeTooltip {
+  display: block;
+}
+
+.orderLineItems {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .lineItem {
@@ -527,6 +790,16 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 32px;
+}
+
+.lineItemPct {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+  text-align: right;
 }
 
 .lineItemLeft {

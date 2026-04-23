@@ -18,7 +18,7 @@
   /* Push far enough right that the left end bleeds well past the left clip edge */
   bottom: 30px;
   right: -130px;
-  width: 460px;
+  width: 428px;
   padding: 9px 0;
   background: #F5E463;
   transform: rotate(-35deg);

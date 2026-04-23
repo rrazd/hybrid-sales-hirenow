@@ -15,6 +15,9 @@ import CheckoutPageScreen from './components/screens/CheckoutPageScreen';
 import OrderConfirmationScreen from './components/screens/OrderConfirmationScreen';
 import QuotesListScreen from './components/screens/QuotesListScreen';
 import WelcomeScreen from './components/screens/WelcomeScreen';
+import JobPlanWelcomeScreen from './components/screens/JobPlanWelcomeScreen';
+import PaymentEmailScreen from './components/screens/PaymentEmailScreen';
+import AdyenCheckoutScreen from './components/screens/AdyenCheckoutScreen';
 import styles from './App.module.css';
 
 type SubView = 'quotes-list' | null;
@@ -37,6 +40,9 @@ const screenRegistry: Record<string, React.ComponentType<any>> = {
   CheckoutPageScreen,
   OrderConfirmationScreen,
   QuotesListScreen,
+  JobPlanWelcomeScreen,
+  PaymentEmailScreen,
+  AdyenCheckoutScreen,
 };
 
 // LinkedIn ANT theme overrides
@@ -52,16 +58,25 @@ const linkedInTheme = {
 
 // Steps that need at least one product to make sense
 const STEPS_NEEDING_PRODUCTS = new Set([
-  'solution-builder-filled', 'solution-builder-complete', 'checkout', 'checkout-page', 'order-confirmation',
+  'solution-builder-filled', 'solution-builder-complete', 'checkout', 'checkout-page', 'order-confirmation', 'adyen-checkout',
 ]);
 
-const DEFAULT_PRODUCT: ProductRow = {
-  key: 'fsh-default',
-  role: 'Account Executive',
-  feePct: 15,
-  salary: 97800,
-  feeAmount: 14670,
-};
+const DEFAULT_PRODUCTS: ProductRow[] = [
+  {
+    key: 'fsh-default',
+    role: 'Account Executive',
+    feePct: 15,
+    salary: 97800,
+    feeAmount: 14670,
+  },
+  {
+    key: 'fsh-misc-default',
+    role: 'Miscellaneous',
+    feePct: 15,
+    salary: 150000,
+    feeAmount: 22500,
+  },
+];
 
 export default function App() {
   const getInitialStep = () => {
@@ -89,7 +104,7 @@ export default function App() {
     }
     setSubView(null);
     if (STEPS_NEEDING_PRODUCTS.has(id) && products.length === 0) {
-      setProducts([DEFAULT_PRODUCT]);
+      setProducts(DEFAULT_PRODUCTS);
     }
     setCurrentStepId(id);
     window.location.hash = id;

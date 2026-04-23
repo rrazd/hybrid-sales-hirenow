@@ -120,14 +120,13 @@ export default function OrderConfirmationScreen() {
 
               {/* Inner 632px frame — heading, body, button centered */}
               <div className={styles.textInner}>
-                <p className={styles.heading}>Your order was successful!</p>
+                <p className={styles.heading}>Welcome to Full-service hiring!</p>
                 <p className={styles.body}>
-                  <strong>Order FLD123131</strong>
-                  {' was purchased on Jan 15, 2026. Thanks for choosing Full-service hiring. You\'ll receive a welcome email from us shortly.'}
+                  {'Thanks for choosing Full-service hiring, you\'ll receive a welcome email from us shortly. You can manage this agreement and billing in Admin Center.'}
                 </p>
                 <div className={styles.btnWrap}>
                   <button className={styles.downloadBtn}>
-                    <span className={styles.downloadLabel}>Download your order form</span>
+                    <span className={styles.downloadLabel}>Go to Admin Center</span>
                   </button>
                 </div>
               </div>
