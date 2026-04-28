@@ -9,7 +9,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Avatar, Button, Table, Tag, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import type { QuoteAdvisorLayout, FSHLayout } from '../../App';
+import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout } from '../../App';
 import { JOB_ROLES, ROLE_SALARIES } from '../../data/jobRoles';
 import styles from './SolutionBuilderScreen.module.css';
 
@@ -19,23 +19,26 @@ const DEFAULT_FEE_PCT = 15;
 function fmt(n: number) {
   return '$' + n.toLocaleString('en-US');
 }
+function fmtCents(n: number) {
+  return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
 const imgNavLogo       = '/linkedin-logo.svg';
 const imgAmyAvatar     = '/amy-avatar.png';
 const imgAlexAvatar    = '/alex-avatar.png';
-const imgAlexHero      = 'https://www.figma.com/api/mcp/asset/05256d12-4662-4a99-bba6-d052c6f35f15';
-const imgCheckIcon     = 'https://www.figma.com/api/mcp/asset/252c479f-5ead-4a4d-b549-3ab7d7800642';
-const imgChevron       = 'https://www.figma.com/api/mcp/asset/8625bbe4-1fee-44ed-b49d-1d4322e32b44';
-const imgLinkExternal  = 'https://www.figma.com/api/mcp/asset/27f853cf-8d03-418d-8ba2-512a6b7589a3';
-const imgSignalSuccess = 'https://www.figma.com/api/mcp/asset/aae46a4b-1016-43a3-85bb-3a52c255c7a0';
-const imgCloseSmall    = 'https://www.figma.com/api/mcp/asset/a5be571a-9b5a-4b47-8fc5-67853f09c724';
-const imgSignalNotice  = 'https://www.figma.com/api/mcp/asset/d0ac7d69-84ee-4ff1-8323-70b4b9b2f8f8';
-const imgSignalErrorSm = 'https://www.figma.com/api/mcp/asset/109cb881-5d81-4285-970f-7c394fc44a9c';
-const imgCopyLinkIcon  = 'https://www.figma.com/api/mcp/asset/bf15c9e2-17dd-4f44-ba36-8129d94213d1';
-const imgToastSuccess  = 'https://www.figma.com/api/mcp/asset/19040906-95e3-4347-b441-f0487c8b725d';
-const imgToastClose    = 'https://www.figma.com/api/mcp/asset/a5be571a-9b5a-4b47-8fc5-67853f09c724';
-const imgConfirmClose  = 'https://www.figma.com/api/mcp/asset/a5be571a-9b5a-4b47-8fc5-67853f09c724';
-const imgAddSmall      = 'https://www.figma.com/api/mcp/asset/d4066de0-1299-4fff-aca2-da5342ba060f';
+const imgAlexHero      = '/alex-avatar.png';
+const imgCheckIcon     = '/check-small.svg';
+const imgChevron       = '/check-small.svg';
+const imgLinkExternal  = '/link-external.svg';
+const imgSignalSuccess = '/signal-success.svg';
+const imgCloseSmall    = '/close-small.svg';
+const imgSignalNotice  = '/signal-notice.svg';
+const imgSignalErrorSm = '/signal-error-sm.svg';
+const imgCopyLinkIcon  = '/copy-link.svg';
+const imgToastSuccess  = '/toast-success.svg';
+const imgToastClose    = '/close-small.svg';
+const imgConfirmClose  = '/close-small.svg';
+const imgAddSmall      = '/add-small.svg';
 
 export type ProductRow = { key: string; role?: string; feePct?: number; salary?: number; feeAmount?: number };
 
@@ -48,12 +51,12 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
       render: (_, row) => row.role ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
           <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>
-            Full-service hiring
+            Full-Service Hiring
           </span>
-          {row.role === 'Miscellaneous' ? (
+          {row.role === 'Other roles' ? (
             <div className={styles.feeTooltipWrap}>
               <span className={styles.calloutLink}>
-                <span className={styles.calloutLinkValueText} style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>Miscellaneous</span>
+                <span className={styles.calloutLinkValueText} style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>Other roles</span>
               </span>
               <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
             </div>
@@ -116,6 +119,97 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
   ];
 }
 
+function buildFSHProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: string) => void): ColumnsType<ProductRow> {
+  return [
+    {
+      title: 'Product',
+      key: 'product',
+      width: 200,
+      onCell: (row) => row.role ? {} : { colSpan: 7 },
+      render: (_, row) => row.role ? (
+        <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>
+          Full-Service Hiring
+        </span>
+      ) : (
+        <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.32px', lineHeight: 1.25 }}>
+          There aren't any products added, once there are you'll see them here.
+        </span>
+      ),
+    },
+    {
+      title: 'Role',
+      key: 'role',
+      onCell: (row) => row.role ? {} : { colSpan: 0 },
+      render: (_, row) => {
+        if (!row.role) return null;
+        if (row.role === 'Other roles') {
+          return (
+            <div className={styles.feeTooltipWrap}>
+              <span className={styles.calloutLink}>
+                <span className={styles.calloutLinkValueText} style={{ fontSize: 14 }}>Other roles</span>
+              </span>
+              <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
+            </div>
+          );
+        }
+        return <span style={{ fontSize: 14, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.9)' }}>{row.role}</span>;
+      },
+    },
+    {
+      title: 'Fee per hire',
+      key: 'feePerHire',
+      width: 160,
+      onCell: (row) => row.role ? {} : { colSpan: 0 },
+      render: (_, row) => row.role ? (
+        <div className={styles.feeTooltipWrap}>
+          <span className={styles.calloutLink}>
+            <span className={styles.calloutLinkText} style={{ fontSize: 14 }}>{row.feePct}%</span>
+          </span>
+          <div className={styles.feeTooltip}>
+            Based on a <strong>forecasted</strong> Account salary of {fmt(row.salary ?? 0)}, LinkedIn's fee per hire would be {fmt(row.feeAmount ?? 0)}.
+          </div>
+        </div>
+      ) : null,
+    },
+    {
+      title: 'Quantity',
+      key: 'quantity',
+      width: 348,
+      align: 'right',
+      onCell: (row) => row.role ? {} : { colSpan: 0 },
+      render: (_, row) => row.role ? (
+        <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
+          <span className={styles.calloutLink}>
+            <span className={styles.calloutLinkText}>Covers all hires</span>
+          </span>
+          <div className={styles.feeTooltip}>Any number of hires can be made during the agreed upon term</div>
+        </div>
+      ) : null,
+    },
+    {
+      title: 'Net price',
+      key: 'netPrice',
+      width: 160,
+      align: 'right',
+      onCell: (row) => row.role ? {} : { colSpan: 0 },
+      render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>$0.00 upfront</span> : null,
+    },
+    {
+      title: '',
+      key: 'actions',
+      width: 160,
+      align: 'right',
+      onCell: (row) => row.role ? {} : { colSpan: 0 },
+      render: (_, row) => row.role ? (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
+          <button className={styles.btnTertiary} onClick={() => onEdit(row)}>Edit</button>
+          <button className={styles.btnTertiary} onClick={() => onRemove(row.key)}>Remove</button>
+        </div>
+      ) : null,
+    },
+  ];
+}
+
 function buildSepLineProductColumns(): ColumnsType<ProductRow> {
   return [
     {
@@ -124,12 +218,12 @@ function buildSepLineProductColumns(): ColumnsType<ProductRow> {
       render: (_, row) => row.role ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
           <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>
-            Full-service hiring
+            Full-Service Hiring
           </span>
-          {row.role === 'Miscellaneous' ? (
+          {row.role === 'Other roles' ? (
             <div className={styles.feeTooltipWrap}>
               <span className={styles.calloutLink}>
-                <span className={styles.calloutLinkValueText} style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>Miscellaneous</span>
+                <span className={styles.calloutLinkValueText} style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>Other roles</span>
               </span>
               <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
             </div>
@@ -171,87 +265,252 @@ interface GroupedProductTableProps {
   onEdit?: () => void;
   onRemove?: () => void;
   readOnly?: boolean;
+  globalHeaderLayout?: GlobalHeaderLayout;
 }
-function GroupedProductTable({ products, onEdit, onRemove, readOnly = false }: GroupedProductTableProps) {
+function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, globalHeaderLayout = 'generic' }: GroupedProductTableProps) {
   const isEmpty = products.length === 0;
+  const fsh1 = globalHeaderLayout === 'fsh-custom';
+  const fsh2 = globalHeaderLayout === 'fsh-custom-2';
+  const fsh3 = globalHeaderLayout === 'fsh-custom-3';
+  // fsh1: Product | Quantity | Role | Fee per hire | Net price | Actions (6 cols)
+  // fsh2/fsh3: Product (with L roles) | Fee per hire | Deposit | Actions (4-5 cols)
+  const totalCols = readOnly
+    ? (fsh1 ? 5 : (fsh2 || fsh3) ? 4 : 3)
+    : (fsh1 ? 6 : (fsh2 || fsh3) ? 5 : 4);
+  const firstProduct = fsh2 && products.length > 0 ? products[0] : null;
+  // fsh3 shows all roles as their own rows; fsh2 nests the first role in the parent row
+  const childProducts = fsh2 ? products.slice(1) : products;
   const cellStyle: React.CSSProperties = { fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)', lineHeight: 1.25 };
+
+  const renderFeeCell = (p: ProductRow, small = false, grey = false) => {
+    const color = fsh2 ? 'rgba(0,0,0,0.9)' : (fsh3 || grey) ? 'rgba(0,0,0,0.6)' : undefined;
+    return (
+      <div className={styles.feeTooltipWrap} style={fsh3 ? { justifyContent: 'flex-end' } : undefined}>
+        <span className={styles.calloutLink} style={color ? { borderBottomColor: color } : undefined}><span className={styles.calloutLinkText} style={{ ...(small && !fsh3 ? { fontSize: 12 } : {}), ...(fsh3 ? { fontSize: 14 } : {}), ...(color ? { color } : {}) }}>{p.feePct}%</span></span>
+        <div className={styles.feeTooltip}>
+          The fee per hire is the percentage of the hire's first-year salary paid to LinkedIn.
+          {p.role !== 'Other roles' && <> For a forecasted salary of {fmt(p.salary ?? 0)} for {p.role}, the fee would be {fmt(p.feeAmount ?? 0)}.</>}
+        </div>
+      </div>
+    );
+  };
+
+  const renderRoleContent = (p: ProductRow) => {
+    const childColor = fsh2 ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.6)';
+    return p.role === 'Other roles' ? (
+      <div className={styles.feeTooltipWrap}>
+        <span className={styles.calloutLink} style={{ borderBottomColor: childColor }}>
+          <span className={styles.calloutLinkValueText} style={{ fontSize: fsh3 ? 14 : 12, color: childColor, whiteSpace: 'nowrap' }}>Other roles</span>
+        </span>
+        <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
+      </div>
+    ) : (
+      <span style={{ ...cellStyle, fontSize: fsh3 ? 14 : 12, color: childColor, whiteSpace: 'nowrap' }}>{p.role}</span>
+    );
+  };
+
   return (
     <div className={styles.groupedTableWrapper}>
       <table className={styles.groupedTable}>
         <colgroup>
-          <col />
-          <col style={{ width: 188 }} />
-          <col style={{ width: 160 }} />
-          <col style={{ width: 160 }} />
+          {fsh3 ? (
+            <>
+              <col />
+              <col style={{ width: 160 }} />
+              <col style={{ width: 188 }} />
+              <col />
+              {!readOnly && <col style={{ width: 160 }} />}
+            </>
+          ) : (
+            <>
+              <col style={fsh1 ? { width: 220 } : undefined} />
+              <col style={{ width: fsh1 ? 140 : 188 }} />
+              {fsh1 && <col style={{ width: 200 }} />}
+              {(fsh1 || fsh2) && <col style={{ width: 160 }} />}
+              <col />
+              {!readOnly && <col style={{ width: 160 }} />}
+            </>
+          )}
         </colgroup>
         <thead>
-          <tr>
-            <th>Product</th>
-            <th style={{ textAlign: 'right' }}>Quantity</th>
-            <th style={{ textAlign: 'right' }}>Net price</th>
-            <th />
-          </tr>
+          {fsh3 ? (
+            <tr>
+              <th>Product</th>
+              <th style={{ textAlign: 'right', paddingRight: 16 }}>Fee per hire</th>
+              <th style={{ textAlign: 'right' }}>Quantity</th>
+              <th style={{ textAlign: 'right', paddingRight: 16 }}>Net price</th>
+              {!readOnly && <th style={{ textAlign: 'left', paddingLeft: 24 }}>Actions</th>}
+            </tr>
+          ) : (
+            <tr>
+              <th>Product</th>
+              <th style={{ textAlign: 'right' }}>Quantity</th>
+              {fsh1 && <th style={{ textAlign: 'left' }}>Role</th>}
+              {(fsh1 || fsh2) && <th>Fee per hire</th>}
+              <th style={{ textAlign: 'right' }}>{fsh2 ? 'Deposit' : 'Net price'}</th>
+              {!readOnly && <th />}
+            </tr>
+          )}
         </thead>
         <tbody>
           {isEmpty ? (
             <tr>
-              <td colSpan={4} className={styles.groupedEmptyTd}>
+              <td colSpan={totalCols} className={styles.groupedEmptyTd}>
                 <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.32px', lineHeight: 1.25 }}>
                   There aren't any products added, once there are you'll see them here.
                 </span>
               </td>
             </tr>
-          ) : (
+          ) : fsh3 ? (
+            /* fsh3: Product | Fee per hire | Quantity | Deposit | Actions */
             <>
-              {/* Parent row */}
-              <tr className={styles.groupedParentTr}>
-                <td><span style={{ ...cellStyle, fontWeight: 600, whiteSpace: 'nowrap' }}>Full service hiring</span></td>
-                <td style={{ textAlign: 'right' }}>
-                  <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
-                    <span className={styles.calloutLink}><span className={styles.calloutLinkText}>Unlimited</span></span>
-                    <div className={styles.feeTooltip}>Any number of hires can be made during the agreed upon contract term.</div>
-                  </div>
-                </td>
-                <td style={{ textAlign: 'right' }}><span style={cellStyle}>$0.00 upfront</span></td>
+              <tr className={`${styles.groupedParentTr} ${styles.groupedFsh3Row}`}>
                 <td>
-                  {!readOnly && (
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
+                  <span style={{ ...cellStyle, fontWeight: 600, whiteSpace: 'nowrap' }}>Full-Service Hiring</span>
+                </td>
+                <td />
+                <td />
+                <td />
+                {!readOnly && (
+                  <td style={{ paddingLeft: 8, paddingRight: 8 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 4 }}>
                       <button className={styles.btnTertiary} onClick={onEdit}>Edit</button>
                       <button className={styles.btnTertiary} onClick={onRemove}>Remove</button>
                     </div>
-                  )}
-                </td>
+                  </td>
+                )}
               </tr>
-              {/* Child rows */}
-              {products.map(p => (
-                <tr key={p.key} className={styles.groupedChildTr}>
-                  <td>
-                    <div className={styles.gtChildProductCell}>
-                      <HierarchyIndicator />
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'flex-start' }}>
-                        {p.role === 'Miscellaneous' ? (
+              {childProducts.map((p, idx) => {
+                const isLastChild = idx === childProducts.length - 1;
+                return (
+                  <tr key={p.key} className={isLastChild ? styles.groupedFsh3RowLast : styles.groupedFsh3ChildRow}>
+                    <td>
+                      <div className={styles.gtChildProductCell} style={{ paddingLeft: 4 }}>
+                        <HierarchyIndicator />
+                        {renderRoleContent(p)}
+                      </div>
+                    </td>
+                    <td style={{ textAlign: 'right', paddingRight: 16 }}>
+                      {renderFeeCell(p, true)}
+                    </td>
+                    <td style={{ textAlign: 'right' }}>
+                      <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
+                        <span className={styles.calloutLink} style={{ borderBottomColor: 'rgba(0,0,0,0.6)' }}>
+                          <span className={styles.calloutLinkText} style={{ color: 'rgba(0,0,0,0.6)' }}>Unlimited</span>
+                        </span>
+                        <div className={styles.feeTooltip}>Any number of hires can be made during the agreed upon contract term.</div>
+                      </div>
+                    </td>
+                    <td style={{ textAlign: 'right', paddingRight: 16 }}>
+                      <span style={{ fontSize: 14, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>$0.00</span>
+                    </td>
+                    {!readOnly && <td style={{ paddingLeft: 8, paddingRight: 8 }} />}
+                  </tr>
+                );
+              })}
+            </>
+          ) : (
+            <>
+              {/* Parent row */}
+              <tr className={`${styles.groupedParentTr} ${fsh1 ? styles.groupedFsh1Row : ''}`}>
+                <td>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: fsh2 ? 12 : 2 }}>
+                    <span style={{ ...cellStyle, fontWeight: 600, whiteSpace: 'nowrap' }}>Full-Service Hiring</span>
+                    {fsh2 && firstProduct && (
+                      <div className={styles.gtChildProductCell}>
+                        <HierarchyIndicator />
+                        {firstProduct.role === 'Other roles' ? (
                           <div className={styles.feeTooltipWrap}>
                             <span className={styles.calloutLink}>
-                              <span className={styles.calloutLinkValueText} style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>Miscellaneous</span>
+                              <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.9)', whiteSpace: 'nowrap' }}>Other roles</span>
                             </span>
                             <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
                           </div>
                         ) : (
-                          <span style={{ ...cellStyle, fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>{p.role}</span>
+                          <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.9)', whiteSpace: 'nowrap' }}>{firstProduct.role}</span>
                         )}
-                        <div className={styles.feeTooltipWrap}>
-                          <span className={styles.calloutLink}><span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{p.feePct}% fee per hire</span></span>
-                          <div className={styles.feeTooltip}>
-                            The fee per hire is the percentage of the hire's first-year salary paid to LinkedIn.
-                            {p.role !== 'Miscellaneous' && <> For a forecasted salary of {fmt(p.salary ?? 0)} for {p.role}, the fee would be {fmt(p.feeAmount ?? 0)}.</>}
-                          </div>
-                        </div>
                       </div>
+                    )}
+                  </div>
+                </td>
+                <td style={{ textAlign: 'right', verticalAlign: fsh2 ? 'top' : undefined }}>
+                  <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
+                    <span className={styles.calloutLink} style={(fsh1 || fsh2) ? { borderBottomColor: 'rgba(0,0,0,0.9)' } : undefined}><span className={styles.calloutLinkText} style={(fsh1 || fsh2) ? { color: 'rgba(0,0,0,0.9)' } : undefined}>{fsh1 ? 'Unlimited hires' : 'Unlimited'}</span></span>
+                    <div className={styles.feeTooltip}>Any number of hires can be made during the agreed upon contract term.</div>
+                  </div>
+                </td>
+                {fsh1 && <td style={{ textAlign: 'left' }} />}
+                {fsh1 && <td />}
+                {fsh2 && (
+                  <td style={{ verticalAlign: 'bottom', paddingBottom: 6 }}>
+                    {firstProduct ? renderFeeCell(firstProduct, true) : null}
+                  </td>
+                )}
+                <td style={{ textAlign: 'right', verticalAlign: fsh2 ? 'top' : undefined }}>
+                  {!fsh2 && <span style={{ ...cellStyle, fontSize: 14 }}>$0.00 upfront</span>}
+                </td>
+                {!readOnly && (
+                  <td>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
+                      <button className={styles.btnTertiary} onClick={onEdit}>Edit</button>
+                      <button className={styles.btnTertiary} onClick={onRemove}>Remove</button>
                     </div>
                   </td>
-                  <td /><td /><td />
+                )}
+              </tr>
+              {/* Child rows */}
+              {childProducts.map((p, idx) => {
+                const isLastChild = idx === childProducts.length - 1;
+                return (
+                <tr key={p.key} className={fsh1 ? (isLastChild ? styles.groupedFsh1RowLast : styles.groupedFsh1ChildRow) : styles.groupedChildTr}>
+                  <td style={fsh2 ? { paddingTop: 10, paddingBottom: 10 } : undefined}>
+                    <div className={styles.gtChildProductCell}>
+                      {!fsh1 && <HierarchyIndicator />}
+                      {fsh1 ? null : (
+                        fsh2 ? renderRoleContent(p) : (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'flex-start' }}>
+                            {renderRoleContent(p)}
+                            <div className={styles.feeTooltipWrap}>
+                              <span className={styles.calloutLink}><span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{p.feePct}% fee per hire</span></span>
+                              <div className={styles.feeTooltip}>
+                                The fee per hire is the percentage of the hire's first-year salary paid to LinkedIn.
+                                {p.role !== 'Other roles' && <> For a forecasted salary of {fmt(p.salary ?? 0)} for {p.role}, the fee would be {fmt(p.feeAmount ?? 0)}.</>}
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </td>
+                  <td />
+                  {fsh1 && (
+                    <td style={{ textAlign: 'left', whiteSpace: 'nowrap' }}>
+                      <div className={styles.gtChildProductCell}>
+                        <HierarchyIndicator />
+                        {p.role === 'Other roles' ? (
+                          <div className={styles.feeTooltipWrap}>
+                            <span className={styles.calloutLink} style={{ borderBottomColor: 'rgba(0,0,0,0.6)' }}>
+                              <span style={{ ...cellStyle, color: 'rgba(0,0,0,0.6)', whiteSpace: 'nowrap' }}>Other roles</span>
+                            </span>
+                            <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
+                          </div>
+                        ) : (
+                          <span style={{ ...cellStyle, color: 'rgba(0,0,0,0.6)', whiteSpace: 'nowrap' }}>{p.role}</span>
+                        )}
+                      </div>
+                    </td>
+                  )}
+                  {fsh1 && <td>{renderFeeCell(p, false, true)}</td>}
+                  {fsh2 && <td style={{ paddingTop: 10, paddingBottom: 10 }}>{renderFeeCell(p, true)}</td>}
+                  <td style={{ textAlign: 'right', ...(fsh2 ? { paddingTop: 10, paddingBottom: 10 } : {}) }}>
+                    {fsh2 && p.feeAmount != null && (
+                      <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{fmtCents(p.feeAmount)}</span>
+                    )}
+                  </td>
+                  {!readOnly && <td />}
                 </tr>
-              ))}
+                );
+              })}
             </>
           )}
         </tbody>
@@ -267,12 +526,12 @@ function buildReadOnlyProductColumns(): ColumnsType<ProductRow> {
       key: 'product',
       render: (_, row) => row.role ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
-          <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>Full-service hiring</span>
+          <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>Full-Service Hiring</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            {row.role === 'Miscellaneous' ? (
+            {row.role === 'Other roles' ? (
               <div className={styles.feeTooltipWrap}>
                 <span className={styles.calloutLink}>
-                  <span className={styles.calloutLinkValueText} style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>Miscellaneous</span>
+                  <span className={styles.calloutLinkValueText} style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)' }}>Other roles</span>
                 </span>
                 <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
               </div>
@@ -302,7 +561,7 @@ function buildReadOnlyProductColumns(): ColumnsType<ProductRow> {
   ];
 }
 
-// Role typeahead for the Full Service Hiring modal (controlled)
+// Role typeahead for the Full-Service Hiring modal (controlled)
 interface RoleTypeaheadProps {
   value: string;
   onChange: (v: string) => void;
@@ -317,7 +576,7 @@ function RoleTypeahead({ value, onChange, onSelect, onClear, isSelected, hasErro
   const inputRef = useRef<HTMLInputElement>(null);
 
   const matches = value.trim()
-    ? JOB_ROLES.filter(r => r !== 'Miscellaneous' && r.toLowerCase().includes(value.toLowerCase()))
+    ? JOB_ROLES.filter(r => r !== 'Other roles' && r.toLowerCase().includes(value.toLowerCase()))
     : [];
 
   const openDropdown = () => {
@@ -433,6 +692,7 @@ interface SolutionBuilderScreenProps {
   fshLayout?: FSHLayout;
   paymentTerm?: 'NET30' | 'NET60' | 'NET90';
   onPaymentTermChange?: (term: 'NET30' | 'NET60' | 'NET90') => void;
+  globalHeaderLayout?: GlobalHeaderLayout;
 }
 
 export default function SolutionBuilderScreen({
@@ -447,6 +707,7 @@ export default function SolutionBuilderScreen({
   fshLayout = 'grouped',
   paymentTerm: paymentTermProp = 'NET30',
   onPaymentTermChange,
+  globalHeaderLayout = 'generic',
 }: SolutionBuilderScreenProps) {
   // Modal / product state — each layout maintains its own products
   const [menuOpen, setMenuOpen] = useState(false);
@@ -496,6 +757,7 @@ export default function SolutionBuilderScreen({
   // Grouped modal state
   interface GroupedRole { id: string; roleQuery: string; role: string; feePct: string; }
   const [groupedRoles, setGroupedRoles] = useState<GroupedRole[]>([]);
+  const [miscFeePct, setMiscFeePct] = useState(String(DEFAULT_FEE_PCT));
   const [groupedRoleErrors, setGroupedRoleErrors] = useState<Set<string>>(new Set());
   const [groupedFeeErrors, setGroupedFeeErrors] = useState<Set<string>>(new Set());
   const pendingScrollId = useRef<string | null>(null);
@@ -553,8 +815,9 @@ export default function SolutionBuilderScreen({
       setGroupedFeeErrors(badFeeIds);
       return;
     }
-    const miscSalary = ROLE_SALARIES['Miscellaneous'] ?? DEFAULT_SALARY;
-    const miscRow: ProductRow = { key: `fsh-misc-${Date.now()}`, role: 'Miscellaneous', feePct: DEFAULT_FEE_PCT, salary: miscSalary, feeAmount: Math.round(miscSalary * DEFAULT_FEE_PCT / 100) };
+    const miscSalary = ROLE_SALARIES['Other roles'] ?? DEFAULT_SALARY;
+    const miscPct = Math.max(0, parseFloat(miscFeePct) || DEFAULT_FEE_PCT);
+    const miscRow: ProductRow = { key: `fsh-misc-${Date.now()}`, role: 'Other roles', feePct: miscPct, salary: miscSalary, feeAmount: Math.round(miscSalary * miscPct / 100) };
     const addedRows: ProductRow[] = groupedRoles
       .filter(r => r.role)
       .map(r => {
@@ -589,17 +852,20 @@ export default function SolutionBuilderScreen({
   const [roleError, setRoleError] = useState(false);
   const isEditingRef = useRef(false);
 
-  const productColumns = useMemo(() => buildProductColumns(
-    (row) => {
+  const productColumns = useMemo(() => {
+    const onEdit = (row: ProductRow) => {
       isEditingRef.current = true;
       setEditingKey(row.key);
       setRoleQuery(row.role ?? '');
       setSelectedRole(row.role ?? '');
       setFindersFee(String(row.feePct ?? DEFAULT_FEE_PCT));
       setModalOpen(true);
-    },
-    (key) => setProducts((prev: ProductRow[]) => prev.filter((p: ProductRow) => p.key !== key)),
-  ), [setProducts]);
+    };
+    const onRemove = (key: string) => setProducts((prev: ProductRow[]) => prev.filter((p: ProductRow) => p.key !== key));
+    return globalHeaderLayout === 'fsh-custom'
+      ? buildFSHProductColumns(onEdit, onRemove)
+      : buildProductColumns(onEdit, onRemove);
+  }, [setProducts, globalHeaderLayout]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -641,6 +907,7 @@ export default function SolutionBuilderScreen({
     setEditingKey(null);
     setGroupedRoleErrors(new Set());
     setGroupedFeeErrors(new Set());
+    setMiscFeePct(String(DEFAULT_FEE_PCT));
   };
 
   const handleAddProduct = () => {
@@ -772,10 +1039,10 @@ export default function SolutionBuilderScreen({
               <section className={styles.section}>
                 <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>Products</Typography.Title>
                 <div className={styles.tableWithGuides}>
-                  <div className={`${styles.totalsGuide} ${styles.totalsGuideLeft}`} />
-                  <div className={`${styles.totalsGuide} ${styles.totalsGuideRight}`} />
+                  <div className={`${styles.totalsGuide} ${fshLayout === 'grouped' ? styles.totalsGuideLeftGrouped : styles.totalsGuideLeft}`} />
+                  <div className={`${styles.totalsGuide} ${fshLayout === 'grouped' ? styles.totalsGuideRightGrouped : styles.totalsGuideRight}`} />
                   {fshLayout === 'grouped' ? (
-                    <GroupedProductTable products={products} readOnly />
+                    <GroupedProductTable products={products} readOnly globalHeaderLayout={globalHeaderLayout} />
                   ) : (
                     <Table<ProductRow>
                       columns={readOnlyColumns}
@@ -789,7 +1056,7 @@ export default function SolutionBuilderScreen({
                       }}
                     />
                   )}
-                  <div className={styles.totalsOuter}>
+                  <div className={`${styles.totalsOuter} ${fshLayout === 'grouped' ? styles.totalsOuterGrouped : ''}`}>
                     <div className={styles.totalsBlock}>
                       <div className={`${styles.totalsRow} ${styles.totalsRowGray}`}>
                         <span className={styles.totalsLabel}>Total discount (0%)</span>
@@ -803,7 +1070,11 @@ export default function SolutionBuilderScreen({
                       </div>
                       <div className={`${styles.totalsRow} ${styles.totalsRowGray}`}>
                         <span className={styles.totalsLabelDark}>Total after tax</span>
-                        <span className={styles.totalsValueDark}>$0.00</span>
+                        <span className={styles.totalsValueDark}>
+                          {globalHeaderLayout === 'fsh-custom-2'
+                            ? fmtCents(products.reduce((sum, p) => sum + (p.feeAmount ?? 0), 0))
+                            : '$0.00'}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -956,31 +1227,33 @@ export default function SolutionBuilderScreen({
               <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>
                 Products
               </Typography.Title>
-              <div className={styles.addProductWrapper} ref={menuRef}>
-                <div className={fshLayout === 'grouped' && products.length > 0 ? styles.feeTooltipWrap : undefined}>
-                  <Button
-                    className={styles.btnOutlined}
-                    disabled={fshLayout === 'grouped' && products.length > 0}
-                    style={{
-                      borderRadius: 24,
-                      fontSize: 14,
-                      fontWeight: 600,
-                      letterSpacing: '-0.15px',
-                      lineHeight: 1.25,
-                      padding: '7px 16px',
-                      height: 'auto',
-                    }}
-                    onClick={() => { setGroupedRoles([{ id: `gr-${Date.now()}`, roleQuery: '', role: '', feePct: String(DEFAULT_FEE_PCT) }]); setModalOpen(true); }}
-                  >
-                    Add product
-                  </Button>
-                  {fshLayout === 'grouped' && products.length > 0 && (
-                    <div className={styles.feeTooltip} style={{ right: 0, left: 'auto', width: 320 }}>
-                      Only one product (Full-service hiring) is available, and it has already been added to this quote.
-                    </div>
-                  )}
+              {products.length > 0 && (
+                <div className={styles.addProductWrapper} ref={menuRef}>
+                  <div className={fshLayout === 'grouped' ? styles.feeTooltipWrap : undefined}>
+                    <Button
+                      className={styles.btnOutlined}
+                      disabled={fshLayout === 'grouped'}
+                      style={{
+                        borderRadius: 24,
+                        fontSize: 14,
+                        fontWeight: 600,
+                        letterSpacing: '-0.15px',
+                        lineHeight: 1.25,
+                        padding: '7px 16px',
+                        height: 'auto',
+                      }}
+                      onClick={() => { setGroupedRoles([{ id: `gr-${Date.now()}`, roleQuery: '', role: '', feePct: String(DEFAULT_FEE_PCT) }]); setModalOpen(true); }}
+                    >
+                      Add product
+                    </Button>
+                    {fshLayout === 'grouped' && (
+                      <div className={styles.feeTooltip} style={{ right: 0, left: 'auto', width: 320 }}>
+                        Only one product (Full-Service Hiring) is available, and it has already been added to this quote.
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             {checkoutError && products.length === 0 && (
               <div className={styles.fieldError} style={{ marginTop: -8 }}>
@@ -991,64 +1264,87 @@ export default function SolutionBuilderScreen({
               </div>
             )}
 
-            <div className={styles.tableWithGuides}>
-              {/* Vertical guide lines — span from table header top to totals bottom */}
-              <div className={`${styles.totalsGuide} ${styles.totalsGuideLeft}`} />
-              <div className={`${styles.totalsGuide} ${styles.totalsGuideRight}`} />
-
-              {fshLayout === 'grouped' ? (
-                <GroupedProductTable
-                  products={products}
-                  onEdit={openEditGroupedModal}
-                  onRemove={() => setProducts([])}
-                />
-              ) : (
-                <Table<ProductRow>
-                  columns={productColumns}
-                  dataSource={products}
-                  locale={{
-                    emptyText: (
-                      <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.32px', lineHeight: 1.25 }}>
-                        There aren't any products added, once there are you'll see them here.
-                      </span>
-                    ),
+            {products.length === 0 ? (
+              <div className={styles.productsEmptyState}>
+                <img src="/empty-waiting-small.svg" alt="" style={{ width: 128, height: 128, display: 'block' }} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+                  <span style={{ fontSize: 16, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.32px', lineHeight: 1.25 }}>
+                    No products added yet.
+                  </span>
+                  <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>
+                    Add products to start building this quote.
+                  </span>
+                </div>
+                <Button
+                  className={styles.btnOutlined}
+                  style={{
+                    borderRadius: 24,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    letterSpacing: '-0.15px',
+                    lineHeight: 1.25,
+                    padding: '7px 16px',
+                    height: 'auto',
                   }}
-                  pagination={false}
-                  style={{ marginTop: 0 }}
-                  components={{
-                    table: (props: React.HTMLAttributes<HTMLTableElement>) => (
-                      <table {...props} style={{ ...props.style, tableLayout: 'fixed', width: '100%' }} />
-                    ),
-                  }}
-                />
-              )}
+                  onClick={() => { setGroupedRoles([{ id: `gr-${Date.now()}`, roleQuery: '', role: '', feePct: String(DEFAULT_FEE_PCT) }]); setModalOpen(true); }}
+                >
+                  Add products
+                </Button>
+              </div>
+            ) : (
+              <div className={styles.tableWithGuides}>
+                {/* Vertical guide lines — span from table header top to totals bottom */}
+                <div className={`${styles.totalsGuide} ${styles.totalsGuideLeft}`} />
+                <div className={`${styles.totalsGuide} ${styles.totalsGuideRight}`} />
 
-              {/* Totals block */}
-              <div className={styles.totalsOuter}>
-              <div className={styles.totalsBlock}>
-                <div className={`${styles.totalsRow} ${styles.totalsRowGray}`}>
-                  <span className={styles.totalsLabel}>Total discount (0%)</span>
-                  <span>$0.00</span>
-                </div>
-                <div className={`${styles.totalsRow} ${styles.totalsRowRegular}`}>
-                  <span>Total before tax</span>
-                  <span>$0.00</span>
-                </div>
-                <div className={`${styles.totalsRow} ${styles.totalsRowRegular}`}>
-                  <span>Estimated tax</span>
-                  <span>$0.00</span>
-                </div>
-                <div className={`${styles.totalsRow} ${styles.totalsRowGray}`}>
-                  <span className={styles.totalsLabelDark}>Total after tax</span>
-                  <span className={styles.totalsValueDark}>$0.00</span>
+                {fshLayout === 'grouped' ? (
+                  <GroupedProductTable
+                    products={products}
+                    onEdit={openEditGroupedModal}
+                    onRemove={() => setProducts([])}
+                    globalHeaderLayout={globalHeaderLayout}
+                  />
+                ) : (
+                  <Table<ProductRow>
+                    columns={productColumns}
+                    dataSource={products}
+                    pagination={false}
+                    style={{ marginTop: 0 }}
+                    components={{
+                      table: (props: React.HTMLAttributes<HTMLTableElement>) => (
+                        <table {...props} style={{ ...props.style, tableLayout: 'fixed', width: '100%' }} />
+                      ),
+                    }}
+                  />
+                )}
+
+                {/* Totals block */}
+                <div className={styles.totalsOuter}>
+                  <div className={styles.totalsBlock}>
+                    <div className={`${styles.totalsRow} ${styles.totalsRowGray}`}>
+                      <span className={styles.totalsLabel}>Total discount (0%)</span>
+                      <span>$0.00</span>
+                    </div>
+                    <div className={`${styles.totalsRow} ${styles.totalsRowRegular}`}>
+                      <span>Total before tax</span>
+                      <span>$0.00</span>
+                    </div>
+                    <div className={`${styles.totalsRow} ${styles.totalsRowRegular}`}>
+                      <span>Estimated tax</span>
+                      <span>$0.00</span>
+                    </div>
+                    <div className={`${styles.totalsRow} ${styles.totalsRowGray}`}>
+                      <span className={styles.totalsLabelDark}>Total after tax</span>
+                      <span className={styles.totalsValueDark}>$0.00</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              </div>
-            </div>{/* end tableWithGuides */}
+            )}{/* end tableWithGuides / empty state */}
           </section>
 
           {/* ── Section C: Billing ──────────────────────────── */}
-          <section className={styles.section}>
+          {products.length > 0 && <section className={styles.section}>
             <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>
               Billing
             </Typography.Title>
@@ -1104,19 +1400,19 @@ export default function SolutionBuilderScreen({
                 </div>
               </div>}
             </div>
-          </section>
+          </section>}
 
         </div>
       </main>
 
-      {/* ── Modal: Full Service Hiring (sep-line) ───────────── */}
+      {/* ── Modal: Full-Service Hiring (sep-line) ───────────── */}
       {showModal && fshLayout !== 'grouped' && (
         <div className={styles.modalScrim}>
           <div className={styles.modal}>
             {/* Header */}
             <div className={styles.modalHeader}>
               <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: 0, letterSpacing: '0.38px' }}>
-                {editingKey ? 'Edit Full-service hiring' : 'Add Full-service hiring'}
+                {editingKey ? 'Edit Full-Service Hiring' : 'Add Full-Service Hiring'}
               </Typography.Title>
               <button className={styles.modalCloseBtn} onClick={handleModalClose}>
                 <img src={imgCloseSmall} alt="Close" style={{ width: 12, height: 12, display: 'block' }} />
@@ -1198,7 +1494,7 @@ export default function SolutionBuilderScreen({
         </div>
       )}
 
-      {/* ── Modal: Full Service Hiring (grouped) ────────────── */}
+      {/* ── Modal: Full-Service Hiring (grouped) ────────────── */}
       {showModal && fshLayout === 'grouped' && (
         <div className={styles.modalScrim}>
           <div className={`${styles.modal} ${styles.modalGrouped}`}>
@@ -1206,7 +1502,7 @@ export default function SolutionBuilderScreen({
             {/* Header */}
             <div className={styles.modalHeader}>
               <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: 0, letterSpacing: '0.38px' }}>
-                Add Full-service hiring
+                Add Full-Service Hiring
               </Typography.Title>
               <button className={styles.modalCloseBtn} onClick={handleModalClose}>
                 <img src={imgCloseSmall} alt="Close" style={{ width: 12, height: 12, display: 'block' }} />
@@ -1221,6 +1517,7 @@ export default function SolutionBuilderScreen({
                   <p className={styles.groupedRolesSectionSubtitle}>Headcount isn't fixed for roles, the contract covers all hires.</p>
                 </div>
 
+                <div className={styles.groupedRolesList}>
                 {groupedRoles.map((entry, entryIdx) => (
                   <div key={entry.id} data-role-id={entry.id} className={`${styles.groupedRoleCard} ${(groupedRoleErrors.has(entry.id) || groupedFeeErrors.has(entry.id)) ? styles.groupedRoleCardError : ''}`}>
                     {/* Labels row */}
@@ -1286,11 +1583,46 @@ export default function SolutionBuilderScreen({
                     </div>
                   </div>
                 ))}
+                </div>
 
                 <button className={styles.groupedAddRoleBtn} onClick={addGroupedRole}>
                   <img src={imgAddSmall} alt="" style={{ width: 12, height: 12 }} />
                   <span>Add another role</span>
                 </button>
+
+                <div className={styles.groupedSummaryDivider} />
+
+                {/* Always-included Other roles row — fee is editable */}
+                <div className={styles.groupedSummaryRow}>
+                  <div className={styles.groupedSummaryCol}>
+                    <span className={styles.groupedSummaryLabel}>Role name</span>
+                    <div className={styles.feeTooltipWrap}>
+                      <span className={styles.calloutLink}>
+                        <span className={styles.groupedSummaryValue}>Other roles</span>
+                      </span>
+                      <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
+                    </div>
+                  </div>
+                  <div className={styles.groupedSummaryCol}>
+                    <div className={styles.feeTooltipWrap}>
+                      <span className={`${styles.calloutLink} ${styles.calloutLinkLabel}`}>
+                        <span className={styles.calloutLinkLabelText}>Fee per hire</span>
+                      </span>
+                      <div className={styles.feeTooltip} style={{ left: 'auto', right: 0 }}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
+                    </div>
+                    <div className={styles.groupedFeeField}>
+                      <div className={styles.feeInputWrap}>
+                        <input
+                          type="text"
+                          value={miscFeePct}
+                          className={styles.feeInput}
+                          onChange={e => setMiscFeePct(e.target.value.replace(/[^0-9.]/g, ''))}
+                        />
+                        <span className={styles.feePrefix}>%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -1321,21 +1653,6 @@ export default function SolutionBuilderScreen({
 
       {/* ── 4. Footer ───────────────────────────────────────── */}
       <footer className={styles.footer}>
-        <Button
-          className={styles.btnCancel}
-          style={{
-            borderRadius: 24,
-            fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-            fontSize: 16,
-            fontWeight: 600,
-            letterSpacing: '-0.32px',
-            lineHeight: 1.25,
-            padding: '12px 24px',
-            height: 'auto',
-          }}
-        >
-          Cancel
-        </Button>
         <Button
           type="primary"
           style={{

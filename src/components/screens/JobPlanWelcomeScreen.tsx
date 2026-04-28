@@ -96,7 +96,7 @@ export default function JobPlanWelcomeScreen() {
 
             {/* Right: welcome panel */}
             <div className={styles.welcomePanel}>
-              <p className={styles.welcomeHeading}>Alex, welcome to Full-service hiring</p>
+              <p className={styles.welcomeHeading}>Alex, welcome to Full-Service Hiring</p>
               <div className={styles.welcomeBars}>
                 <div className={styles.welcomeBar} />
                 <div className={styles.welcomeBar} />

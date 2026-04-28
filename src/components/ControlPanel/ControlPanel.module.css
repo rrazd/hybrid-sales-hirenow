@@ -452,6 +452,12 @@
   white-space: nowrap;
 }
 
+/* Compact variant — tighter padding and smaller font for 4-button rows */
+.layoutSegmentCompact .segmentBtn {
+  padding: 5px 5px;
+  font-size: 10px;
+}
+
 .segmentBtn:hover:not(.segmentBtnActive) {
   background: var(--color-cool-gray-20);
   color: var(--color-cool-gray-90);

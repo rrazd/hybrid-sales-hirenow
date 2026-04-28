@@ -27,8 +27,7 @@ const imgAlexAvatar = '/alex-avatar.png';
 const imgLightbulb  = '/lightbulb.svg';
 const imgAmyAvatar  = '/amy-avatar.png';
 const imgIn14       = '/linkedin-in14.svg';
-const imgChevron    = 'https://www.figma.com/api/mcp/asset/b372fc92-aa72-4dd9-a1c9-31d9a0d48ee4';
-const imgCaret      = 'https://www.figma.com/api/mcp/asset/73024edc-377c-46e8-997e-b7d41b5f19c7';
+const imgCaret      = '/caret-down.svg';
 
 interface Props {
   onNavigate?: (id: string) => void;
@@ -37,7 +36,6 @@ interface Props {
 }
 
 export default function CheckoutPageScreen({ onNavigate, products = [], paymentTerm = 'NET30' }: Props) {
-  const [detailsOpen, setDetailsOpen] = useState(false);
   const [stateValue, setStateValue] = useState('');
   const [stateOpen, setStateOpen] = useState(false);
   const [stateRect, setStateRect] = useState<{ top?: number; bottom?: number; left: number; width: number } | null>(null);
@@ -78,7 +76,7 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
 
             {/* Welcome card */}
             <div className={styles.card}>
-              <p className={styles.welcomeHeading}>Alex, thank you for choosing Full-service hiring</p>
+              <p className={styles.welcomeHeading}>Alex, thank you for choosing Full-Service Hiring</p>
               <div className={styles.inlineFeedback}>
                 <div className={styles.lightbulbWrap}>
                   <img src={imgLightbulb} alt="" className={styles.lightbulbImg} />
@@ -263,11 +261,15 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
           <div className={styles.rightCol}>
             <div className={styles.orderCard}>
 
+              {/* Product title + per-role subtitles */}
               <div className={styles.orderSection}>
-                <p className={styles.orderTitle}>Order Summary</p>
-                <p className={styles.orderSubtitle}>Full Service Hiring x1</p>
+                <p className={styles.orderTitle}>Full-Service Hiring</p>
+                {products.map(p => (
+                  <p key={p.key} className={styles.orderSubtitle}>{p.role ?? 'Role'} - {p.feePct ?? 0}% fee per hire</p>
+                ))}
               </div>
 
+              {/* Due Today */}
               <div className={styles.dueTodayRow}>
                 <span className={styles.dueTodayLabel}>Due Today</span>
                 <span className={styles.dueTodayValue}>$0</span>
@@ -275,59 +277,14 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
 
               <div className={styles.orderDivider} />
 
-              <button className={styles.showDetailsBtn} onClick={() => setDetailsOpen(o => !o)}>
-                <span>{detailsOpen ? 'Hide order details' : 'Show order details'}</span>
-                <div className={styles.chevronWrap}>
-                  <img
-                    src={imgChevron}
-                    alt=""
-                    className={styles.chevronImg}
-                    style={{ transform: detailsOpen ? undefined : 'rotate(180deg)' }}
-                  />
-                </div>
-              </button>
-
-              {detailsOpen && (
-                <div className={styles.orderDetails}>
-                  <div className={styles.orderLineSection}>
-                    <div className={styles.orderLineHeader}>
-                      <span className={styles.orderLineHeaderLabel}>Role</span>
-                      <div className={styles.feeTooltipWrap}>
-                        <span className={`${styles.calloutLink} ${styles.calloutLinkLabel}`}>
-                          <span className={styles.calloutLinkLabelText}>Fee per hire</span>
-                        </span>
-                        <div className={styles.feeTooltip}>The fee per hire is the percentage of the hire's first-year salary paid to LinkedIn.</div>
-                      </div>
-                    </div>
-                    <div className={styles.orderLineItems}>
-                      {products.map(p => (
-                        <div key={p.key} className={styles.lineItem}>
-                          <span className={styles.lineItemName}>{p.role ?? 'Role'}</span>
-                          <span className={styles.lineItemPct}>{p.feePct ?? 0}%</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className={styles.orderDivider} />
-
-                  <div className={styles.subtotalRowBold}>
-                    <span>Order total</span>
-                    <span>$0.00</span>
-                  </div>
-
-                  <div className={styles.orderDivider} />
-                </div>
-              )}
-
+              {/* Timeline bullets */}
               <ul className={styles.timelineList}>
                 <li>Your plan starts today and services continue till <strong>Jan 1, 2027</strong>.</li>
                 <li>You will be <strong>invoiced</strong> on the hire's start date. Payment is due within <strong>{paymentTerm === 'NET30' ? 30 : paymentTerm === 'NET60' ? 60 : 90} days</strong> of the invoice date.</li>
-                <li>Your invoice will reflect the final amount due as a percentage of the hired candidate(s) <strong>first year salary</strong>.</li>
+                <li>Your invoice will reflect the final amount due based on the agreed fee per hire, calculated as a percentage of each hired candidate's <strong>first-year salary.</strong></li>
               </ul>
 
-              <div className={styles.orderDivider} />
-
+              {/* Legal text */}
               <p className={styles.legalText}>
                 By placing this order you agree to our{' '}
                 <span className={styles.legalLink}>terms of service</span>
@@ -335,8 +292,10 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
                 <span className={styles.legalLink}>how to cancel</span>
                 {' and our '}
                 <span className={styles.legalLink}>refund policy</span>
-                {'.'}
+                .
               </p>
+
+              <div className={styles.orderDivider} />
 
               <button
                 className={styles.placeOrderBtn}

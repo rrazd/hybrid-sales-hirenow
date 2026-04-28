@@ -8,7 +8,7 @@ import styles from './QuotesListScreen.module.css';
 const imgNavLogo        = '/linkedin-logo.svg';
 const imgAmyAvatar      = '/amy-avatar.png';
 const imgAlexAvatar     = '/alex-avatar.png';
-const imgGenericAvatar  = 'https://www.figma.com/api/mcp/asset/66a1f931-a306-420d-a917-71eb3f261124';
+const imgGenericAvatar  = '/oval-avatar.svg';
 
 const STATUS_BG: Record<string, string> = {
   'Quote in progress':    'rgba(0,0,0,0.08)',

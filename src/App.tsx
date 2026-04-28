@@ -18,6 +18,7 @@ import WelcomeScreen from './components/screens/WelcomeScreen';
 import JobPlanWelcomeScreen from './components/screens/JobPlanWelcomeScreen';
 import PaymentEmailScreen from './components/screens/PaymentEmailScreen';
 import AdyenCheckoutScreen from './components/screens/AdyenCheckoutScreen';
+import RoleStatusEmailScreen from './components/screens/RoleStatusEmailScreen';
 import styles from './App.module.css';
 
 type SubView = 'quotes-list' | null;
@@ -25,6 +26,7 @@ type SubView = 'quotes-list' | null;
 export type QuoteAdvisorLayout = 'in-card' | 'floating';
 export type FSHLayout = 'sep-line' | 'grouped';
 export type PaymentTerm = 'NET30' | 'NET60' | 'NET90';
+export type GlobalHeaderLayout = 'generic' | 'fsh-custom' | 'fsh-custom-2' | 'fsh-custom-3';
 
 // Screen registry — add new screens here as they are built
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,6 +45,7 @@ const screenRegistry: Record<string, React.ComponentType<any>> = {
   JobPlanWelcomeScreen,
   PaymentEmailScreen,
   AdyenCheckoutScreen,
+  RoleStatusEmailScreen,
 };
 
 // LinkedIn ANT theme overrides
@@ -71,27 +74,35 @@ const DEFAULT_PRODUCTS: ProductRow[] = [
   },
   {
     key: 'fsh-misc-default',
-    role: 'Miscellaneous',
+    role: 'Other roles',
     feePct: 15,
     salary: 150000,
     feeAmount: 22500,
   },
 ];
 
-export default function App() {
-  const getInitialStep = () => {
-    const hash = window.location.hash.slice(1);
-    return flowSteps.find(s => s.id === hash) ? hash : 'welcome';
-  };
+function getInitialStepId() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const queryStep = urlParams.get('step');
+  if (queryStep && flowSteps.find(s => s.id === queryStep)) return queryStep;
+  const hash = window.location.hash.slice(1);
+  return flowSteps.find(s => s.id === hash) ? hash : 'welcome';
+}
 
-  const [currentStepId, setCurrentStepId] = useState(getInitialStep);
+export default function App() {
+  const [currentStepId, setCurrentStepId] = useState(getInitialStepId);
   const [subView, setSubView] = useState<SubView>(null);
   const [panelOpen, setPanelOpen] = useState(true);
   const [quoteAdvisorLayout, setQuoteAdvisorLayout] = useState<QuoteAdvisorLayout>('floating');
   const [fshLayout, setFSHLayout] = useState<FSHLayout>('grouped');
   const [quoteAdvisorContentOn, setQuoteAdvisorContentOn] = useState(false);
-  const [products, setProducts] = useState<ProductRow[]>([]);
+  const [products, setProducts] = useState<ProductRow[]>(() => {
+    const stepId = getInitialStepId();
+    const stepsWithProducts = new Set([...STEPS_NEEDING_PRODUCTS, 'solution-builder']);
+    return stepsWithProducts.has(stepId) ? DEFAULT_PRODUCTS : [];
+  });
   const [paymentTerm, setPaymentTerm] = useState<PaymentTerm>('NET30');
+  const [globalHeaderLayout, setGlobalHeaderLayout] = useState<GlobalHeaderLayout>('fsh-custom-3');
 
   const hasProducts = products.length > 0;
   // Step 7 requires at least one product to continue
@@ -150,10 +161,13 @@ export default function App() {
           onQuoteAdvisorContentChange={setQuoteAdvisorContentOn}
           fshLayout={fshLayout}
           onFSHLayoutChange={setFSHLayout}
+          globalHeaderLayout={globalHeaderLayout}
+          onGlobalHeaderLayoutChange={setGlobalHeaderLayout}
           onReset={() => {
             setFSHLayout('grouped');
             setQuoteAdvisorLayout('floating');
             setQuoteAdvisorContentOn(false);
+            setGlobalHeaderLayout('fsh-custom-3');
           }}
         />
 
@@ -181,6 +195,7 @@ export default function App() {
               fshLayout={fshLayout}
               paymentTerm={paymentTerm}
               onPaymentTermChange={setPaymentTerm}
+              globalHeaderLayout={globalHeaderLayout}
             />
           ) : (
             <div className={styles.placeholder}>

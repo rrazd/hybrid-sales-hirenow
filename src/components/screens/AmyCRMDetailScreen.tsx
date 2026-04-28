@@ -11,7 +11,7 @@ import NotLbpRibbon from '../NotLbpRibbon/NotLbpRibbon';
 import styles from './AmyCRMDetailScreen.module.css';
 
 const imgBackground = '/crm-detail-bg.png';
-const imgExternalIcon = 'https://www.figma.com/api/mcp/asset/27f853cf-8d03-418d-8ba2-512a6b7589a3';
+const imgExternalIcon = '/link-external.svg';
 const imgAmy = '/amy-avatar.png';
 
 // Gray placeholder rects — Figma px → % of 950×533 canvas

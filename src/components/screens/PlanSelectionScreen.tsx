@@ -5,7 +5,7 @@
  *
  * Figma node 0:19053.
  * Single wide pill progress bar (no stepper).
- * Two plan selection cards side by side — left blank (lo-fi), right shows "Full service hiring".
+ * Two plan selection cards side by side — left blank (lo-fi), right shows "Full-Service Hiring".
  */
 
 import { useState } from 'react';
@@ -51,9 +51,9 @@ export default function PlanSelectionScreen() {
                 <img src={imgLeftCard} alt="" className={styles.cardImg} onLoad={onLoad} />
               </div>
 
-              {/* Right card — Full service hiring (selected) */}
+              {/* Right card — Full-Service Hiring (selected) */}
               <div className={styles.cardRight}>
-                <span className={styles.cardTitle}>Full-service hiring</span>
+                <span className={styles.cardTitle}>Full-Service Hiring</span>
                 <div className={styles.radioWrap}>
                   <img src={imgRadioOuter} alt="" className={styles.radioOuter} onLoad={onLoad} />
                   <img src={imgRadioInner} alt="" className={styles.radioInner} onLoad={onLoad} />

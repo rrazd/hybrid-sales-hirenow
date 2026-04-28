@@ -1,0 +1,252 @@
+/* ─── Page root ──────────────────────────────────────────────── */
+.pageWrapper {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 24px;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+/* ─── Browser wrap ───────────────────────────────────────────── */
+.browserWrap {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+}
+
+/* ─── macOS tab bar ──────────────────────────────────────────── */
+.tabBar {
+  background: white;
+  border-radius: 10px 10px 0 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.trafficLights {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dotRed,
+.dotYellow,
+.dotGreen {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dotRed    { background: #ff5f57; }
+.dotYellow { background: #febc2e; }
+.dotGreen  { background: #28c840; }
+
+/* ─── Email client shell ─────────────────────────────────────── */
+.browser {
+  background: #fdfaf5;
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Email app nav bar ──────────────────────────────────────── */
+.emailNav {
+  background: #788fa5;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+.navLogo {
+  background: #c0d1e2;
+  height: 14px;
+  width: 148px;
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+
+.navIcons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.navIconSm {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #c0d1e2;
+  flex-shrink: 0;
+}
+
+.navIconLg {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #c0d1e2;
+  flex-shrink: 0;
+}
+
+/* ─── Three-panel body ───────────────────────────────────────── */
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 480px;
+}
+
+/* ─── Left folder sidebar ────────────────────────────────────── */
+.folderSidebar {
+  width: 17%;
+  flex-shrink: 0;
+  background: #fdfaf5;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.folderGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.folderGroup:last-child {
+  border-bottom: none;
+}
+
+.folderBar {
+  height: 8px;
+  width: 100%;
+  border-radius: 100px;
+  background: #e9e5df;
+}
+
+.folderBarActive {
+  background: #958b7b;
+}
+
+/* ─── Center email list ──────────────────────────────────────── */
+.emailListPane {
+  width: 29%;
+  flex-shrink: 0;
+  background: white;
+  border-left: 7px solid #788fa5;
+  border-right: 7px solid #788fa5;
+  display: flex;
+  flex-direction: column;
+}
+
+.listHeader {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.filterBar {
+  height: 8px;
+  width: 124px;
+  border-radius: 100px;
+  background: #e9e5df;
+}
+
+.emailRow {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.emailRowSelected {
+  background: #f4f2ee;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #c0d1e2;
+  flex-shrink: 0;
+}
+
+.emailMeta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+.emailBarLong {
+  height: 10px;
+  width: 100%;
+  border-radius: 100px;
+}
+
+.emailBarShort {
+  height: 10px;
+  width: 60%;
+  border-radius: 100px;
+}
+
+.attachIcon {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+}
+
+/* ─── Right reading pane ─────────────────────────────────────── */
+.readingPane {
+  flex: 1;
+  background: white;
+  border-left: 7px solid #788fa5;
+  border-right: 7px solid #788fa5;
+  border-bottom: 7px solid #788fa5;
+  border-radius: 0 0 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.readingBody {
+  padding: 40px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.subjectBar {
+  height: 14px;
+  width: 85%;
+  border-radius: 100px;
+  background: #c0d1e2;
+}
+
+.bodyBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bodyBar {
+  height: 10px;
+  border-radius: 100px;
+  background: #e9e5df;
+}

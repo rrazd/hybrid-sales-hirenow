@@ -10,6 +10,7 @@ export interface FlowStep {
   component: string; // component name, used for routing
   supportsQuoteAdvisorToggle?: boolean; // show layout picker in control panel
   supportsFSHLayoutToggle?: boolean;    // show FSH table layout picker in control panel
+  supportsGlobalHeaderToggle?: boolean; // show generic vs FSH custom header toggle
 }
 
 export const flowSteps: FlowStep[] = [
@@ -35,7 +36,7 @@ export const flowSteps: FlowStep[] = [
     id: 'plan-selection',
     stepNumber: 2,
     label: 'Choose a Plan (LTS)',
-    blurb: 'Alex selects Full service hiring plan and clicks Submit.',
+    blurb: 'Alex selects Full-Service Hiring plan and clicks Submit.',
     perspective: 'Alex',
     fidelity: 'low',
     component: 'PlanSelectionScreen',
@@ -62,7 +63,7 @@ export const flowSteps: FlowStep[] = [
     id: 'amy-crm',
     stepNumber: 5,
     label: 'HireNow CRM intake (LTS)',
-    blurb: 'Amy sees Alex appear in her Leads list in HireNow CRM, and reaches out to understand his hiring needs. Amy confirms that Alex is the right fit for Full Service Hiring. Amy clicks More Info, on Alex\'s lead row.',
+    blurb: 'Amy sees Alex appear in her Leads list in HireNow CRM, and reaches out to understand his hiring needs. Amy confirms that Alex is the right fit for Full-Service Hiring. Amy clicks More Info, on Alex\'s lead row.',
     perspective: 'Amy',
     fidelity: 'high',
     component: 'AmyCRMScreen',
@@ -86,6 +87,7 @@ export const flowSteps: FlowStep[] = [
     component: 'SolutionBuilderScreen',
     supportsQuoteAdvisorToggle: true,
     supportsFSHLayoutToggle: true,
+    supportsGlobalHeaderToggle: true,
   },
   {
     id: 'solution-builder-filled',
@@ -95,6 +97,7 @@ export const flowSteps: FlowStep[] = [
     perspective: 'Amy',
     fidelity: 'high',
     component: 'SolutionBuilderScreen',
+    supportsGlobalHeaderToggle: true,
   },
   {
     id: 'checkout',
@@ -131,12 +134,13 @@ export const flowSteps: FlowStep[] = [
     perspective: 'Amy',
     fidelity: 'high',
     component: 'SolutionBuilderScreen',
+    supportsGlobalHeaderToggle: true,
   },
   {
     id: 'job-plan-welcome',
     stepNumber: 14,
     label: 'Welcome email',
-    blurb: 'Alex gets a welcome email for Full Service Hiring. A LinkedIn recruiter searches for potential hires, arranges interviews and Alex makes a selection of hires - this is all handled by LTS.',
+    blurb: 'Alex gets a welcome email for Full-Service Hiring. A LinkedIn recruiter searches for potential hires, arranges interviews and Alex makes a selection of hires - this is all handled by LTS.',
     perspective: 'Alex',
     fidelity: 'low',
     component: 'JobPlanWelcomeScreen',
@@ -158,5 +162,14 @@ export const flowSteps: FlowStep[] = [
     perspective: 'Alex',
     fidelity: 'high',
     component: 'AdyenCheckoutScreen',
+  },
+  {
+    id: 'role-status-email',
+    stepNumber: 17,
+    label: 'Role status email',
+    blurb: 'Alex receives an email from LinkedIn summarizing the status of the roles per his agreement, he can see in this email the roles that have been filled that he just paid for.',
+    perspective: 'Alex',
+    fidelity: 'low',
+    component: 'RoleStatusEmailScreen',
   },
 ];

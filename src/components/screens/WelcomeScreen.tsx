@@ -77,12 +77,12 @@ export default function WelcomeScreen({ onBegin }: Props) {
               </div>
             </div>
             <p className={styles.cardDesc}>
-              Amy is a LinkedIn sales rep focused on converting high-intent Full Service Hiring leads and guiding customers through purchase.
+              Amy is a LinkedIn sales rep focused on converting high-intent Full-Service Hiring leads and guiding customers through purchase.
             </p>
             <div className={styles.jtbdBlock}>
               <p className={styles.jtbdLabel}>Root JTBD</p>
               <p className={styles.jtbdText}>
-                Convert qualified leads into Full Service Hiring customers, increasing commission likelihood while ensuring a strong customer experience.
+                Convert qualified leads into Full-Service Hiring customers, increasing commission likelihood while ensuring a strong customer experience.
               </p>
             </div>
           </div>

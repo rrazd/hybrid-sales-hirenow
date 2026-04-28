@@ -12,28 +12,27 @@ const imgLock       = '/lock.svg';
 const imgQuestion   = '/question.svg';
 const imgAlexAvatar = '/alex-avatar.png';
 
-/* ── Success illustration assets ── */
-const imgVector  = 'https://www.figma.com/api/mcp/asset/42d99c1c-81fa-40f6-9868-403373b7e904';
-const imgGroup   = 'https://www.figma.com/api/mcp/asset/3e53750e-5225-4d91-af58-f551d43495b9';
-const imgGroup1  = 'https://www.figma.com/api/mcp/asset/c178684e-c166-4158-91ca-c963316df66d';
-const imgGroup2  = 'https://www.figma.com/api/mcp/asset/20720654-07ee-4115-899a-5c56a9820ec0';
-const imgGroup3  = 'https://www.figma.com/api/mcp/asset/8e1d6cf9-ec52-4471-b99c-d57624739fd3';
-const imgGroup4  = 'https://www.figma.com/api/mcp/asset/2340a61c-884a-42c9-b87e-9a07939999f6';
-const imgVector1 = 'https://www.figma.com/api/mcp/asset/dea13ded-c967-4bf7-a815-f98eafd5eb65';
-const imgVector2 = 'https://www.figma.com/api/mcp/asset/b841fbaf-1652-4e69-bcb2-53825c4c7c8d';
-const imgVector3 = 'https://www.figma.com/api/mcp/asset/18709474-99fe-4936-8757-f3b8c3c5bd84';
-const imgGroup5  = 'https://www.figma.com/api/mcp/asset/62ff7193-021e-48e7-b32e-cf90b78dd6a5';
-const imgVector4 = 'https://www.figma.com/api/mcp/asset/a5b34c4f-22e7-4751-b662-de891617af4b';
-const imgVector5 = 'https://www.figma.com/api/mcp/asset/95687782-b2c3-4ab4-9958-5fcb7eb776a3';
-const imgGroup6  = 'https://www.figma.com/api/mcp/asset/fdfbf5d9-bbca-4119-aa15-b71be2ea2749';
-const imgVector6 = 'https://www.figma.com/api/mcp/asset/7c878c56-3536-4857-a9fc-86dfeec775f4';
-const imgVector7 = 'https://www.figma.com/api/mcp/asset/c5f26c30-e10d-4530-ad69-dc995b517a67';
-const imgGroup7  = 'https://www.figma.com/api/mcp/asset/b9971f5c-eb26-49e7-bb54-b23fd19ddfcc';
-const imgGroup8  = 'https://www.figma.com/api/mcp/asset/c0abf545-a390-4a7c-9a8f-b78031c8935f';
-const imgGroup9  = 'https://www.figma.com/api/mcp/asset/4eaccf5e-58d2-4369-a799-51a13298294e';
+/* ── Success illustration assets (stored locally in /public) ── */
+const imgVector  = '/success-vector.svg';
+const imgGroup   = '/success-group.svg';
+const imgGroup1  = '/success-group1.svg';
+const imgGroup2  = '/success-group2.svg';
+const imgGroup3  = '/success-group3.svg';
+const imgGroup4  = '/success-group4.svg';
+const imgVector1 = '/success-vector1.svg';
+const imgVector2 = '/success-vector2.svg';
+const imgVector3 = '/success-vector3.svg';
+const imgGroup5  = '/success-group5.svg';
+const imgVector4 = '/success-vector4.svg';
+const imgVector5 = '/success-vector5.svg';
+const imgGroup6  = '/success-group6.svg';
+const imgVector6 = '/success-vector6.svg';
+const imgVector7 = '/success-vector7.svg';
+const imgGroup7  = '/success-group7.svg';
+const imgGroup8  = '/success-group8.svg';
+const imgGroup9  = '/success-group9.svg';
 
 /* ── Card assets ── */
-const imgDownload  = 'https://www.figma.com/api/mcp/asset/054629a4-2b2a-4eab-ae11-da6a3c427a22';
 const imgAmyAvatar = '/amy-avatar.png';
 const imgIn14      = '/linkedin-in14.svg';
 
@@ -120,9 +119,9 @@ export default function OrderConfirmationScreen() {
 
               {/* Inner 632px frame — heading, body, button centered */}
               <div className={styles.textInner}>
-                <p className={styles.heading}>Welcome to Full-service hiring!</p>
+                <p className={styles.heading}>Welcome to Full-Service Hiring!</p>
                 <p className={styles.body}>
-                  {'Thanks for choosing Full-service hiring, you\'ll receive a welcome email from us shortly. You can manage this agreement and billing in Admin Center.'}
+                  {'Thanks for choosing Full-Service Hiring, you\'ll receive a welcome email from us shortly. You can manage this agreement and billing in Admin Center.'}
                 </p>
                 <div className={styles.btnWrap}>
                   <button className={styles.downloadBtn}>

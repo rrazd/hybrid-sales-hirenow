@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { flowSteps } from '../../data/flow';
 import type { Perspective } from '../../data/flow';
 import { personas } from '../../data/personas';
-import type { QuoteAdvisorLayout, FSHLayout } from '../../App';
+import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout } from '../../App';
 import styles from './ControlPanel.module.css';
 
 const imgLinkedInBadge  = '/linkedin-in21.svg';
@@ -21,6 +21,8 @@ interface ControlPanelProps {
   onQuoteAdvisorContentChange?: (on: boolean) => void;
   fshLayout?: FSHLayout;
   onFSHLayoutChange?: (layout: FSHLayout) => void;
+  globalHeaderLayout?: GlobalHeaderLayout;
+  onGlobalHeaderLayoutChange?: (layout: GlobalHeaderLayout) => void;
   onReset?: () => void;
 }
 
@@ -68,6 +70,8 @@ export default function ControlPanel({
   onQuoteAdvisorContentChange,
   fshLayout = 'grouped',
   onFSHLayoutChange,
+  globalHeaderLayout = 'generic',
+  onGlobalHeaderLayoutChange,
   onReset,
 }: ControlPanelProps) {
   const [stepsOpen, setStepsOpen] = useState(false);
@@ -142,7 +146,7 @@ export default function ControlPanel({
         </div>
 
         {/* Restore recommended settings — top of config area */}
-        {(currentStep.supportsFSHLayoutToggle || currentStep.supportsQuoteAdvisorToggle) && onReset && (
+        {(currentStep.supportsFSHLayoutToggle || currentStep.supportsQuoteAdvisorToggle || currentStep.supportsGlobalHeaderToggle) && onReset && (
           <div className={styles.resetSection}>
             <button className={styles.resetBtn} onClick={onReset}>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
@@ -169,6 +173,39 @@ export default function ControlPanel({
                 onClick={() => onFSHLayoutChange('sep-line')}
               >
                 Separate
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Global header toggle — only for solution-builder steps */}
+        {currentStep.supportsGlobalHeaderToggle && onGlobalHeaderLayoutChange && (
+          <div className={styles.layoutSection}>
+            <p className={styles.layoutLabel}>Products table header</p>
+            <div className={`${styles.layoutSegment} ${styles.layoutSegmentCompact}`}>
+              <button
+                className={`${styles.segmentBtn} ${globalHeaderLayout === 'generic' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onGlobalHeaderLayoutChange('generic')}
+              >
+                Generic
+              </button>
+              <button
+                className={`${styles.segmentBtn} ${globalHeaderLayout === 'fsh-custom' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onGlobalHeaderLayoutChange('fsh-custom')}
+              >
+                Custom
+              </button>
+              <button
+                className={`${styles.segmentBtn} ${globalHeaderLayout === 'fsh-custom-2' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onGlobalHeaderLayoutChange('fsh-custom-2')}
+              >
+                Custom 2
+              </button>
+              <button
+                className={`${styles.segmentBtn} ${globalHeaderLayout === 'fsh-custom-3' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onGlobalHeaderLayoutChange('fsh-custom-3')}
+              >
+                Custom 3
               </button>
             </div>
           </div>

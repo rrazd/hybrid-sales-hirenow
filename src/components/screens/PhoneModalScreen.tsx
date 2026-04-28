@@ -47,7 +47,7 @@ export default function PhoneModalScreen() {
                 <img src={imgLeftCard} alt="" className={styles.cardImg} onLoad={onLoad} />
               </div>
               <div className={styles.cardRight}>
-                <span className={styles.cardTitle}>Full-service hiring</span>
+                <span className={styles.cardTitle}>Full-Service Hiring</span>
                 <div className={styles.radioWrap}>
                   <img src={imgRadioOuter} alt="" className={styles.radioOuter} onLoad={onLoad} />
                   <img src={imgRadioInner} alt="" className={styles.radioInner} onLoad={onLoad} />
