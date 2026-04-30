@@ -3,7 +3,7 @@ import styles from './WelcomeScreen.module.css';
 
 const imgLinkedInLogo   = '/linkedin-logo.svg';
 const imgLinkedInBadge  = '/linkedin-in21.svg';
-const imgCompanyBadge   = '/company-badge.svg';
+const imgCompanyBadge   = '/flexis-logo.png';
 
 interface Props {
   onBegin: () => void;
