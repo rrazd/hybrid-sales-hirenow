@@ -34,8 +34,8 @@ const imgSignalSuccess = '/signal-success.svg';
 const imgCloseSmall    = '/close-small.svg';
 const imgSignalNotice  = '/signal-notice.svg';
 const imgSignalErrorSm = '/signal-error-sm.svg';
-const imgCopyLinkIcon  = '/copy-link.svg';
-const imgToastSuccess  = '/toast-success.svg';
+const imgCopyLinkIcon  = '/link-chain.svg';
+const imgToastSuccess  = '/signal-success-check.svg';
 const imgToastClose    = '/close-small.svg';
 const imgConfirmClose  = '/close-small.svg';
 const imgAddSmall      = '/add-small.svg';
@@ -65,11 +65,13 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
           )}
           <div className={styles.feeTooltipWrap}>
             <span className={styles.calloutLink}>
-              <span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{row.feePct}% fee per hire</span>
+              <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}% fee per hire</span>
             </span>
-            <div className={styles.feeTooltip}>
-              Based on a <strong>forecasted</strong> Account salary of {fmt(row.salary ?? 0)}, LinkedIn's fee per hire would be {fmt(row.feeAmount ?? 0)}.
-            </div>
+            {row.role !== 'Other roles' && (
+              <div className={styles.feeTooltip}>
+                For a forecasted salary of {fmt(row.salary ?? 0)} for {row.role}, the fee per hire would be {fmt(row.feeAmount ?? 0)}.
+              </div>
+            )}
           </div>
         </div>
       ) : (
@@ -156,18 +158,29 @@ function buildFSHProductColumns(onEdit: (row: ProductRow) => void, onRemove: (ke
       },
     },
     {
-      title: 'Fee per hire',
+      title: (
+        <div className={styles.feeTooltipWrap}>
+          <span className={styles.calloutLink}>
+            <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', letterSpacing: '-0.15px' }}>Fee per hire</span>
+          </span>
+          <div className={styles.feeTooltip}>
+            The percentage of the hire's first year salary paid to LinkedIn.
+          </div>
+        </div>
+      ),
       key: 'feePerHire',
       width: 160,
       onCell: (row) => row.role ? {} : { colSpan: 0 },
       render: (_, row) => row.role ? (
         <div className={styles.feeTooltipWrap}>
           <span className={styles.calloutLink}>
-            <span className={styles.calloutLinkText} style={{ fontSize: 14 }}>{row.feePct}%</span>
+            <span style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}%</span>
           </span>
-          <div className={styles.feeTooltip}>
-            Based on a <strong>forecasted</strong> Account salary of {fmt(row.salary ?? 0)}, LinkedIn's fee per hire would be {fmt(row.feeAmount ?? 0)}.
-          </div>
+          {row.role !== 'Other roles' && (
+            <div className={styles.feeTooltip}>
+              For a forecasted salary of {fmt(row.salary ?? 0)} for {row.role}, the fee per hire would be {fmt(row.feeAmount ?? 0)}.
+            </div>
+          )}
         </div>
       ) : null,
     },
@@ -232,11 +245,13 @@ function buildSepLineProductColumns(): ColumnsType<ProductRow> {
           )}
           <div className={styles.feeTooltipWrap}>
             <span className={styles.calloutLink}>
-              <span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{row.feePct}% fee per hire</span>
+              <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}% fee per hire</span>
             </span>
-            <div className={styles.feeTooltip}>
-              Based on a <strong>forecasted</strong> Account salary of {fmt(row.salary ?? 0)}, LinkedIn's fee per hire would be {fmt(row.feeAmount ?? 0)}.
-            </div>
+            {row.role !== 'Other roles' && (
+              <div className={styles.feeTooltip}>
+                For a forecasted salary of {fmt(row.salary ?? 0)} for {row.role}, the fee per hire would be {fmt(row.feeAmount ?? 0)}.
+              </div>
+            )}
           </div>
         </div>
       ) : null,
@@ -283,14 +298,17 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
   const cellStyle: React.CSSProperties = { fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)', lineHeight: 1.25 };
 
   const renderFeeCell = (p: ProductRow, small = false, grey = false) => {
-    const color = fsh2 ? 'rgba(0,0,0,0.9)' : (fsh3 || grey) ? 'rgba(0,0,0,0.6)' : undefined;
+    const color = fsh2 ? 'rgba(0,0,0,0.9)' : (fsh3 || grey) ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.9)';
     return (
       <div className={styles.feeTooltipWrap} style={fsh3 ? { justifyContent: 'flex-end' } : undefined}>
-        <span className={styles.calloutLink} style={color ? { borderBottomColor: color } : undefined}><span className={styles.calloutLinkText} style={{ ...(small && !fsh3 ? { fontSize: 12 } : {}), ...(fsh3 ? { fontSize: 14 } : {}), ...(color ? { color } : {}) }}>{p.feePct}%</span></span>
-        <div className={styles.feeTooltip}>
-          The fee per hire is the percentage of the hire's first-year salary paid to LinkedIn.
-          {p.role !== 'Other roles' && <> For a forecasted salary of {fmt(p.salary ?? 0)} for {p.role}, the fee would be {fmt(p.feeAmount ?? 0)}.</>}
-        </div>
+        <span className={styles.calloutLink}>
+          <span style={{ fontSize: small && !fsh3 ? 12 : 14, color, letterSpacing: '-0.15px', lineHeight: 1.25 }}>{p.feePct}%</span>
+        </span>
+        {p.role !== 'Other roles' && (
+          <div className={styles.feeTooltip}>
+            For a forecasted salary of {fmt(p.salary ?? 0)} for {p.role}, the fee per hire would be {fmt(p.feeAmount ?? 0)}.
+          </div>
+        )}
       </div>
     );
   };
@@ -336,7 +354,16 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
           {fsh3 ? (
             <tr>
               <th>Product</th>
-              <th style={{ textAlign: 'right', paddingRight: 16 }}>Fee per hire</th>
+              <th style={{ textAlign: 'right', paddingRight: 16 }}>
+                <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
+                  <span className={styles.calloutLink}>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', letterSpacing: '-0.15px' }}>Fee per hire</span>
+                  </span>
+                  <div className={styles.feeTooltip}>
+                    The percentage of the hire's first year salary paid to LinkedIn.
+                  </div>
+                </div>
+              </th>
               <th style={{ textAlign: 'right' }}>Quantity</th>
               <th style={{ textAlign: 'right', paddingRight: 16 }}>Net price</th>
               {!readOnly && <th style={{ textAlign: 'left', paddingLeft: 24 }}>Actions</th>}
@@ -346,7 +373,18 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
               <th>Product</th>
               <th style={{ textAlign: 'right' }}>Quantity</th>
               {fsh1 && <th style={{ textAlign: 'left' }}>Role</th>}
-              {(fsh1 || fsh2) && <th>Fee per hire</th>}
+              {(fsh1 || fsh2) && (
+                <th>
+                  <div className={styles.feeTooltipWrap}>
+                    <span className={styles.calloutLink}>
+                      <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', letterSpacing: '-0.15px' }}>Fee per hire</span>
+                    </span>
+                    <div className={styles.feeTooltip}>
+                      The percentage of the hire's first year salary paid to LinkedIn.
+                    </div>
+                  </div>
+                </th>
+              )}
               <th style={{ textAlign: 'right' }}>{fsh2 ? 'Deposit' : 'Net price'}</th>
               {!readOnly && <th />}
             </tr>
@@ -474,7 +512,7 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
                               <span className={styles.calloutLink}><span className={styles.calloutLinkText} style={{ fontSize: 12 }}>{p.feePct}% fee per hire</span></span>
                               <div className={styles.feeTooltip}>
                                 The fee per hire is the percentage of the hire's first-year salary paid to LinkedIn.
-                                {p.role !== 'Other roles' && <> For a forecasted salary of {fmt(p.salary ?? 0)} for {p.role}, the fee would be {fmt(p.feeAmount ?? 0)}.</>}
+                                {p.role !== 'Other roles' && <> For a forecasted salary of {fmt(p.salary ?? 0)} for {p.role}, the fee per hire would be {fmt(p.feeAmount ?? 0)}.</>}
                               </div>
                             </div>
                           </div>
@@ -1023,8 +1061,8 @@ export default function SolutionBuilderScreen({
                     style={{ borderRadius: 24, fontSize: 16, fontWeight: 600, letterSpacing: '-0.32px', padding: '12px 24px', height: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}
                     onClick={showToast}
                   >
-                    <div style={{ position: 'relative', width: 20, height: 20, flexShrink: 0 }}>
-                      <img src={imgCopyLinkIcon} alt="" style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', display: 'block' }} />
+                    <div style={{ position: 'relative', width: 24, height: 24, flexShrink: 0 }}>
+                      <img src={imgCopyLinkIcon} alt="" style={{ position: 'absolute', left: 2, top: 2, width: 20, height: 20, display: 'block' }} />
                     </div>
                     Copy checkout link
                   </Button>

@@ -1,0 +1,821 @@
+/* ── Page shell ─────────────────────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f2f0ed;
+  font-family: 'LinkedIn Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ── Global header ──────────────────────────────────────── */
+.globalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  padding: 0 18px 0 24px;
+  flex-shrink: 0;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.headerLogo {
+  height: 34px;
+  width: 34px;
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.headerTitle {
+  font-size: 26px;
+  font-weight: 400;
+  color: #0a66c2;
+  white-space: nowrap;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.navIconWrap {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.navIconImg {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.navAvatarWrap {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.navAvatarImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Body (sidebar + main) ──────────────────────────────── */
+.body {
+  display: flex;
+  flex: 1;
+}
+
+/* ── Left sidebar ───────────────────────────────────────── */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-right: 1px solid rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  align-self: flex-start;
+}
+
+.sidebarTop {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  height: 96px;
+}
+
+.sidebarAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.sidebarProfile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sidebarName {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.9);
+  margin: 0;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebarEmail {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.6);
+  margin: 0;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebarNav {
+  display: flex;
+  flex-direction: column;
+  padding-top: 8px;
+}
+
+.navItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 12px 24px;
+  cursor: pointer;
+}
+
+.navItem:hover {
+  background: rgba(0,0,0,0.04);
+}
+
+.navItemActive {
+  padding-left: 20px;
+}
+
+.navActiveBar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: rgba(0,0,0,0.9);
+}
+
+.navLabel {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.75);
+  line-height: 1.25;
+}
+
+.navItemActive .navLabel {
+  color: rgba(0,0,0,0.9);
+}
+
+/* ── Main content area ──────────────────────────────────── */
+.main {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Page heading ───────────────────────────────────────── */
+.headingSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.breadcrumbRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.breadcrumbText {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.6);
+  white-space: nowrap;
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+}
+
+.chevronWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.chevronImg {
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 7px;
+  height: 14px;
+  display: block;
+}
+
+.pageHeadingLarge {
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.9);
+  margin: 0;
+  line-height: 1.25;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.36px;
+}
+
+.refIdText {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.6);
+  margin: 4px 0 0 0;
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+}
+
+/* ── Card shell ─────────────────────────────────────────── */
+.card {
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+}
+
+.cardHeadingRow {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  min-height: 56px;
+}
+
+.cardHeadingRowTx {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  min-height: 56px;
+}
+
+.cardHeadingText {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.9);
+  margin: 0;
+  line-height: 1.25;
+  letter-spacing: -0.32px;
+}
+
+.cardDivider {
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+  width: 100%;
+}
+
+/* ── Customize receipt details button ───────────────────── */
+.customizeBtn {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.75);
+  border-radius: 16px;
+  padding: 7px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.75);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+}
+
+/* ── Callout link + tooltip (matches SB pattern) ────────── */
+.tooltipWrap {
+  position: relative;
+  display: inline-flex;
+  justify-content: flex-end;
+}
+
+.calloutLink {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-self: flex-start;
+  border-bottom: 2px dotted #56687a;
+  cursor: pointer;
+}
+
+.calloutLink:hover {
+  border-bottom-color: #38434f;
+}
+
+.calloutLinkText {
+  border-bottom: 1px solid transparent;
+  color: rgba(0,0,0,0.9);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.calloutLink:hover .calloutLinkText {
+  color: rgba(0,0,0,0.75);
+}
+
+.calloutLinkTextBold {
+  font-weight: 600;
+  color: rgba(0,0,0,0.9);
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  width: 288px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 1px rgba(140,140,140,0.2), 0px 4px 12px rgba(0,0,0,0.3);
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: normal;
+  text-align: left;
+  z-index: 500;
+  pointer-events: none;
+}
+
+.tooltipWrap:hover .tooltip {
+  display: block;
+}
+
+/* ── General info + billing shared ─────────────────────── */
+.infoContent {
+  padding: 24px;
+}
+
+.infoRow {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 238px;
+  flex-shrink: 0;
+}
+
+.infoLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.6);
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+}
+
+.infoValue {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.9);
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+}
+
+/* Status group (icon + text) */
+.statusGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Status icon: 16×16 outer, 14×14 inner at top:1 left:1 */
+.statusIconWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.statusIconInner {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.activeText {
+  font-size: 14px;
+  font-weight: 400;
+  color: #057642;
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+  white-space: nowrap;
+}
+
+/* ── Roles table ────────────────────────────────────────── */
+.rolesTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.rolesTh {
+  padding: 8px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #e6e6e6;
+  text-align: left;
+  height: 63px;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+}
+
+.rolesThFirst {
+  padding-left: 24px;
+}
+
+.rolesThRight {
+  text-align: right;
+  padding-right: 48px;
+}
+
+.rolesTr {
+  border-bottom: 1px solid #f3f2f0;
+}
+
+.rolesTr:last-child {
+  border-bottom: none;
+}
+
+.rolesTd {
+  padding: 24px 16px;
+  vertical-align: middle;
+  font-size: 14px;
+  color: rgba(0,0,0,0.9);
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+  white-space: nowrap;
+}
+
+.rolesTdFirst {
+  padding-left: 24px;
+}
+
+.rolesTdRight {
+  text-align: right;
+  padding-right: 48px;
+}
+
+/* ── Billing information ────────────────────────────────── */
+.billingContent {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.billingRow {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.billingBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 160px;
+}
+
+.billingBlockUniform {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.taxIdMuted {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.6);
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+}
+
+.taxIdLink {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0a66c2;
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+/* ── Transactions table ─────────────────────────────────── */
+.txTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.txTh {
+  padding: 8px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #e6e6e6;
+  text-align: left;
+  height: 63px;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.9);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+}
+
+.txThFirst {
+  padding-left: 24px;
+}
+
+.txThRight {
+  text-align: right;
+}
+
+.txTdRight {
+  text-align: right;
+}
+
+.txThCenter {
+  text-align: center;
+}
+
+.txThAction {
+  width: 56px;
+  padding: 8px 12px;
+  height: 63px;
+  vertical-align: middle;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.txTr {
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.txTr:last-child {
+  border-bottom: none;
+}
+
+.txTd {
+  padding: 8px 16px;
+  height: 55px;
+  vertical-align: middle;
+  font-size: 14px;
+  color: rgba(0,0,0,0.9);
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+  white-space: nowrap;
+}
+
+.txTdFirst {
+  padding-left: 24px;
+}
+
+.txTdCenter {
+  text-align: center;
+}
+
+.txTdAction {
+  width: 56px;
+  text-align: center;
+  padding: 8px 12px;
+}
+
+/* Total cell with notice badge */
+.totalCell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Notice icon: 16×16 outer, 12×12 inner at top:2 left:2 */
+.noticeWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.noticeImg {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+/* Payment method cell */
+.methodCell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Visa card: 34×24 white box */
+.visaCard {
+  position: relative;
+  width: 34px;
+  height: 24px;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visaLogoImg {
+  width: 24px;
+  height: 8px;
+  display: block;
+  object-fit: contain;
+}
+
+/* Paid status cell */
+.paidCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* Signal Success Small: 16×16 outer, 14×14 inner at top:1 left:1 */
+.paidIconWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.paidIconImg {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.paidLabel {
+  font-size: 14px;
+  color: #057642;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+/* Overflow (···) icon: 24×24 outer, 20×4 inner at left:2 top:10 */
+.overflowWrap {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  margin: 0 auto;
+}
+
+.overflowImg {
+  position: absolute;
+  left: 2px;
+  top: 10px;
+  width: 20px;
+  height: 4px;
+  display: block;
+}
+
+/* ── Card footer (View all) ─────────────────────────────── */
+.cardFooter {
+  position: relative;
+  height: 56px;
+  overflow: hidden;
+}
+
+.footerBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.viewAllBtn {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.viewAllLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.75);
+  white-space: nowrap;
+}
+
+.viewAllIconImg {
+  width: 16px;
+  height: 12px;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ── Help card ──────────────────────────────────────────── */
+.helpCard {
+  position: relative;
+  height: 96px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+/* Messages icon: 48×48 at top:24 left:24 */
+.helpIcon {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  width: 48px;
+  height: 48px;
+  display: block;
+  object-fit: contain;
+}
+
+/* Text block at left:88 top:24 */
+.helpTextBlock {
+  position: absolute;
+  left: 88px;
+  top: 24px;
+}
+
+.helpLine1 {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.9);
+  margin: 0;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.helpLine2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0a66c2;
+  margin: 4px 0 0 0;
+  line-height: 1.25;
+  white-space: nowrap;
+}

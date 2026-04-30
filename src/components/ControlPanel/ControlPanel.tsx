@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { flowSteps } from '../../data/flow';
 import type { Perspective } from '../../data/flow';
 import { personas } from '../../data/personas';
@@ -6,7 +6,7 @@ import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout } from '../../Ap
 import styles from './ControlPanel.module.css';
 
 const imgLinkedInBadge  = '/linkedin-in21.svg';
-const imgCompanyBadge   = '/company-badge.svg';
+const imgCompanyBadge   = '/flexis-logo.png';
 
 interface ControlPanelProps {
   currentStepId: string;
@@ -75,6 +75,18 @@ export default function ControlPanel({
   onReset,
 }: ControlPanelProps) {
   const [stepsOpen, setStepsOpen] = useState(false);
+  const stepPickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!stepsOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (stepPickerRef.current && !stepPickerRef.current.contains(e.target as Node)) {
+        setStepsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [stepsOpen]);
   const currentIdx = flowSteps.findIndex(s => s.id === currentStepId);
   const currentStep = flowSteps[currentIdx] ?? flowSteps[1];
   const totalNumberedSteps = Math.max(...flowSteps.map(s => s.stepNumber));
@@ -111,7 +123,7 @@ export default function ControlPanel({
         </div>
 
         {/* Current Step Blurb + Step Picker */}
-        <div className={styles.blurbSection}>
+        <div className={styles.blurbSection} ref={stepPickerRef}>
           <button
             className={styles.stepPickerBtn}
             onClick={() => setStepsOpen(o => !o)}
