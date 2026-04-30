@@ -197,11 +197,11 @@
 /* ── Main content area ──────────────────────────────────── */
 .main {
   flex: 1;
+  min-width: 0;
   padding: 32px 40px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 1200px;
 }
 
 .pageHeading {
