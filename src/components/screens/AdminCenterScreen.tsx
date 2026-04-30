@@ -153,7 +153,7 @@ export default function AdminCenterScreen({
                 <div className={styles.purchaseDetailRow}>
                   <span className={styles.detailText}>Annual agreement (will not auto-renew)</span>
                   <img src={imgDot} alt="" className={styles.dotSep} />
-                  <span className={styles.detailText}>{p.roles} roles with custom fee per hire</span>
+                  <span className={styles.detailText}>{p.roles} roles</span>
                   <img src={imgDot} alt="" className={styles.dotSep} />
                   <span className={styles.detailText}>{p.dateStart}</span>
                   <div className={styles.dateDash} />
