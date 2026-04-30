@@ -36,7 +36,7 @@ const PURCHASES = (roleCount: number) => [
     statusIcon: imgClockSmall,
     statusLabel: 'Expired',
     statusColor: 'rgba(0,0,0,0.6)',
-    roles: 2,
+    roles: 5,
     dateStart: 'Mar 22, 2021',
     dateEnd: 'Mar 14, 2021',
   },
