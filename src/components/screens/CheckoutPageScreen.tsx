@@ -96,9 +96,8 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
 
             {/* Billing information card */}
             <div className={styles.billingCard}>
-              <div className={styles.billingForm}>
-
-                <p className={styles.billingTitle}>Provide your billing information</p>
+              <p className={styles.billingTitle}>Provide your billing information</p>
+              <div className={styles.billingForm} style={{ marginTop: 24 }}>
 
                 {/* Billing address subsection */}
                 <div className={styles.billingSection}>
