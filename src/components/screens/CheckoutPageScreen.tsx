@@ -4,7 +4,7 @@
  * Fidelity: High — LinkedIn secure checkout with order summary
  */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { ProductRow } from './SolutionBuilderScreen';
 import styles from './CheckoutPageScreen.module.css';
 
@@ -27,19 +27,28 @@ const imgAlexAvatar = '/alex-avatar.png';
 const imgLightbulb  = '/lightbulb.svg';
 const imgAmyAvatar  = '/amy-avatar.png';
 const imgIn14       = '/linkedin-in14.svg';
-const imgCaret      = '/caret-down.svg';
+const imgCaret      = '/checkout-caret.svg';
 
 interface Props {
   onNavigate?: (id: string) => void;
   products?: ProductRow[];
   paymentTerm?: 'NET30' | 'NET60' | 'NET90';
+  checkoutLayout?: 'with-subheaders' | 'no-subheaders';
 }
 
-export default function CheckoutPageScreen({ onNavigate, products = [], paymentTerm = 'NET30' }: Props) {
+export default function CheckoutPageScreen({ onNavigate, products = [], paymentTerm = 'NET30', checkoutLayout = 'with-subheaders' }: Props) {
+  const showSubheaders = checkoutLayout === 'with-subheaders';
   const [stateValue, setStateValue] = useState('');
   const [stateOpen, setStateOpen] = useState(false);
   const [stateRect, setStateRect] = useState<{ top?: number; bottom?: number; left: number; width: number } | null>(null);
   const stateRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on any scroll so it doesn't drift from its anchor
+  useEffect(() => {
+    const close = () => setStateOpen(false);
+    window.addEventListener('scroll', close, true);
+    return () => window.removeEventListener('scroll', close, true);
+  }, []);
 
   return (
     <div className={styles.page}>
@@ -89,12 +98,14 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
             <div className={styles.billingCard}>
               <div className={styles.billingForm}>
 
-                <p className={styles.billingTitle}>Enter your billing information</p>
+                <p className={styles.billingTitle}>Provide your billing information</p>
 
                 {/* Billing address subsection */}
                 <div className={styles.billingSection}>
-                  <p className={styles.billingSubsection}>Billing address</p>
                   <div className={styles.billingFields}>
+
+                    {/* Billing contact subtitle */}
+                    {showSubheaders && <p className={styles.billingSubsection}>Billing contact</p>}
 
                     {/* First name + Last name */}
                     <div className={styles.billingRow} style={{ gap: 16 }}>
@@ -107,6 +118,15 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
                         <input className={styles.billingInput} style={{ width: 248 }} type="text" />
                       </div>
                     </div>
+
+                    {/* Invoice recipient email */}
+                    <div className={styles.billingField}>
+                      <label className={styles.billingLabel}>Invoice recipient email</label>
+                      <input className={styles.billingInput} style={{ width: 248 }} type="email" />
+                    </div>
+
+                    {/* Billing address subtitle */}
+                    {showSubheaders && <p className={styles.billingSubsection} style={{ marginTop: 24 }}>Billing address</p>}
 
                     {/* Country/region */}
                     <div className={styles.billingField}>
@@ -185,15 +205,9 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
                       <input className={styles.billingInput} style={{ width: 250 }} type="text" />
                     </div>
 
-                  </div>
-                </div>
+                    {/* Add button */}
+                    <button className={styles.addBtn} onClick={() => onNavigate?.('checkout-billing-profile')}>Add</button>
 
-                {/* Invoice details subsection */}
-                <div className={styles.billingSection} style={{ paddingTop: 20 }}>
-                  <p className={styles.billingSubsection}>Invoice details</p>
-                  <div className={styles.billingField}>
-                    <label className={styles.billingLabel}>Invoice recipient email</label>
-                    <input className={styles.billingInput} style={{ width: 248 }} type="email" />
                   </div>
                 </div>
 

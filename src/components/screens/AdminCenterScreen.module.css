@@ -398,7 +398,6 @@
 /* Header row — 63px min-height via py-8px with fixed line content */
 .th {
   padding: 8px 8px 8px 16px;
-  background: #ffffff;
   border-bottom: 1px solid #e6e6e6;
   text-align: left;
   height: 63px;

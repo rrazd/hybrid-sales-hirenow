@@ -21,6 +21,7 @@ import AdyenCheckoutScreen from './components/screens/AdyenCheckoutScreen';
 import RoleStatusEmailScreen from './components/screens/RoleStatusEmailScreen';
 import AdminCenterScreen from './components/screens/AdminCenterScreen';
 import AdminCenterDetailScreen from './components/screens/AdminCenterDetailScreen';
+import CheckoutBillingProfileScreen from './components/screens/CheckoutBillingProfileScreen';
 import styles from './App.module.css';
 
 type SubView = 'quotes-list' | null;
@@ -29,6 +30,7 @@ export type QuoteAdvisorLayout = 'in-card' | 'floating';
 export type FSHLayout = 'sep-line' | 'grouped';
 export type PaymentTerm = 'NET30' | 'NET60' | 'NET90';
 export type GlobalHeaderLayout = 'generic' | 'fsh-custom' | 'fsh-custom-2' | 'fsh-custom-3';
+export type CheckoutLayout = 'with-subheaders' | 'no-subheaders';
 
 // Screen registry — add new screens here as they are built
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -50,6 +52,7 @@ const screenRegistry: Record<string, React.ComponentType<any>> = {
   RoleStatusEmailScreen,
   AdminCenterScreen,
   AdminCenterDetailScreen,
+  CheckoutBillingProfileScreen,
 };
 
 // LinkedIn ANT theme overrides
@@ -107,6 +110,7 @@ export default function App() {
   });
   const [paymentTerm, setPaymentTerm] = useState<PaymentTerm>('NET30');
   const [globalHeaderLayout, setGlobalHeaderLayout] = useState<GlobalHeaderLayout>('fsh-custom-3');
+  const [checkoutLayout, setCheckoutLayout] = useState<CheckoutLayout>('no-subheaders');
 
   const hasProducts = products.length > 0;
   // Step 7 requires at least one product to continue
@@ -167,11 +171,14 @@ export default function App() {
           onFSHLayoutChange={setFSHLayout}
           globalHeaderLayout={globalHeaderLayout}
           onGlobalHeaderLayoutChange={setGlobalHeaderLayout}
+          checkoutLayout={checkoutLayout}
+          onCheckoutLayoutChange={setCheckoutLayout}
           onReset={() => {
             setFSHLayout('grouped');
             setQuoteAdvisorLayout('floating');
             setQuoteAdvisorContentOn(false);
             setGlobalHeaderLayout('fsh-custom-3');
+            setCheckoutLayout('no-subheaders');
           }}
         />
 
@@ -200,6 +207,7 @@ export default function App() {
               paymentTerm={paymentTerm}
               onPaymentTermChange={setPaymentTerm}
               globalHeaderLayout={globalHeaderLayout}
+              checkoutLayout={checkoutLayout}
             />
           ) : (
             <div className={styles.placeholder}>

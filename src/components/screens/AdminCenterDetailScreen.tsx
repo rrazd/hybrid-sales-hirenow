@@ -114,9 +114,9 @@ export default function AdminCenterDetailScreen() {
               <p className={styles.cardHeadingText}>General information</p>
             </div>
             <div className={styles.cardDivider} />
-            <div className={styles.infoContent}>
-              <div className={styles.infoRow}>
-                <div className={styles.infoBlock}>
+            <div className={styles.billingContent}>
+              <div className={styles.billingRow}>
+                <div className={`${styles.billingBlock} ${styles.billingBlockUniform}`}>
                   <span className={styles.infoLabel}>Status</span>
                   <div className={styles.statusGroup}>
                     <div className={styles.statusIconWrap}>
@@ -125,14 +125,15 @@ export default function AdminCenterDetailScreen() {
                     <span className={styles.activeText}>Active</span>
                   </div>
                 </div>
-                <div className={styles.infoBlock}>
+                <div className={`${styles.billingBlock} ${styles.billingBlockUniform}`}>
                   <span className={styles.infoLabel}>Start date</span>
                   <span className={styles.infoValue}>Nov 1, 2026</span>
                 </div>
-                <div className={styles.infoBlock}>
+                <div className={`${styles.billingBlock} ${styles.billingBlockUniform}`}>
                   <span className={styles.infoLabel}>End date</span>
                   <span className={styles.infoValue}>Nov 1, 2027</span>
                 </div>
+                <div className={`${styles.billingBlock} ${styles.billingBlockUniform}`} aria-hidden />
               </div>
             </div>
           </div>
@@ -220,8 +221,24 @@ export default function AdminCenterDetailScreen() {
                   <span className={styles.infoLabel}>Currency</span>
                   <span className={styles.infoValue}>USD</span>
                 </div>
-                <div className={`${styles.billingBlock} ${styles.billingBlockUniform}`} aria-hidden />
-                <div className={`${styles.billingBlock} ${styles.billingBlockUniform}`} aria-hidden />
+                <div className={`${styles.billingBlock} ${styles.billingBlockUniform}`}>
+                  <span className={styles.infoLabel}>Billing contact</span>
+                  <div className={styles.billingContactRow}>
+                    <img src="/tia-avatar-placeholder.svg" alt="Tia Derby" className={styles.billingContactAvatar} />
+                    <div className={styles.billingContactInfo}>
+                      <span className={styles.billingContactName}>Tia Derby</span>
+                      <span className={styles.billingContactEmail}>tderby@flexis.com</span>
+                    </div>
+                  </div>
+                </div>
+                <div className={`${styles.billingBlock} ${styles.billingBlockUniform}`}>
+                  <span className={styles.infoLabel}>Bill to address</span>
+                  <div className={styles.billingAddress}>
+                    <span>950 W Maude Ave</span>
+                    <span>Sunnyvale CA 94085</span>
+                    <span>United States</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

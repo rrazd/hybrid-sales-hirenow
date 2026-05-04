@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { flowSteps } from '../../data/flow';
 import type { Perspective } from '../../data/flow';
 import { personas } from '../../data/personas';
-import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout } from '../../App';
+import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout, CheckoutLayout } from '../../App';
 import styles from './ControlPanel.module.css';
 
 const imgLinkedInBadge  = '/linkedin-in21.svg';
@@ -23,6 +23,8 @@ interface ControlPanelProps {
   onFSHLayoutChange?: (layout: FSHLayout) => void;
   globalHeaderLayout?: GlobalHeaderLayout;
   onGlobalHeaderLayoutChange?: (layout: GlobalHeaderLayout) => void;
+  checkoutLayout?: CheckoutLayout;
+  onCheckoutLayoutChange?: (layout: CheckoutLayout) => void;
   onReset?: () => void;
 }
 
@@ -72,6 +74,8 @@ export default function ControlPanel({
   onFSHLayoutChange,
   globalHeaderLayout = 'generic',
   onGlobalHeaderLayoutChange,
+  checkoutLayout = 'with-subheaders',
+  onCheckoutLayoutChange,
   onReset,
 }: ControlPanelProps) {
   const [stepsOpen, setStepsOpen] = useState(false);
@@ -185,6 +189,27 @@ export default function ControlPanel({
                 onClick={() => onFSHLayoutChange('sep-line')}
               >
                 Separate
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Checkout layout toggle — only for step 11 */}
+        {currentStep.supportsCheckoutLayoutToggle && onCheckoutLayoutChange && (
+          <div className={styles.layoutSection}>
+            <p className={styles.layoutLabel}>Billing form layout</p>
+            <div className={styles.layoutSegment}>
+              <button
+                className={`${styles.segmentBtn} ${checkoutLayout === 'with-subheaders' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onCheckoutLayoutChange('with-subheaders')}
+              >
+                Sub headers
+              </button>
+              <button
+                className={`${styles.segmentBtn} ${checkoutLayout === 'no-subheaders' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onCheckoutLayoutChange('no-subheaders')}
+              >
+                No sub headers
               </button>
             </div>
           </div>

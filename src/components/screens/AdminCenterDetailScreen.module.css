@@ -356,7 +356,7 @@
 
 .calloutLinkTextBold {
   font-weight: 600;
-  color: rgba(0,0,0,0.9);
+  color: rgba(0,0,0,0.6);
 }
 
 .tooltip {
@@ -460,21 +460,34 @@
 
 .rolesTh {
   padding: 8px 16px;
-  background: #ffffff;
-  border-bottom: 1px solid #e6e6e6;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
   text-align: left;
   height: 63px;
   vertical-align: middle;
   white-space: nowrap;
   font-size: 14px;
   font-weight: 600;
-  color: rgba(0,0,0,0.9);
+  color: rgba(0,0,0,0.6);
   letter-spacing: -0.15px;
   line-height: 1.25;
 }
 
 .rolesThFirst {
   padding-left: 24px;
+}
+
+.rolesHeadDividerCell {
+  padding: 0 24px;
+  height: 1px;
+  line-height: 0;
+  font-size: 0;
+  overflow: hidden;
+}
+
+.rolesHeadDividerLine {
+  height: 1px;
+  background: #e6e6e6;
 }
 
 .rolesThRight {
@@ -536,6 +549,56 @@
   min-width: 0;
 }
 
+.billingContactRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.billingContactAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.billingContactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.billingContactName {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.9);
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+}
+
+.billingContactEmail {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.6);
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+}
+
+.billingAddress {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.9);
+  line-height: 1.4;
+  letter-spacing: -0.15px;
+  margin-top: 2px;
+}
+
 .taxIdMuted {
   font-size: 14px;
   font-weight: 400;
@@ -562,7 +625,7 @@
 
 .txTh {
   padding: 8px 16px;
-  background: #ffffff;
+  border: none;
   border-bottom: 1px solid #e6e6e6;
   text-align: left;
   height: 63px;
@@ -570,7 +633,7 @@
   white-space: nowrap;
   font-size: 14px;
   font-weight: 600;
-  color: rgba(0,0,0,0.9);
+  color: rgba(0,0,0,0.6);
   letter-spacing: -0.15px;
   line-height: 1.25;
 }
@@ -596,14 +659,14 @@
   padding: 8px 12px;
   height: 63px;
   vertical-align: middle;
+  border: none;
   border-bottom: 1px solid #e6e6e6;
 }
 
-.txTr {
-  border-bottom: 1px solid #e6e6e6;
-}
-
-.txTr:last-child {
+.txTr:last-child .txTd,
+.txTr:last-child .txTdFirst,
+.txTr:last-child .txTdCenter,
+.txTr:last-child .txTdAction {
   border-bottom: none;
 }
 
@@ -616,6 +679,8 @@
   line-height: 1.25;
   letter-spacing: -0.15px;
   white-space: nowrap;
+  border: none;
+  border-bottom: 1px solid #e6e6e6;
 }
 
 .txTdFirst {

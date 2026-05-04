@@ -8,9 +8,10 @@ export interface FlowStep {
   perspective: Perspective;
   fidelity: 'low' | 'high';
   component: string; // component name, used for routing
-  supportsQuoteAdvisorToggle?: boolean; // show layout picker in control panel
-  supportsFSHLayoutToggle?: boolean;    // show FSH table layout picker in control panel
-  supportsGlobalHeaderToggle?: boolean; // show generic vs FSH custom header toggle
+  supportsQuoteAdvisorToggle?: boolean;     // show layout picker in control panel
+  supportsFSHLayoutToggle?: boolean;        // show FSH table layout picker in control panel
+  supportsGlobalHeaderToggle?: boolean;     // show generic vs FSH custom header toggle
+  supportsCheckoutLayoutToggle?: boolean;   // show checkout subheader layout toggle
 }
 
 export const flowSteps: FlowStep[] = [
@@ -112,14 +113,24 @@ export const flowSteps: FlowStep[] = [
     id: 'checkout-page',
     stepNumber: 11,
     label: 'Open checkout link (LBP)',
-    blurb: 'Alex is already logged into linkedin.com, he opens the link and sees the custom checkout page. He can clearly understand that he owes nothing now. He fills out billing information and clicks the main CTA.',
+    blurb: 'Alex is already logged into linkedin.com, he opens the link and sees the custom checkout page. He can clearly understand that he owes nothing now. He fills out billing information and clicks Add.',
     perspective: 'Alex',
     fidelity: 'high',
     component: 'CheckoutPageScreen',
+    supportsCheckoutLayoutToggle: true,
+  },
+  {
+    id: 'checkout-billing-profile',
+    stepNumber: 12,
+    label: 'Billing profile selected (LBP)',
+    blurb: 'After clicking Add, Alex sees his saved billing profile — name, email, and address — in a dropdown selector. He clicks "Agree and activate for $0" to place the order.',
+    perspective: 'Alex',
+    fidelity: 'high',
+    component: 'CheckoutBillingProfileScreen',
   },
   {
     id: 'order-confirmation',
-    stepNumber: 12,
+    stepNumber: 13,
     label: 'Order success (LBP)',
     blurb: 'Alex sees a confirmation/success page. Alex hits "Go to Admin Center."',
     perspective: 'Alex',
@@ -128,7 +139,7 @@ export const flowSteps: FlowStep[] = [
   },
   {
     id: 'admin-center',
-    stepNumber: 13,
+    stepNumber: 14,
     label: 'Admin Center (LBP)',
     blurb: 'In Admin Center Alex sees his recent Full Service Hire agreement. He clicks into it.',
     perspective: 'Alex',
@@ -137,7 +148,7 @@ export const flowSteps: FlowStep[] = [
   },
   {
     id: 'admin-center-detail',
-    stepNumber: 14,
+    stepNumber: 15,
     label: 'Admin Center Detail (LBP)',
     blurb: 'Alex can view the agreement details here, including upfront view of the roles, fee per hire and status.',
     perspective: 'Alex',
@@ -146,7 +157,7 @@ export const flowSteps: FlowStep[] = [
   },
   {
     id: 'solution-builder-complete',
-    stepNumber: 15,
+    stepNumber: 16,
     label: 'Status in Solution Builder (LBP)',
     blurb: 'Amy sees that the status of the quote has been now updated to "Checkout complete" and she can no longer take any actions on this quote.',
     perspective: 'Amy',
@@ -156,7 +167,7 @@ export const flowSteps: FlowStep[] = [
   },
   {
     id: 'job-plan-welcome',
-    stepNumber: 16,
+    stepNumber: 17,
     label: 'Welcome email',
     blurb: 'Alex gets a welcome email for Full-Service Hiring. A LinkedIn recruiter searches for potential hires, arranges interviews and Alex makes a selection of hires - this is all handled by LTS.',
     perspective: 'Alex',
@@ -165,7 +176,7 @@ export const flowSteps: FlowStep[] = [
   },
   {
     id: 'payment-due-email',
-    stepNumber: 17,
+    stepNumber: 18,
     label: 'Payment due email',
     blurb: 'Once the new hire starts (per agreed terms), payment is triggered. Alex will have NET[X] days to pay for the % finder fees due to LinkedIn. Alex receives an email asking for payment. He clicks Pay now.',
     perspective: 'Alex',
@@ -174,7 +185,7 @@ export const flowSteps: FlowStep[] = [
   },
   {
     id: 'adyen-checkout',
-    stepNumber: 18,
+    stepNumber: 19,
     label: 'Adyen checkout',
     blurb: 'He is taken to this Adyen hosted checkout page where he can pay and see the confirmation screen.',
     perspective: 'Alex',
@@ -183,7 +194,7 @@ export const flowSteps: FlowStep[] = [
   },
   {
     id: 'role-status-email',
-    stepNumber: 19,
+    stepNumber: 20,
     label: 'Role status email',
     blurb: 'Alex receives an email from LinkedIn summarizing the status of the roles per his agreement, he can see in this email the roles that have been filled that he just paid for.',
     perspective: 'Alex',

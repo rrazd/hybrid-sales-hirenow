@@ -157,7 +157,7 @@
 .billingForm {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 4px;
 }
 
 .billingSection {
@@ -704,6 +704,25 @@
   background: #004182;
 }
 
+.addBtn {
+  align-self: flex-start;
+  background: #0a66c2;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: -0.32px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.addBtn:hover {
+  background: #004182;
+}
+
 .editQuoteBtn {
   width: 100%;
   background: transparent;
@@ -889,4 +908,189 @@
   color: rgba(0, 0, 0, 0.9);
   letter-spacing: -0.32px;
   line-height: 1.25;
+}
+
+/* ─── Billing profile dropdown (post-Add step) ───────────────── */
+.profileDropdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  background: white;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profileInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profileName {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.profileAddress {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.profileCaretWrap {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.profileCaretImg {
+  position: absolute;
+  left: 5px;
+  top: 9px;
+  width: 14px;
+  height: 7px;
+  display: block;
+}
+
+/* ─── Billing profile open dropdown panel ────────────────────── */
+.profilePanel {
+  background: white;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  overflow: hidden;
+}
+
+.profilePanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.profilePanelTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.profilePanelAddBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 24px;
+  padding: 7px 16px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0a66c2;
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.profilePanelAddIcon {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.profilePanelDivider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+.profileOption {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px;
+}
+
+.profileCheckWrap {
+  width: 21px;
+  flex-shrink: 0;
+  padding-top: 8px;
+}
+
+.profileCheckImg {
+  width: 21px;
+  height: 21px;
+  display: block;
+}
+
+.profileOptionInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profileOptionDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.profileOptionNameRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.profileOptionName {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.profileOptionAddress {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.profileEditBtn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 7px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0a66c2;
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  cursor: pointer;
+  font-family: inherit;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
 }
