@@ -4,6 +4,7 @@
  * Fidelity: High — mobile email screenshot with invoice attachment
  */
 
+import { useState } from 'react';
 import styles from './PaymentEmailScreen.module.css';
 
 function DocIcon() {
@@ -34,17 +35,27 @@ function DownloadBtn() {
 }
 
 export default function PaymentEmailScreen() {
+  const [loaded, setLoaded] = useState(false);
+
   return (
     <div className={styles.page}>
       <div className={styles.imageWrap}>
-        <img src="/payment-email.png" alt="Payment due email" className={styles.screenshot} />
-        <div className={styles.attachmentOverlay}>
-          <div className={styles.attachmentChip}>
-            <DocIcon />
-            <span className={styles.fileName}>INV12314124302.pdf</span>
-            <DownloadBtn />
+        {!loaded && <div className={styles.skeleton} />}
+        <img
+          src="/payment-email.png"
+          alt="Payment due email"
+          className={`${styles.screenshot} ${loaded ? styles.screenshotVisible : styles.screenshotHidden}`}
+          onLoad={() => setLoaded(true)}
+        />
+        {loaded && (
+          <div className={styles.attachmentOverlay}>
+            <div className={styles.attachmentChip}>
+              <DocIcon />
+              <span className={styles.fileName}>INV12314124302.pdf</span>
+              <DownloadBtn />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
