@@ -123,8 +123,8 @@ export const flowSteps: FlowStep[] = [
   {
     id: 'checkout-billing-profile',
     stepNumber: 12,
-    label: 'Billing profile selected (LBP)',
-    blurb: 'After clicking Add, Alex sees his saved billing profile — name, email, and address — in a dropdown selector. He clicks "Agree and activate for $0" to place the order.',
+    label: 'Billing info filled (LBP)',
+    blurb: 'After clicking Add, Alex sees his saved billing profile in a dropdown selector. He clicks "Agree and activate for $0."',
     perspective: 'Alex',
     fidelity: 'high',
     component: 'CheckoutBillingProfileScreen',
@@ -170,7 +170,7 @@ export const flowSteps: FlowStep[] = [
   {
     id: 'job-plan-welcome',
     stepNumber: 17,
-    label: 'Welcome email',
+    label: 'Welcome email (LTS)',
     blurb: 'Alex gets a welcome email for Full-Service Hiring. A LinkedIn recruiter searches for potential hires, arranges interviews and Alex makes a selection of hires - this is all handled by LTS.',
     perspective: 'Alex',
     fidelity: 'low',
@@ -179,7 +179,7 @@ export const flowSteps: FlowStep[] = [
   {
     id: 'payment-due-email',
     stepNumber: 18,
-    label: 'Payment due email',
+    label: 'Payment due email (LBP)',
     blurb: 'Once the new hire starts (per agreed terms), payment is triggered. Alex will have NET[X] days to pay for the % finder fees due to LinkedIn. Alex receives an email asking for payment. He clicks Pay now.',
     perspective: 'Alex',
     fidelity: 'low',
@@ -188,7 +188,7 @@ export const flowSteps: FlowStep[] = [
   {
     id: 'adyen-checkout',
     stepNumber: 19,
-    label: 'Adyen checkout',
+    label: 'Adyen checkout (LBP)',
     blurb: 'He is taken to this Adyen hosted checkout page where he can pay and see the confirmation screen.',
     perspective: 'Alex',
     fidelity: 'high',
@@ -197,7 +197,7 @@ export const flowSteps: FlowStep[] = [
   {
     id: 'role-status-email',
     stepNumber: 20,
-    label: 'Role status email',
+    label: 'Role status email (LTS)',
     blurb: 'Alex receives an email from LinkedIn summarizing the status of the roles per his agreement, he can see in this email the roles that have been filled that he just paid for.',
     perspective: 'Alex',
     fidelity: 'low',
