@@ -1,0 +1,316 @@
+.screen {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.pagesRow {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* ── Invoice page card ─────────────────────────────── */
+.page {
+  width: 612px;
+  min-height: 868px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(0, 0, 0, 0.16);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  box-sizing: border-box;
+  gap: 19px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  position: relative;
+}
+
+/* ── Header ─────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 28px;
+  height: 28px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.headerTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+/* ── Checkout banner ─────────────────────────────────── */
+.checkoutBanner {
+  display: flex;
+  align-items: stretch;
+  border: 2px solid #0073b1;
+  gap: 8px;
+}
+
+.checkoutBannerBtn {
+  background: #0073b1;
+  border: none;
+  padding: 4px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  text-decoration: underline;
+  letter-spacing: -0.15px;
+  line-height: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+  width: 153px;
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.checkoutBannerText {
+  font-size: 12px;
+  font-weight: 600;
+  color: black;
+  letter-spacing: -0.32px;
+  line-height: 20px;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 0;
+}
+
+/* ── Metadata ────────────────────────────────────────── */
+.metaRow {
+  display: flex;
+  align-items: flex-start;
+}
+
+.metaCol {
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.metaLabel {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  line-height: 1.25;
+}
+
+.metaValue {
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  line-height: 1.25;
+}
+
+.customReceiptBox {
+  flex: 1;
+  min-height: 64px;
+  border: 1px solid rgba(140, 140, 140, 0.2);
+  border-radius: 7px;
+  padding: 8px 10px;
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 1.25;
+}
+
+/* ── Dividers ────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.12);
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.tableDividerThin {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+/* ── Summary heading ─────────────────────────────────── */
+.summaryHeading {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+/* ── Table ───────────────────────────────────────────── */
+.tableWrap {
+  background: #f9fafb;
+  border-radius: 9px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.tableWrapPlain {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.tableHeader,
+.tableRow {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px;
+  gap: 0;
+}
+
+.tableRowTall {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 10px;
+  gap: 0;
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  line-height: 1.25;
+}
+
+.tableHeader {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  line-height: 1.25;
+}
+
+.tableRow {
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  line-height: 1.25;
+}
+
+.colItem {
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.colDesc {
+  flex: 1;
+  min-width: 0;
+}
+
+.colRight {
+  width: 80px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+/* ── Totals ──────────────────────────────────────────── */
+.totals {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0 10px;
+}
+
+.totalsInner {
+  display: flex;
+  gap: 63px;
+  align-items: flex-start;
+}
+
+.totalsLabels {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 120px;
+}
+
+.totalsValues {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.totalLabel {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  line-height: 1.25;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.totalValue {
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  line-height: 1.25;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ── Placeholders ────────────────────────────────────── */
+.placeholders {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.placeholderBar {
+  height: 14px;
+  background: #d9d9d9;
+  border-radius: 30px;
+  width: 404px;
+}
+
+/* ── Help text ───────────────────────────────────────── */
+.helpText {
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  line-height: 1.25;
+  margin: 0;
+}
+
+.helpLink {
+  color: #0000f5;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ── Footer ──────────────────────────────────────────── */
+.footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  line-height: 1.25;
+  padding-top: 8px;
+}

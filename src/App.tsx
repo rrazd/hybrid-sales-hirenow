@@ -22,6 +22,7 @@ import RoleStatusEmailScreen from './components/screens/RoleStatusEmailScreen';
 import AdminCenterScreen from './components/screens/AdminCenterScreen';
 import AdminCenterDetailScreen from './components/screens/AdminCenterDetailScreen';
 import CheckoutBillingProfileScreen from './components/screens/CheckoutBillingProfileScreen';
+import InvoiceScreen from './components/screens/InvoiceScreen';
 import styles from './App.module.css';
 
 type SubView = 'quotes-list' | null;
@@ -54,6 +55,7 @@ const screenRegistry: Record<string, React.ComponentType<any>> = {
   AdminCenterScreen,
   AdminCenterDetailScreen,
   CheckoutBillingProfileScreen,
+  InvoiceScreen,
 };
 
 // LinkedIn ANT theme overrides
