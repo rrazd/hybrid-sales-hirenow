@@ -1002,7 +1002,7 @@
 .profilePanelAddBtn {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   background: transparent;
   border: 1px solid transparent;
   border-radius: 24px;
