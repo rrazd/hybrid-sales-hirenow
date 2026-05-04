@@ -12,6 +12,7 @@ export interface FlowStep {
   supportsFSHLayoutToggle?: boolean;        // show FSH table layout picker in control panel
   supportsGlobalHeaderToggle?: boolean;     // show generic vs FSH custom header toggle
   supportsCheckoutLayoutToggle?: boolean;   // show checkout subheader layout toggle
+  supportsBillingEditToggle?: boolean;      // show billing edit allow/disallow toggle
 }
 
 export const flowSteps: FlowStep[] = [
@@ -127,6 +128,7 @@ export const flowSteps: FlowStep[] = [
     perspective: 'Alex',
     fidelity: 'high',
     component: 'CheckoutBillingProfileScreen',
+    supportsBillingEditToggle: true,
   },
   {
     id: 'order-confirmation',

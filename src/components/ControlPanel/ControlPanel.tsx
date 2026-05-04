@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { flowSteps } from '../../data/flow';
 import type { Perspective } from '../../data/flow';
 import { personas } from '../../data/personas';
-import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout, CheckoutLayout } from '../../App';
+import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout, CheckoutLayout, BillingEditMode } from '../../App';
 import styles from './ControlPanel.module.css';
 
 const imgLinkedInBadge  = '/linkedin-in21.svg';
@@ -25,6 +25,8 @@ interface ControlPanelProps {
   onGlobalHeaderLayoutChange?: (layout: GlobalHeaderLayout) => void;
   checkoutLayout?: CheckoutLayout;
   onCheckoutLayoutChange?: (layout: CheckoutLayout) => void;
+  billingEditMode?: BillingEditMode;
+  onBillingEditModeChange?: (mode: BillingEditMode) => void;
   onReset?: () => void;
 }
 
@@ -76,6 +78,8 @@ export default function ControlPanel({
   onGlobalHeaderLayoutChange,
   checkoutLayout = 'with-subheaders',
   onCheckoutLayoutChange,
+  billingEditMode = 'disallow',
+  onBillingEditModeChange,
   onReset,
 }: ControlPanelProps) {
   const [stepsOpen, setStepsOpen] = useState(false);
@@ -210,6 +214,27 @@ export default function ControlPanel({
                 onClick={() => onCheckoutLayoutChange('no-subheaders')}
               >
                 No sub headers
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Billing edit toggle — only for step 12 */}
+        {currentStep.supportsBillingEditToggle && onBillingEditModeChange && (
+          <div className={styles.layoutSection}>
+            <p className={styles.layoutLabel}>Billing info edits</p>
+            <div className={styles.layoutSegment}>
+              <button
+                className={`${styles.segmentBtn} ${billingEditMode === 'allow' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onBillingEditModeChange('allow')}
+              >
+                Allow edits
+              </button>
+              <button
+                className={`${styles.segmentBtn} ${billingEditMode === 'disallow' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onBillingEditModeChange('disallow')}
+              >
+                No edits
               </button>
             </div>
           </div>

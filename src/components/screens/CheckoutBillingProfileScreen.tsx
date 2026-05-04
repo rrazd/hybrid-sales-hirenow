@@ -24,6 +24,7 @@ interface Props {
   onNavigate?: (id: string) => void;
   products?: ProductRow[];
   paymentTerm?: 'NET30' | 'NET60' | 'NET90';
+  billingEditMode?: 'allow' | 'disallow';  // default: disallow
 }
 
 type Profile = {
@@ -49,7 +50,7 @@ const INITIAL_PROFILES: Profile[] = [
 
 type FormValues = Omit<Profile, 'id' | 'name' | 'address'>;
 
-export default function CheckoutBillingProfileScreen({ onNavigate, products = [], paymentTerm = 'NET30' }: Props) {
+export default function CheckoutBillingProfileScreen({ onNavigate, products = [], paymentTerm = 'NET30', billingEditMode = 'disallow' }: Props) {
   const [profiles, setProfiles] = useState<Profile[]>(INITIAL_PROFILES);
   const [profileOpen, setProfileOpen] = useState(false);
   const [selectedId, setSelectedId] = useState('alex');
@@ -266,10 +267,12 @@ export default function CheckoutBillingProfileScreen({ onNavigate, products = []
                               </div>
                               <span className={styles.profileOptionAddress}>{p.address}</span>
                             </div>
-                            <button
-                              className={styles.profileEditBtn}
-                              onClick={e => { e.stopPropagation(); setProfileOpen(false); startEditing(p); }}
-                            >Edit billing information</button>
+                            {billingEditMode === 'allow' && (
+                              <button
+                                className={styles.profileEditBtn}
+                                onClick={e => { e.stopPropagation(); setProfileOpen(false); startEditing(p); }}
+                              >Edit billing information</button>
+                            )}
                           </div>
                         </div>
                         {i < profiles.length - 1 && <div className={styles.profilePanelDivider} />}
