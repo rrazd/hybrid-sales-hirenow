@@ -18,6 +18,7 @@ const imgLightbulb  = '/lightbulb.svg';
 const imgCaret      = '/checkout-caret.svg';
 const imgCheck      = '/billing-check.svg';
 const imgAddIcon    = '/billing-add-icon.svg';
+const imgArrowLeft  = '/arrow-left-small.svg';
 
 interface Props {
   onNavigate?: (id: string) => void;
@@ -25,16 +26,76 @@ interface Props {
   paymentTerm?: 'NET30' | 'NET60' | 'NET90';
 }
 
-const PROFILES = [
-  { id: 'alex', name: 'Alex Smith', email: 'asmith@flexis.com', address: '950 Maude Ave, Sunnyvale, United States 95032' },
-  { id: 'alexis', name: 'Alexis Doe', email: 'adoe@flexis.com', address: '1600 Amphitheatre Pkwy, Mountain View, United States 94043' },
+type Profile = {
+  id: string; name: string; email: string; address: string;
+  firstName: string; lastName: string;
+  address1: string; address2: string; city: string; state: string; postal: string;
+};
+
+const INITIAL_PROFILES: Profile[] = [
+  {
+    id: 'alex',
+    name: 'Alex Smith', email: 'asmith@flexis.com', address: '950 Maude Ave, Sunnyvale, United States 95032',
+    firstName: 'Alex', lastName: 'Smith',
+    address1: '950 Maude Ave', address2: '', city: 'Sunnyvale', state: 'California', postal: '95032',
+  },
+  {
+    id: 'alexis',
+    name: 'Alexis Doe', email: 'adoe@flexis.com', address: '1600 Amphitheatre Pkwy, Mountain View, United States 94043',
+    firstName: 'Alexis', lastName: 'Doe',
+    address1: '1600 Amphitheatre Pkwy', address2: '', city: 'Mountain View', state: 'California', postal: '94043',
+  },
 ];
 
+type FormValues = Omit<Profile, 'id' | 'name' | 'address'>;
+
 export default function CheckoutBillingProfileScreen({ onNavigate, products = [], paymentTerm = 'NET30' }: Props) {
+  const [profiles, setProfiles] = useState<Profile[]>(INITIAL_PROFILES);
   const [profileOpen, setProfileOpen] = useState(false);
   const [selectedId, setSelectedId] = useState('alex');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [isAddingNew, setIsAddingNew] = useState(false);
+  const [formValues, setFormValues] = useState<FormValues | null>(null);
 
-  const selected = PROFILES.find(p => p.id === selectedId) ?? PROFILES[0];
+  const selected = profiles.find(p => p.id === selectedId) ?? profiles[0];
+  const editing = profiles.find(p => p.id === editingId) ?? null;
+
+  const emptyForm: FormValues = { firstName: '', lastName: '', email: '', address1: '', address2: '', city: '', state: '', postal: '' };
+
+  const startEditing = (p: Profile) => {
+    setEditingId(p.id);
+    setIsAddingNew(false);
+    setFormValues({ firstName: p.firstName, lastName: p.lastName, email: p.email, address1: p.address1, address2: p.address2, city: p.city, state: p.state, postal: p.postal });
+  };
+
+  const startAdding = () => {
+    setProfileOpen(false);
+    setEditingId(null);
+    setIsAddingNew(true);
+    setFormValues(emptyForm);
+  };
+
+  const cancelForm = () => {
+    setEditingId(null);
+    setIsAddingNew(false);
+    setFormValues(null);
+  };
+
+  const saveEditing = () => {
+    if (!formValues) { cancelForm(); return; }
+    const name = `${formValues.firstName} ${formValues.lastName}`.trim();
+    const addr = [formValues.address1, formValues.city, `United States ${formValues.postal}`].filter(Boolean).join(', ');
+    if (isAddingNew) {
+      const newProfile: Profile = { id: `new-${Date.now()}`, name, address: addr, ...formValues };
+      setProfiles(prev => [...prev, newProfile]);
+    } else if (editingId) {
+      setProfiles(prev => prev.map(p => p.id !== editingId ? p : { ...p, ...formValues, name, address: addr }));
+    }
+    cancelForm();
+  };
+
+  const setField = (field: keyof FormValues, value: string) =>
+    setFormValues(prev => prev ? { ...prev, [field]: value } : prev);
 
   return (
     <div className={styles.page}>
@@ -83,27 +144,102 @@ export default function CheckoutBillingProfileScreen({ onNavigate, products = []
             {/* Billing information card — profile selected state */}
             <div className={styles.billingCard}>
               <p className={styles.billingTitle}>Provide your billing information</p>
-              <div className={styles.billingForm} style={{ marginTop: 24 }}>
 
-                {/* Closed row trigger */}
-                <div className={styles.profileDropdown} onClick={() => setProfileOpen(o => !o)} style={{ cursor: 'pointer' }}>
-                  <div className={styles.profileInfo}>
-                    <span className={styles.profileName}>{selected.name}&nbsp;•&nbsp;{selected.email}</span>
-                    <span className={styles.profileAddress}>{selected.address}</span>
-                  </div>
-                  <div className={styles.profileCaretWrap}>
-                    <img src={imgCaret} alt="" className={styles.profileCaretImg} />
+              {formValues !== null ? (
+                /* ── Edit form ───────────────────────────────── */
+                <>
+                <button
+                  className={styles.backToSavedBtn}
+                  style={{ marginTop: 24 }}
+                  onClick={cancelForm}
+                >
+                  <img src={imgArrowLeft} alt="" className={styles.backToSavedIcon} />
+                  Back to saved information
+                </button>
+                <div className={styles.billingSection} style={{ marginTop: 24 }}>
+                  <div className={styles.billingFields}>
+
+                    <div className={styles.billingRow} style={{ gap: 16 }}>
+                      <div className={styles.billingField}>
+                        <label className={styles.billingLabel}>First name</label>
+                        <input className={styles.billingInput} style={{ width: 248 }} type="text" value={formValues.firstName} onChange={e => setField('firstName', e.target.value)} />
+                      </div>
+                      <div className={styles.billingField}>
+                        <label className={styles.billingLabel}>Last name</label>
+                        <input className={styles.billingInput} style={{ width: 248 }} type="text" value={formValues.lastName} onChange={e => setField('lastName', e.target.value)} />
+                      </div>
+                    </div>
+
+                    <div className={styles.billingField}>
+                      <label className={styles.billingLabel}>Invoice recipient email</label>
+                      <input className={styles.billingInput} style={{ width: 248 }} type="email" value={formValues.email} onChange={e => setField('email', e.target.value)} />
+                    </div>
+
+                    <div className={styles.billingField}>
+                      <label className={styles.billingLabel}>Country/region</label>
+                      <div className={styles.billingSelect} style={{ width: 320 }}>
+                        <span className={styles.billingSelectValue}>United States</span>
+                        <div className={styles.billingCaretWrap}>
+                          <img src={imgCaret} alt="" className={styles.billingCaretImg} />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.billingField}>
+                      <label className={styles.billingLabel}>Address line 1</label>
+                      <input className={styles.billingInput} style={{ width: 512 }} type="text" value={formValues.address1} onChange={e => setField('address1', e.target.value)} />
+                    </div>
+
+                    <div className={styles.billingField}>
+                      <label className={styles.billingLabel}>Address line 2 (optional)</label>
+                      <input className={styles.billingInput} style={{ width: 512 }} type="text" value={formValues.address2} onChange={e => setField('address2', e.target.value)} />
+                    </div>
+
+                    <div className={styles.billingRow} style={{ gap: 12, width: 512 }}>
+                      <div className={styles.billingField} style={{ flex: 1 }}>
+                        <label className={styles.billingLabel}>City</label>
+                        <input className={styles.billingInput} style={{ width: '100%' }} type="text" value={formValues.city} onChange={e => setField('city', e.target.value)} />
+                      </div>
+                      <div className={styles.billingField} style={{ flex: 1 }}>
+                        <label className={styles.billingLabel}>State/province</label>
+                        <input className={styles.billingInput} style={{ width: '100%' }} type="text" value={formValues.state} onChange={e => setField('state', e.target.value)} />
+                      </div>
+                    </div>
+
+                    <div className={styles.billingField}>
+                      <label className={styles.billingLabel}>Postal code</label>
+                      <input className={styles.billingInput} style={{ width: 250 }} type="text" value={formValues.postal} onChange={e => setField('postal', e.target.value)} />
+                    </div>
+
+                    <button className={styles.addBtn} onClick={saveEditing}>{isAddingNew ? 'Add' : 'Save'}</button>
+
                   </div>
                 </div>
+                </>
+              ) : (
+                /* ── Dropdown selector ───────────────────────── */
+                <div className={styles.billingForm} style={{ marginTop: 24 }}>
+                <div className={styles.profileDropdownWrap}>
 
-                {/* Open panel */}
-                {profileOpen && (
+                  {/* Closed row trigger */}
+                  <div className={styles.profileDropdown} onClick={() => setProfileOpen(o => !o)} style={{ cursor: 'pointer' }}>
+                    <div className={styles.profileInfo}>
+                      <span className={styles.profileName}>{selected.name}&nbsp;•&nbsp;{selected.email}</span>
+                      <span className={styles.profileAddress}>{selected.address}</span>
+                    </div>
+                    <div className={styles.profileCaretWrap}>
+                      <img src={imgCaret} alt="" className={styles.profileCaretImg} />
+                    </div>
+                  </div>
+
+                  {/* Open panel — floats over content below */}
+                  {profileOpen && (
                   <div className={styles.profilePanel}>
 
                     {/* Header row */}
                     <div className={styles.profilePanelHeader}>
                       <span className={styles.profilePanelTitle}>Saved information</span>
-                      <button className={styles.profilePanelAddBtn}>
+                      <button className={styles.profilePanelAddBtn} onClick={startAdding}>
                         <img src={imgAddIcon} alt="" className={styles.profilePanelAddIcon} />
                         Add new billing information
                       </button>
@@ -111,7 +247,7 @@ export default function CheckoutBillingProfileScreen({ onNavigate, products = []
 
                     <div className={styles.profilePanelDivider} />
 
-                    {PROFILES.map((p, i) => (
+                    {profiles.map((p, i) => (
                       <Fragment key={p.id}>
                         <div
                           className={styles.profileOption}
@@ -130,19 +266,25 @@ export default function CheckoutBillingProfileScreen({ onNavigate, products = []
                               </div>
                               <span className={styles.profileOptionAddress}>{p.address}</span>
                             </div>
-                            <button className={styles.profileEditBtn} onClick={e => e.stopPropagation()}>Edit billing information</button>
+                            <button
+                              className={styles.profileEditBtn}
+                              onClick={e => { e.stopPropagation(); setProfileOpen(false); startEditing(p); }}
+                            >Edit billing information</button>
                           </div>
                         </div>
-                        {i < PROFILES.length - 1 && <div className={styles.profilePanelDivider} />}
+                        {i < profiles.length - 1 && <div className={styles.profilePanelDivider} />}
                       </Fragment>
                     ))}
 
                     <div className={styles.profilePanelDivider} />
 
                   </div>
-                )}
+                  )}
+
+                </div>{/* end profileDropdownWrap */}
 
               </div>
+              )}{/* end dropdown/edit conditional */}
             </div>
 
             {/* FAQ card */}

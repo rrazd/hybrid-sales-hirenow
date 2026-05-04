@@ -966,12 +966,21 @@
 }
 
 /* ─── Billing profile open dropdown panel ────────────────────── */
+.profileDropdownWrap {
+  position: relative;
+  width: 100%;
+}
+
 .profilePanel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
   background: white;
   border-radius: 0 0 12px 12px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
-  width: 100%;
   overflow: hidden;
+  z-index: 10;
 }
 
 .profilePanelHeader {
@@ -997,7 +1006,8 @@
   background: transparent;
   border: 1px solid transparent;
   border-radius: 24px;
-  padding: 7px 16px;
+  padding: 7px 16px 7px 8px;
+  margin-right: -16px;
   cursor: pointer;
   font-family: inherit;
   font-size: 14px;
@@ -1006,6 +1016,10 @@
   letter-spacing: -0.15px;
   line-height: 1.25;
   white-space: nowrap;
+}
+
+.profilePanelAddBtn:hover {
+  background: rgba(10, 102, 194, 0.08);
 }
 
 .profilePanelAddIcon {
@@ -1082,7 +1096,8 @@
   background: transparent;
   border: 1px solid transparent;
   border-radius: 16px;
-  padding: 7px 0;
+  padding: 7px 16px;
+  margin-left: -16px;
   font-size: 14px;
   font-weight: 600;
   color: #0a66c2;
@@ -1093,4 +1108,39 @@
   align-self: flex-start;
   display: flex;
   align-items: center;
+}
+
+.profileEditBtn:hover {
+  background: rgba(10, 102, 194, 0.08);
+}
+
+.backToSavedBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 7px 16px 7px 8px;
+  margin-left: -8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0a66c2;
+  letter-spacing: -0.32px;
+  line-height: 1.25;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.backToSavedBtn:hover {
+  background: rgba(10, 102, 194, 0.08);
+}
+
+.backToSavedIcon {
+  width: 13px;
+  height: 10px;
+  display: block;
+  flex-shrink: 0;
 }
