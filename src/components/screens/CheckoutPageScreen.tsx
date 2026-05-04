@@ -34,10 +34,12 @@ interface Props {
   products?: ProductRow[];
   paymentTerm?: 'NET30' | 'NET60' | 'NET90';
   checkoutLayout?: 'with-subheaders' | 'no-subheaders';
+  formBorderMode?: 'show' | 'hide';
 }
 
-export default function CheckoutPageScreen({ onNavigate, products = [], paymentTerm = 'NET30', checkoutLayout = 'with-subheaders' }: Props) {
+export default function CheckoutPageScreen({ onNavigate, products = [], paymentTerm = 'NET30', checkoutLayout = 'with-subheaders', formBorderMode = 'hide' }: Props) {
   const showSubheaders = checkoutLayout === 'with-subheaders';
+  const hideBorder = formBorderMode === 'hide';
   const [showBillingError, setShowBillingError] = useState(false);
   const [stateValue, setStateValue] = useState('');
   const [stateOpen, setStateOpen] = useState(false);
@@ -107,7 +109,7 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
                   <span className={styles.inlineErrorText}>Add billing information before continuing further.</span>
                 </div>
               )}
-              <div className={styles.billingForm} style={{ marginTop: 24 }}>
+              <div className={`${styles.billingForm}${!hideBorder ? ` ${styles.formWithBorder}` : ''}`} style={{ marginTop: 24 }}>
 
                 {/* Billing address subsection */}
                 <div className={styles.billingSection}>

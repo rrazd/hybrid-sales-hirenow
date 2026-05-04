@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { flowSteps } from '../../data/flow';
 import type { Perspective } from '../../data/flow';
 import { personas } from '../../data/personas';
-import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout, CheckoutLayout, BillingEditMode } from '../../App';
+import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout, CheckoutLayout, BillingEditMode, FormBorderMode } from '../../App';
 import styles from './ControlPanel.module.css';
 
 const imgLinkedInBadge  = '/linkedin-in21.svg';
@@ -27,6 +27,8 @@ interface ControlPanelProps {
   onCheckoutLayoutChange?: (layout: CheckoutLayout) => void;
   billingEditMode?: BillingEditMode;
   onBillingEditModeChange?: (mode: BillingEditMode) => void;
+  formBorderMode?: FormBorderMode;
+  onFormBorderModeChange?: (mode: FormBorderMode) => void;
   onReset?: () => void;
 }
 
@@ -80,6 +82,8 @@ export default function ControlPanel({
   onCheckoutLayoutChange,
   billingEditMode = 'disallow',
   onBillingEditModeChange,
+  formBorderMode = 'hide',
+  onFormBorderModeChange,
   onReset,
 }: ControlPanelProps) {
   const [stepsOpen, setStepsOpen] = useState(false);
@@ -214,6 +218,27 @@ export default function ControlPanel({
                 onClick={() => onCheckoutLayoutChange('no-subheaders')}
               >
                 No sub headers
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Form border toggle — only for step 11 */}
+        {currentStep.supportsFormBorderToggle && onFormBorderModeChange && (
+          <div className={styles.layoutSection}>
+            <p className={styles.layoutLabel}>Form border</p>
+            <div className={styles.layoutSegment}>
+              <button
+                className={`${styles.segmentBtn} ${formBorderMode === 'show' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onFormBorderModeChange('show')}
+              >
+                Show
+              </button>
+              <button
+                className={`${styles.segmentBtn} ${formBorderMode === 'hide' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onFormBorderModeChange('hide')}
+              >
+                Hide
               </button>
             </div>
           </div>

@@ -33,6 +33,7 @@ export type PaymentTerm = 'NET30' | 'NET60' | 'NET90';
 export type GlobalHeaderLayout = 'generic' | 'fsh-custom' | 'fsh-custom-2' | 'fsh-custom-3';
 export type CheckoutLayout = 'with-subheaders' | 'no-subheaders';
 export type BillingEditMode = 'allow' | 'disallow';
+export type FormBorderMode = 'show' | 'hide';
 
 // Screen registry — add new screens here as they are built
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -115,6 +116,7 @@ export default function App() {
   const [globalHeaderLayout, setGlobalHeaderLayout] = useState<GlobalHeaderLayout>('fsh-custom-3');
   const [checkoutLayout, setCheckoutLayout] = useState<CheckoutLayout>('no-subheaders');
   const [billingEditMode, setBillingEditMode] = useState<BillingEditMode>('disallow');
+  const [formBorderMode, setFormBorderMode] = useState<FormBorderMode>('hide');
 
   const hasProducts = products.length > 0;
   // Step 7 requires at least one product to continue
@@ -179,6 +181,8 @@ export default function App() {
           onCheckoutLayoutChange={setCheckoutLayout}
           billingEditMode={billingEditMode}
           onBillingEditModeChange={setBillingEditMode}
+          formBorderMode={formBorderMode}
+          onFormBorderModeChange={setFormBorderMode}
           onReset={() => {
             setFSHLayout('grouped');
             setQuoteAdvisorLayout('floating');
@@ -186,6 +190,7 @@ export default function App() {
             setGlobalHeaderLayout('fsh-custom-3');
             setCheckoutLayout('no-subheaders');
             setBillingEditMode('disallow');
+            setFormBorderMode('hide');
           }}
         />
 
@@ -216,6 +221,7 @@ export default function App() {
               globalHeaderLayout={globalHeaderLayout}
               checkoutLayout={checkoutLayout}
               billingEditMode={billingEditMode}
+              formBorderMode={formBorderMode}
             />
           ) : (
             <div className={styles.placeholder}>

@@ -13,6 +13,7 @@ export interface FlowStep {
   supportsGlobalHeaderToggle?: boolean;     // show generic vs FSH custom header toggle
   supportsCheckoutLayoutToggle?: boolean;   // show checkout subheader layout toggle
   supportsBillingEditToggle?: boolean;      // show billing edit allow/disallow toggle
+  supportsFormBorderToggle?: boolean;       // show form border show/hide toggle
 }
 
 export const flowSteps: FlowStep[] = [
@@ -119,6 +120,7 @@ export const flowSteps: FlowStep[] = [
     fidelity: 'high',
     component: 'CheckoutPageScreen',
     supportsCheckoutLayoutToggle: true,
+    supportsFormBorderToggle: true,
   },
   {
     id: 'checkout-billing-profile',

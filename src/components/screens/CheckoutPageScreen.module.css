@@ -175,6 +175,12 @@
   gap: 4px;
 }
 
+.formWithBorder {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 24px;
+}
+
 .billingSection {
   display: flex;
   flex-direction: column;
