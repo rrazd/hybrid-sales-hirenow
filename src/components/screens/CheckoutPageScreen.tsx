@@ -38,6 +38,7 @@ interface Props {
 
 export default function CheckoutPageScreen({ onNavigate, products = [], paymentTerm = 'NET30', checkoutLayout = 'with-subheaders' }: Props) {
   const showSubheaders = checkoutLayout === 'with-subheaders';
+  const [showBillingError, setShowBillingError] = useState(false);
   const [stateValue, setStateValue] = useState('');
   const [stateOpen, setStateOpen] = useState(false);
   const [stateRect, setStateRect] = useState<{ top?: number; bottom?: number; left: number; width: number } | null>(null);
@@ -97,6 +98,15 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
             {/* Billing information card */}
             <div className={styles.billingCard}>
               <p className={styles.billingTitle}>Provide your billing information</p>
+              {showBillingError && (
+                <div className={styles.inlineError}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" flex-shrink="0" style={{ flexShrink: 0, marginTop: 1 }}>
+                    <circle cx="10" cy="10" r="10" fill="#CF0007" />
+                    <rect x="5" y="9" width="10" height="2" rx="1" fill="white" />
+                  </svg>
+                  <span className={styles.inlineErrorText}>Add billing information before continuing further.</span>
+                </div>
+              )}
               <div className={styles.billingForm} style={{ marginTop: 24 }}>
 
                 {/* Billing address subsection */}
@@ -312,7 +322,7 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
 
               <button
                 className={styles.placeOrderBtn}
-                onClick={() => onNavigate?.('order-confirmation')}
+                onClick={() => setShowBillingError(true)}
               >
                 Agree and activate for $0
               </button>

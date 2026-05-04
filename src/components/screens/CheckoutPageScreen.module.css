@@ -154,6 +154,21 @@
   margin: 0;
 }
 
+.inlineError {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.inlineErrorText {
+  font-size: 14px;
+  font-weight: 400;
+  color: #cf0007;
+  line-height: 1.25;
+  letter-spacing: -0.15px;
+}
+
 .billingForm {
   display: flex;
   flex-direction: column;
