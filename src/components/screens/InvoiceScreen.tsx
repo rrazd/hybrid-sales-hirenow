@@ -58,7 +58,7 @@ function InvoicePage1({ onNavigate }: { onNavigate?: (id: string) => void }) {
       {/* Meta row 2 */}
       <div className={styles.metaRow}>
         {[
-          { label: 'Amount', value: '$3,000.00' },
+          { label: 'Amount', value: '$31,020.00' },
           { label: 'Transaction Date', value: '03/1/2025' },
           { label: 'Billing Frequency', value: 'N/A' },
           { label: 'Payment Method', value: 'N/A' },
