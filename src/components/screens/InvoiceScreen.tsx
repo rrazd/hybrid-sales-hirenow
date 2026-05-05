@@ -96,17 +96,15 @@ function InvoicePage1({ onNavigate }: { onNavigate?: (id: string) => void }) {
         <div className={styles.tableHeader}>
           <span className={styles.colItem}>Item</span>
           <span className={styles.colDesc}>Description</span>
-          <span className={styles.colRight}>Rate</span>
-          <span className={styles.colRight}>Quantity</span>
+          <span className={styles.colQty}>Quantity</span>
           <span className={styles.colRight}>Price</span>
         </div>
         <div className={styles.tableDividerThin} />
         <div className={styles.tableRow}>
           <span className={styles.colItem}>1</span>
           <span className={styles.colDesc}>Full-Service Hiring</span>
-          <span className={styles.colRight}>$2,900.00</span>
-          <span className={styles.colRight}>N/A</span>
-          <span className={styles.colRight}>$2,900.00</span>
+          <span className={styles.colQty}>2</span>
+          <span className={styles.colRight}>$30,000.00</span>
         </div>
       </div>
 
@@ -120,11 +118,11 @@ function InvoicePage1({ onNavigate }: { onNavigate?: (id: string) => void }) {
           </div>
           <div className={styles.totalsValues}>
             {[
-              ['sub', '$2,900.00'],
-              ['sgst', '$100.00'],
-              ['total', '$3,000.00'],
+              ['sub', '$30,000.00'],
+              ['sgst', '$1,020.00'],
+              ['total', '$31,020.00'],
               ['pay', '$0.00'],
-              ['bal', '$3,000.00'],
+              ['bal', '$31,020.00'],
             ].map(([key, val]) => (
               <span key={key} className={styles.totalValue}>{val}</span>
             ))}

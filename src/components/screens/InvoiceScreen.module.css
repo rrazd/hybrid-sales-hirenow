@@ -227,6 +227,14 @@
   text-align: right;
 }
 
+.colQty {
+  width: 80px;
+  flex-shrink: 0;
+  text-align: right;
+  position: relative;
+  left: -32px;
+}
+
 /* ── Totals ──────────────────────────────────────────── */
 .totals {
   display: flex;
