@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { flowSteps } from '../../data/flow';
 import type { Perspective } from '../../data/flow';
 import { personas } from '../../data/personas';
-import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout, CheckoutLayout, BillingEditMode, FormBorderMode } from '../../App';
+import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout, CheckoutLayout, BillingEditMode, FormBorderMode, MVPMode, UserImageMode } from '../../App';
 import styles from './ControlPanel.module.css';
 
 const imgLinkedInBadge  = '/linkedin-in21.svg';
@@ -29,6 +29,10 @@ interface ControlPanelProps {
   onBillingEditModeChange?: (mode: BillingEditMode) => void;
   formBorderMode?: FormBorderMode;
   onFormBorderModeChange?: (mode: FormBorderMode) => void;
+  mvpMode?: MVPMode;
+  onMVPModeChange?: (mode: MVPMode) => void;
+  userImageMode?: UserImageMode;
+  onUserImageModeChange?: (mode: UserImageMode) => void;
   onReset?: () => void;
 }
 
@@ -84,6 +88,10 @@ export default function ControlPanel({
   onBillingEditModeChange,
   formBorderMode = 'hide',
   onFormBorderModeChange,
+  mvpMode = 'ideal',
+  onMVPModeChange,
+  userImageMode = 'show',
+  onUserImageModeChange,
   onReset,
 }: ControlPanelProps) {
   const [stepsOpen, setStepsOpen] = useState(false);
@@ -170,14 +178,34 @@ export default function ControlPanel({
         </div>
 
         {/* Restore recommended settings — top of config area */}
-        {(currentStep.supportsFSHLayoutToggle || currentStep.supportsQuoteAdvisorToggle || currentStep.supportsGlobalHeaderToggle) && onReset && (
+        {(currentStep.supportsFSHLayoutToggle || currentStep.supportsQuoteAdvisorToggle || currentStep.supportsGlobalHeaderToggle || currentStep.supportsMVPToggle) && onReset && (
           <div className={styles.resetSection}>
             <button className={styles.resetBtn} onClick={onReset}>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                 <path d="M1.5 6A4.5 4.5 0 1 0 3.2 2.5M1.5 1v2h2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              Restore recommended settings
+              Restore MVP settings
             </button>
+          </div>
+        )}
+
+        {/* MVP mode toggle — steps 7 and 9 */}
+        {currentStep.supportsMVPToggle && onMVPModeChange && (
+          <div className={styles.mvpSection}>
+            <div className={styles.mvpToggleRow}>
+              <div className={styles.mvpToggleText}>
+                <span className={styles.layoutLabel}>Post MVP</span>
+                <p className={styles.mvpHint}>Adjusts default selections below</p>
+              </div>
+              <button
+                className={`${styles.mvpToggle} ${mvpMode === 'ideal' ? styles.mvpToggleOn : ''}`}
+                onClick={() => onMVPModeChange(mvpMode === 'ideal' ? 'constrained' : 'ideal')}
+                role="switch"
+                aria-checked={mvpMode === 'ideal'}
+              >
+                <span className={styles.mvpToggleThumb} />
+              </button>
+            </div>
           </div>
         )}
 
@@ -298,43 +326,24 @@ export default function ControlPanel({
           </div>
         )}
 
-        {/* Quote Advisor layout picker — only for applicable steps */}
-        {currentStep.supportsQuoteAdvisorToggle && onQuoteAdvisorLayoutChange && (
-          <div className={styles.layoutSection}>
-            <p className={styles.layoutLabel}>Quote advisor layout</p>
-            <div className={styles.layoutSegment}>
-              <button
-                className={`${styles.segmentBtn} ${quoteAdvisorLayout === 'floating' ? styles.segmentBtnActive : ''}`}
-                onClick={() => onQuoteAdvisorLayoutChange('floating')}
-              >
-                Floating right
-              </button>
-              <button
-                className={`${styles.segmentBtn} ${quoteAdvisorLayout === 'in-card' ? styles.segmentBtnActive : ''}`}
-                onClick={() => onQuoteAdvisorLayoutChange('in-card')}
-              >
-                Within card
-              </button>
-            </div>
-          </div>
-        )}
 
-        {/* Quote Advisor content toggle — only when products exist */}
-        {currentStep.supportsQuoteAdvisorToggle && hasProducts && onQuoteAdvisorContentChange && (
+
+        {/* User image toggle — only for solution-builder step */}
+        {currentStep.supportsUserImageToggle && onUserImageModeChange && (
           <div className={styles.layoutSection}>
-            <p className={styles.layoutLabel}>Quote advisor content</p>
+            <p className={styles.layoutLabel}>User image</p>
             <div className={styles.layoutSegment}>
               <button
-                className={`${styles.segmentBtn} ${!quoteAdvisorContentOn ? styles.segmentBtnActive : ''}`}
-                onClick={() => onQuoteAdvisorContentChange(false)}
+                className={`${styles.segmentBtn} ${userImageMode === 'show' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onUserImageModeChange('show')}
               >
-                Off
+                Show
               </button>
               <button
-                className={`${styles.segmentBtn} ${quoteAdvisorContentOn ? styles.segmentBtnActive : ''}`}
-                onClick={() => onQuoteAdvisorContentChange(true)}
+                className={`${styles.segmentBtn} ${userImageMode === 'hide' ? styles.segmentBtnActive : ''}`}
+                onClick={() => onUserImageModeChange('hide')}
               >
-                On
+                Hide
               </button>
             </div>
           </div>

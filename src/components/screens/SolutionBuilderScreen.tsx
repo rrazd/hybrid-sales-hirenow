@@ -7,6 +7,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Avatar, Button, Table, Tag, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import type { QuoteAdvisorLayout, FSHLayout, GlobalHeaderLayout } from '../../App';
@@ -34,6 +35,7 @@ const imgSignalSuccess = '/signal-success.svg';
 const imgCloseSmall    = '/close-small.svg';
 const imgSignalNotice  = '/signal-notice.svg';
 const imgSignalErrorSm = '/signal-error-sm.svg';
+const imgSignalError   = '/signal-error.svg';
 const imgCopyLinkIcon  = '/link-chain.svg';
 const imgToastSuccess  = '/signal-success-check.svg';
 const imgToastClose    = '/close-small.svg';
@@ -64,13 +66,17 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
             <span style={{ fontSize: 12, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.6)' }}>{row.role}</span>
           )}
           <div className={styles.feeTooltipWrap}>
-            <span className={styles.calloutLink}>
+            {row.role === 'Other roles' ? (
               <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}% fee per hire</span>
-            </span>
-            {row.role !== 'Other roles' && (
-              <div className={styles.feeTooltip}>
-                For a forecasted salary of {fmt(row.salary ?? 0)} for {row.role}, the fee per hire would be {fmt(row.feeAmount ?? 0)}.
-              </div>
+            ) : (
+              <>
+                <span className={styles.calloutLink}>
+                  <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}% fee per hire</span>
+                </span>
+                <div className={styles.feeTooltip}>
+                  For a forecasted salary of {fmt(row.salary ?? 0)} for {row.role}, the fee per hire would be {fmt(row.feeAmount ?? 0)}.
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -121,6 +127,42 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
   ];
 }
 
+function PortalTooltip({ children, content, style }: {
+  children: React.ReactNode;
+  content: React.ReactNode;
+  style?: React.CSSProperties;
+}) {
+  const [visible, setVisible] = useState(false);
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseEnter = () => {
+    if (wrapRef.current) {
+      const rect = wrapRef.current.getBoundingClientRect();
+      setCoords({ top: rect.top - 8, left: rect.left });
+    }
+    setVisible(true);
+  };
+
+  return (
+    <div
+      ref={wrapRef}
+      className={styles.feeTooltipWrap}
+      style={style}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={() => setVisible(false)}
+    >
+      {children}
+      {visible && createPortal(
+        <div className={styles.feeTooltipFixed} style={{ top: coords.top, left: coords.left }}>
+          {content}
+        </div>,
+        document.body
+      )}
+    </div>
+  );
+}
+
 function buildFSHProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: string) => void): ColumnsType<ProductRow> {
   return [
     {
@@ -141,6 +183,7 @@ function buildFSHProductColumns(onEdit: (row: ProductRow) => void, onRemove: (ke
     {
       title: 'Role',
       key: 'role',
+      width: 248,
       onCell: (row) => row.role ? {} : { colSpan: 0 },
       render: (_, row) => {
         if (!row.role) return null;
@@ -159,41 +202,49 @@ function buildFSHProductColumns(onEdit: (row: ProductRow) => void, onRemove: (ke
     },
     {
       title: (
-        <div className={styles.feeTooltipWrap}>
-          <span className={styles.calloutLink}>
+        <PortalTooltip
+          style={{ paddingLeft: 24 }}
+          content="The percentage of the hire's first year salary paid to LinkedIn."
+        >
+          <span className={styles.calloutLink} style={{ borderBottomColor: 'rgba(0,0,0,0.75)' }}>
             <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', letterSpacing: '-0.15px' }}>Fee per hire</span>
           </span>
-          <div className={styles.feeTooltip}>
-            The percentage of the hire's first year salary paid to LinkedIn.
-          </div>
-        </div>
+        </PortalTooltip>
       ),
       key: 'feePerHire',
-      width: 160,
+      width: 136,
       onCell: (row) => row.role ? {} : { colSpan: 0 },
-      render: (_, row) => row.role ? (
-        <div className={styles.feeTooltipWrap}>
-          <span className={styles.calloutLink}>
-            <span style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}%</span>
-          </span>
-          {row.role !== 'Other roles' && (
-            <div className={styles.feeTooltip}>
-              For a forecasted salary of {fmt(row.salary ?? 0)} for {row.role}, the fee per hire would be {fmt(row.feeAmount ?? 0)}.
+      render: (_, row) => {
+        if (!row.role) return null;
+        if (row.role === 'Other roles') {
+          return (
+            <div style={{ paddingLeft: 24 }}>
+              <span style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}%</span>
             </div>
-          )}
-        </div>
-      ) : null,
+          );
+        }
+        return (
+          <PortalTooltip
+            style={{ paddingLeft: 24 }}
+            content={`For a forecasted salary of ${fmt(row.salary ?? 0)} for ${row.role}, the fee per hire would be ${fmt(row.feeAmount ?? 0)}.`}
+          >
+            <span className={styles.calloutLink} style={{ borderBottomColor: 'rgba(0,0,0,0.9)' }}>
+              <span style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}%</span>
+            </span>
+          </PortalTooltip>
+        );
+      },
     },
     {
       title: 'Quantity',
       key: 'quantity',
-      width: 348,
+      width: 212,
       align: 'right',
       onCell: (row) => row.role ? {} : { colSpan: 0 },
       render: (_, row) => row.role ? (
         <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
-          <span className={styles.calloutLink}>
-            <span className={styles.calloutLinkText}>Covers all hires</span>
+          <span className={styles.calloutLink} style={{ borderBottomColor: 'rgba(0,0,0,0.9)' }}>
+            <span className={styles.calloutLinkText} style={{ color: 'rgba(0,0,0,0.9)' }}>Unlimited</span>
           </span>
           <div className={styles.feeTooltip}>Any number of hires can be made during the agreed upon term</div>
         </div>
@@ -204,8 +255,9 @@ function buildFSHProductColumns(onEdit: (row: ProductRow) => void, onRemove: (ke
       key: 'netPrice',
       width: 160,
       align: 'right',
-      onCell: (row) => row.role ? {} : { colSpan: 0 },
-      render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>$0.00 upfront</span> : null,
+      onHeaderCell: () => ({ style: { paddingRight: 16 } }),
+      onCell: (row) => row.role ? { style: { paddingRight: 16 } } : { colSpan: 0 },
+      render: (_, row) => row.role ? <span style={{ fontSize: 14, letterSpacing: '-0.15px', color: 'rgba(0,0,0,0.9)' }}>$0.00</span> : null,
     },
     {
       title: '',
@@ -244,13 +296,17 @@ function buildSepLineProductColumns(): ColumnsType<ProductRow> {
             <span style={{ fontSize: 12, letterSpacing: '-0.15px', lineHeight: 1.25, color: 'rgba(0,0,0,0.6)' }}>{row.role}</span>
           )}
           <div className={styles.feeTooltipWrap}>
-            <span className={styles.calloutLink}>
+            {row.role === 'Other roles' ? (
               <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}% fee per hire</span>
-            </span>
-            {row.role !== 'Other roles' && (
-              <div className={styles.feeTooltip}>
-                For a forecasted salary of {fmt(row.salary ?? 0)} for {row.role}, the fee per hire would be {fmt(row.feeAmount ?? 0)}.
-              </div>
+            ) : (
+              <>
+                <span className={styles.calloutLink}>
+                  <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}% fee per hire</span>
+                </span>
+                <div className={styles.feeTooltip}>
+                  For a forecasted salary of {fmt(row.salary ?? 0)} for {row.role}, the fee per hire would be {fmt(row.feeAmount ?? 0)}.
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -342,9 +398,9 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
           ) : (
             <>
               <col style={fsh1 ? { width: 220 } : undefined} />
-              <col style={{ width: fsh1 ? 140 : 188 }} />
-              {fsh1 && <col style={{ width: 200 }} />}
-              {(fsh1 || fsh2) && <col style={{ width: 160 }} />}
+              <col style={{ width: fsh1 ? 104 : 188 }} />
+              {fsh1 && <col style={{ width: 248 }} />}
+              {(fsh1 || fsh2) && <col style={fsh1 ? { width: 136 } : { width: 160 }} />}
               <col />
               {!readOnly && <col style={{ width: 160 }} />}
             </>
@@ -366,7 +422,7 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
               </th>
               <th style={{ textAlign: 'right' }}>Quantity</th>
               <th style={{ textAlign: 'right', paddingRight: 16 }}>Net price</th>
-              {!readOnly && <th style={{ textAlign: 'left', paddingLeft: 24 }}>Actions</th>}
+              {!readOnly && <th />}
             </tr>
           ) : (
             <tr>
@@ -374,7 +430,7 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
               <th style={{ textAlign: 'right' }}>Quantity</th>
               {fsh1 && <th style={{ textAlign: 'left' }}>Role</th>}
               {(fsh1 || fsh2) && (
-                <th>
+                <th style={fsh1 ? { paddingLeft: 24 } : undefined}>
                   <div className={styles.feeTooltipWrap}>
                     <span className={styles.calloutLink}>
                       <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', letterSpacing: '-0.15px' }}>Fee per hire</span>
@@ -538,7 +594,7 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
                       </div>
                     </td>
                   )}
-                  {fsh1 && <td>{renderFeeCell(p, false, true)}</td>}
+                  {fsh1 && <td style={{ paddingLeft: 24 }}>{renderFeeCell(p, false, true)}</td>}
                   {fsh2 && <td style={{ paddingTop: 10, paddingBottom: 10 }}>{renderFeeCell(p, true)}</td>}
                   <td style={{ textAlign: 'right', ...(fsh2 ? { paddingTop: 10, paddingBottom: 10 } : {}) }}>
                     {fsh2 && p.feeAmount != null && (
@@ -731,6 +787,8 @@ interface SolutionBuilderScreenProps {
   paymentTerm?: 'NET30' | 'NET60' | 'NET90';
   onPaymentTermChange?: (term: 'NET30' | 'NET60' | 'NET90') => void;
   globalHeaderLayout?: GlobalHeaderLayout;
+  userImageMode?: 'show' | 'hide';
+  mvpMode?: 'ideal' | 'constrained';
 }
 
 export default function SolutionBuilderScreen({
@@ -746,6 +804,8 @@ export default function SolutionBuilderScreen({
   paymentTerm: paymentTermProp = 'NET30',
   onPaymentTermChange,
   globalHeaderLayout = 'generic',
+  userImageMode = 'hide',
+  mvpMode = 'constrained',
 }: SolutionBuilderScreenProps) {
   // Modal / product state — each layout maintains its own products
   const [menuOpen, setMenuOpen] = useState(false);
@@ -888,6 +948,7 @@ export default function SolutionBuilderScreen({
   const [selectedRole, setSelectedRole] = useState('');
   const [findersFee, setFindersFee] = useState(String(DEFAULT_FEE_PCT));
   const [roleError, setRoleError] = useState(false);
+  const [feeError, setFeeError] = useState(false);
   const isEditingRef = useRef(false);
 
   const productColumns = useMemo(() => {
@@ -946,21 +1007,27 @@ export default function SolutionBuilderScreen({
     setGroupedRoleErrors(new Set());
     setGroupedFeeErrors(new Set());
     setMiscFeePct(String(DEFAULT_FEE_PCT));
+    setRoleError(false);
+    setFeeError(false);
   };
 
   const handleAddProduct = () => {
-    if (!selectedRole) {
-      setRoleError(true);
-    } else {
-      setRoleError(false);
-      const salary = ROLE_SALARIES[selectedRole] ?? DEFAULT_SALARY;
-      const pct = Math.max(0, parseFloat(findersFee) || 0);
-      const fee = Math.round(salary * pct / 100);
-      const row: ProductRow = { key: editingKey ?? `fsh-${Date.now()}`, role: selectedRole, feePct: pct, salary, feeAmount: fee };
-      setProducts((prev: ProductRow[]) => editingKey ? prev.map((p: ProductRow) => p.key === editingKey ? row : p) : [...prev, row]);
-      setEditingKey(null);
-      setModalOpen(false);
+    const noRole = !selectedRole;
+    const badFee = !isValidFee(findersFee);
+    if (noRole || badFee) {
+      setRoleError(noRole);
+      setFeeError(badFee);
+      return;
     }
+    setRoleError(false);
+    setFeeError(false);
+    const salary = ROLE_SALARIES[selectedRole] ?? DEFAULT_SALARY;
+    const pct = parseFloat(findersFee);
+    const fee = Math.round(salary * pct / 100);
+    const row: ProductRow = { key: editingKey ?? `fsh-${Date.now()}`, role: selectedRole, feePct: pct, salary, feeAmount: fee };
+    setProducts((prev: ProductRow[]) => editingKey ? prev.map((p: ProductRow) => p.key === editingKey ? row : p) : [...prev, row]);
+    setEditingKey(null);
+    setModalOpen(false);
   };
 
   useEffect(() => {
@@ -1026,7 +1093,7 @@ export default function SolutionBuilderScreen({
           </div>
           <div className={styles.subHeaderRight}>
             <div className={styles.crmLink}>
-              <span className={styles.crmLinkText}>HireNow CRM</span>
+              <span className={styles.crmLinkText}>{mvpMode === 'constrained' ? 'CRM' : 'HireNow CRM'}</span>
               <div className={styles.linkIconWrap}>
                 <img src={imgLinkExternal} alt="" className={styles.linkIconInner} />
               </div>
@@ -1041,7 +1108,7 @@ export default function SolutionBuilderScreen({
             {/* Hero card */}
             <div className={styles.heroCard}>
               <div className={styles.heroLeft}>
-                <img src={imgAlexHero} alt="Alex" className={styles.heroAvatar} />
+                {mvpMode === 'ideal' && <img src={imgAlexHero} alt="Alex" className={styles.heroAvatar} />}
                 <div>
                   <p className={styles.heroTitle}>{isComplete ? 'Alex Rodrigo has placed the order.' : 'Alex Rodrigo\'s checkout generated'}</p>
                   {!isComplete && <p className={styles.heroExpiry}>Expires on 02/13/2026 (in 30 days)</p>}
@@ -1230,7 +1297,7 @@ export default function SolutionBuilderScreen({
           </div>
         </div>
         <div className={styles.crmLink}>
-          <span className={styles.crmLinkText}>HireNow CRM</span>
+          <span className={styles.crmLinkText}>{mvpMode === 'constrained' ? 'CRM' : 'HireNow CRM'}</span>
           <div className={styles.linkIconWrap}>
             <img src={imgLinkExternal} alt="" className={styles.linkIconInner} />
           </div>
@@ -1247,7 +1314,7 @@ export default function SolutionBuilderScreen({
               Customer
             </Typography.Title>
             <div className={styles.customerField}>
-              <Avatar src={imgAlexAvatar} size={48} style={{ flexShrink: 0, borderRadius: '50%' }} />
+              {userImageMode === 'show' && <Avatar src={imgAlexAvatar} size={48} style={{ flexShrink: 0, borderRadius: '50%' }} />}
               <div className={styles.customerInfo}>
                 <Typography.Text style={{ fontSize: 16, fontWeight: 600, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.32px', lineHeight: 1.25, display: 'block' }}>
                   Alex Rodrigo
@@ -1280,7 +1347,14 @@ export default function SolutionBuilderScreen({
                         padding: '7px 16px',
                         height: 'auto',
                       }}
-                      onClick={() => { setGroupedRoles([{ id: `gr-${Date.now()}`, roleQuery: '', role: '', feePct: String(DEFAULT_FEE_PCT) }]); setModalOpen(true); }}
+                      onClick={() => {
+                        if (mvpMode === 'constrained' && globalHeaderLayout === 'fsh-custom') {
+                          setMenuOpen(o => !o);
+                        } else {
+                          setGroupedRoles([{ id: `gr-${Date.now()}`, roleQuery: '', role: '', feePct: String(DEFAULT_FEE_PCT) }]);
+                          setModalOpen(true);
+                        }
+                      }}
                     >
                       Add product
                     </Button>
@@ -1289,14 +1363,24 @@ export default function SolutionBuilderScreen({
                         Only one product (Full-Service Hiring) is available, and it has already been added to this quote.
                       </div>
                     )}
+                    {menuOpen && mvpMode === 'constrained' && globalHeaderLayout === 'fsh-custom' && (
+                      <div className={styles.productMenu}>
+                        <div
+                          className={styles.productMenuItem}
+                          onClick={() => { setMenuOpen(false); setModalOpen(true); }}
+                        >
+                          Full-Service Hiring
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
             </div>
             {checkoutError && products.length === 0 && (
-              <div className={styles.fieldError} style={{ marginTop: -8 }}>
-                <div className={styles.fieldErrorIcon}>
-                  <img src={imgSignalErrorSm} alt="" className={styles.fieldErrorIconImg} />
+              <div className={styles.inlineFeedbackNegative}>
+                <div className={styles.inlineFeedbackIcon}>
+                  <img src={imgSignalError} alt="" className={styles.inlineFeedbackIconImg} />
                 </div>
                 <span>Add at least one product to generate a checkout link.</span>
               </div>
@@ -1313,27 +1397,52 @@ export default function SolutionBuilderScreen({
                     Add products to start building this quote.
                   </span>
                 </div>
-                <Button
-                  className={styles.btnOutlined}
-                  style={{
-                    borderRadius: 24,
-                    fontSize: 14,
-                    fontWeight: 600,
-                    letterSpacing: '-0.15px',
-                    lineHeight: 1.25,
-                    padding: '7px 16px',
-                    height: 'auto',
-                  }}
-                  onClick={() => { setGroupedRoles([{ id: `gr-${Date.now()}`, roleQuery: '', role: '', feePct: String(DEFAULT_FEE_PCT) }]); setModalOpen(true); }}
-                >
-                  Add products
-                </Button>
+                <div className={styles.addProductWrapper} ref={menuRef}>
+                  <Button
+                    className={styles.btnOutlined}
+                    style={{
+                      borderRadius: 24,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      letterSpacing: '-0.15px',
+                      lineHeight: 1.25,
+                      padding: '7px 16px',
+                      height: 'auto',
+                    }}
+                    onClick={() => {
+                      if (mvpMode === 'constrained' && globalHeaderLayout === 'fsh-custom') {
+                        setMenuOpen(o => !o);
+                      } else {
+                        setGroupedRoles([{ id: `gr-${Date.now()}`, roleQuery: '', role: '', feePct: String(DEFAULT_FEE_PCT) }]);
+                        setModalOpen(true);
+                      }
+                    }}
+                  >
+                    Add products
+                  </Button>
+                  {menuOpen && mvpMode === 'constrained' && globalHeaderLayout === 'fsh-custom' && (
+                    <div className={styles.productMenu}>
+                      <div
+                        className={styles.productMenuItem}
+                        onClick={() => { setMenuOpen(false); setModalOpen(true); }}
+                      >
+                        Full-Service Hiring
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
               <div className={styles.tableWithGuides}>
                 {/* Vertical guide lines — span from table header top to totals bottom */}
-                <div className={`${styles.totalsGuide} ${styles.totalsGuideLeft}`} />
-                <div className={`${styles.totalsGuide} ${styles.totalsGuideRight}`} />
+                <div
+                  className={`${styles.totalsGuide} ${styles.totalsGuideLeft}`}
+                  style={fshLayout !== 'grouped' && globalHeaderLayout === 'fsh-custom' ? { right: 'calc(320 / 1116 * 100%)' } : undefined}
+                />
+                <div
+                  className={`${styles.totalsGuide} ${styles.totalsGuideRight}`}
+                  style={fshLayout !== 'grouped' && globalHeaderLayout === 'fsh-custom' ? { right: 'calc(160 / 1116 * 100%)' } : undefined}
+                />
 
                 {fshLayout === 'grouped' ? (
                   <GroupedProductTable
@@ -1357,7 +1466,10 @@ export default function SolutionBuilderScreen({
                 )}
 
                 {/* Totals block */}
-                <div className={styles.totalsOuter}>
+                <div
+                  className={styles.totalsOuter}
+                  style={fshLayout !== 'grouped' && globalHeaderLayout === 'fsh-custom' ? { paddingRight: 'calc(160 / 1116 * 100%)' } : undefined}
+                >
                   <div className={styles.totalsBlock}>
                     <div className={`${styles.totalsRow} ${styles.totalsRowGray}`}>
                       <span className={styles.totalsLabel}>Total discount (0%)</span>
@@ -1461,51 +1573,65 @@ export default function SolutionBuilderScreen({
             <div className={styles.modalBody}>
               {/* Role typeahead */}
               <div className={styles.modalField}>
-                <label className={styles.fieldLabel}>Role name</label>
-                <RoleTypeahead
-                  value={roleQuery}
-                  onChange={v => { setRoleQuery(v); if (v !== selectedRole) setSelectedRole(''); }}
-                  onSelect={role => { setSelectedRole(role); setRoleQuery(role); setRoleError(false); }}
-                  onClear={() => { setRoleQuery(''); setSelectedRole(''); }}
-                  isSelected={!!selectedRole}
-                  hasError={roleError}
-                />
-                {roleError && (
-                  <div className={styles.fieldError}>
-                    <div className={styles.fieldErrorIcon}>
-                      <img src={imgSignalErrorSm} alt="" className={styles.fieldErrorIconImg} />
+                {selectedRole === 'Other roles' ? (
+                  <>
+                    <span className={styles.groupedSummaryLabel}>Role name</span>
+                    <div className={styles.feeTooltipWrap}>
+                      <span className={styles.calloutLink}>
+                        <span className={styles.groupedSummaryValue}>Other roles</span>
+                      </span>
+                      <div className={styles.feeTooltip}>This role is included by default so the customer can add additional roles during the contract term without updating the contract.</div>
                     </div>
-                    <span>Add a role</span>
-                  </div>
+                  </>
+                ) : (
+                  <>
+                    <label className={`${styles.fieldLabel} ${roleError ? styles.fieldLabelError : ''}`}>Role name</label>
+                    <RoleTypeahead
+                      value={roleQuery}
+                      onChange={v => { setRoleQuery(v); if (v !== selectedRole) setSelectedRole(''); }}
+                      onSelect={role => { setSelectedRole(role); setRoleQuery(role); setRoleError(false); }}
+                      onClear={() => { setRoleQuery(''); setSelectedRole(''); }}
+                      isSelected={!!selectedRole}
+                      hasError={roleError}
+                    />
+                    {roleError && (
+                      <div className={styles.fieldError}>
+                        <div className={styles.fieldErrorIcon}>
+                          <img src={imgSignalErrorSm} alt="" className={styles.fieldErrorIconImg} />
+                        </div>
+                        <span>Add a role</span>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
-              {/* Finder's fee */}
+              {/* Fee per hire */}
               <div className={styles.modalField}>
-                <label className={styles.fieldLabel}>Finder's fee (% of hire's salary)</label>
-                <div className={styles.feeInputWrap}>
+                <PortalTooltip content="The percentage of the hire's first year salary paid to LinkedIn.">
+                  <span className={styles.calloutLink} style={{ borderBottomColor: 'rgba(0,0,0,0.75)' }}>
+                    <span className={styles.calloutLinkLabelText}>Fee per hire</span>
+                  </span>
+                </PortalTooltip>
+                <div className={`${styles.feeInputWrap} ${feeError ? styles.feeInputWrapError : ''}`}>
                   <input
                     type="text"
                     value={findersFee}
                     className={styles.feeInput}
-                    onChange={e => setFindersFee(e.target.value.replace(/[^0-9.]/g, ''))}
+                    onChange={e => { setFindersFee(e.target.value.replace(/[^0-9.]/g, '')); setFeeError(false); }}
                   />
                   <span className={styles.feePrefix}>%</span>
                 </div>
-                <p className={styles.fieldHelper}>Between XX% – XX%</p>
+                {feeError && (
+                  <div className={styles.fieldError}>
+                    <div className={styles.fieldErrorIcon}>
+                      <img src={imgSignalErrorSm} alt="" className={styles.fieldErrorIconImg} />
+                    </div>
+                    <span>Add a whole-number fee per hire (1–100)</span>
+                  </div>
+                )}
               </div>
 
-              {/* Info notice */}
-              <div className={styles.modalNotice}>
-                <div style={{ position: 'relative', width: 24, height: 24, flexShrink: 0, marginTop: 2 }}>
-                  <img src={imgSignalNotice} alt="" style={{ position: 'absolute', left: 3, top: 3, width: 18, height: 18, display: 'block' }} />
-                </div>
-                <Typography.Text style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25, display: 'block', minHeight: '3.75em' }}>
-                  Headcount isn't fixed, this agreement covers all hires for this role during the term.{selectedRole && (
-                    <> LinkedIn's fee per hire: <strong>{feePct}% (finder's fee) × {fmt(forecastedSalary)} (forecasted salary) = {fmt(feeAmount)}.</strong></>
-                  )}
-                </Typography.Text>
-              </div>
             </div>
 
             {/* Footer */}

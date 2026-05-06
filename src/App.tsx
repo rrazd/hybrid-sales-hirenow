@@ -34,6 +34,8 @@ export type GlobalHeaderLayout = 'generic' | 'fsh-custom' | 'fsh-custom-2' | 'fs
 export type CheckoutLayout = 'with-subheaders' | 'no-subheaders';
 export type BillingEditMode = 'allow' | 'disallow';
 export type FormBorderMode = 'show' | 'hide';
+export type MVPMode = 'ideal' | 'constrained';
+export type UserImageMode = 'show' | 'hide';
 
 // Screen registry — add new screens here as they are built
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -105,7 +107,7 @@ export default function App() {
   const [subView, setSubView] = useState<SubView>(null);
   const [panelOpen, setPanelOpen] = useState(true);
   const [quoteAdvisorLayout, setQuoteAdvisorLayout] = useState<QuoteAdvisorLayout>('floating');
-  const [fshLayout, setFSHLayout] = useState<FSHLayout>('grouped');
+  const [fshLayout, setFSHLayout] = useState<FSHLayout>('sep-line');
   const [quoteAdvisorContentOn, setQuoteAdvisorContentOn] = useState(false);
   const [products, setProducts] = useState<ProductRow[]>(() => {
     const stepId = getInitialStepId();
@@ -113,10 +115,36 @@ export default function App() {
     return stepsWithProducts.has(stepId) ? DEFAULT_PRODUCTS : [];
   });
   const [paymentTerm, setPaymentTerm] = useState<PaymentTerm>('NET30');
-  const [globalHeaderLayout, setGlobalHeaderLayout] = useState<GlobalHeaderLayout>('fsh-custom-3');
+  const [globalHeaderLayout, setGlobalHeaderLayout] = useState<GlobalHeaderLayout>('fsh-custom');
   const [checkoutLayout, setCheckoutLayout] = useState<CheckoutLayout>('no-subheaders');
   const [billingEditMode, setBillingEditMode] = useState<BillingEditMode>('disallow');
   const [formBorderMode, setFormBorderMode] = useState<FormBorderMode>('hide');
+  const [mvpMode, setMvpMode] = useState<MVPMode>('constrained');
+  const [userImageMode, setUserImageMode] = useState<UserImageMode>('hide');
+  const [mvpSnapshots, setMvpSnapshots] = useState<Record<MVPMode, {
+    fshLayout: FSHLayout;
+    globalHeaderLayout: GlobalHeaderLayout;
+    quoteAdvisorLayout: QuoteAdvisorLayout;
+    quoteAdvisorContentOn: boolean;
+    userImageMode: UserImageMode;
+  }>>({
+    ideal: { fshLayout: 'grouped', globalHeaderLayout: 'fsh-custom-3', quoteAdvisorLayout: 'floating', quoteAdvisorContentOn: false, userImageMode: 'show' },
+    constrained: { fshLayout: 'sep-line', globalHeaderLayout: 'fsh-custom', quoteAdvisorLayout: 'floating', quoteAdvisorContentOn: false, userImageMode: 'hide' },
+  });
+
+  const handleMvpModeChange = (newMode: MVPMode) => {
+    setMvpSnapshots(prev => ({
+      ...prev,
+      [mvpMode]: { fshLayout, globalHeaderLayout, quoteAdvisorLayout, quoteAdvisorContentOn, userImageMode },
+    }));
+    const next = mvpSnapshots[newMode];
+    setFSHLayout(next.fshLayout);
+    setGlobalHeaderLayout(next.globalHeaderLayout);
+    setQuoteAdvisorLayout(next.quoteAdvisorLayout);
+    setQuoteAdvisorContentOn(next.quoteAdvisorContentOn);
+    setUserImageMode(next.userImageMode);
+    setMvpMode(newMode);
+  };
 
   const hasProducts = products.length > 0;
   // Step 7 requires at least one product to continue
@@ -183,14 +211,24 @@ export default function App() {
           onBillingEditModeChange={setBillingEditMode}
           formBorderMode={formBorderMode}
           onFormBorderModeChange={setFormBorderMode}
+          mvpMode={mvpMode}
+          onMVPModeChange={handleMvpModeChange}
+          userImageMode={userImageMode}
+          onUserImageModeChange={setUserImageMode}
           onReset={() => {
-            setFSHLayout('grouped');
+            setFSHLayout('sep-line');
             setQuoteAdvisorLayout('floating');
             setQuoteAdvisorContentOn(false);
-            setGlobalHeaderLayout('fsh-custom-3');
+            setGlobalHeaderLayout('fsh-custom');
             setCheckoutLayout('no-subheaders');
             setBillingEditMode('disallow');
             setFormBorderMode('hide');
+            setMvpMode('constrained');
+            setUserImageMode('hide');
+            setMvpSnapshots({
+              ideal: { fshLayout: 'grouped', globalHeaderLayout: 'fsh-custom-3', quoteAdvisorLayout: 'floating', quoteAdvisorContentOn: false, userImageMode: 'show' },
+              constrained: { fshLayout: 'sep-line', globalHeaderLayout: 'fsh-custom', quoteAdvisorLayout: 'floating', quoteAdvisorContentOn: false, userImageMode: 'hide' },
+            });
           }}
         />
 
@@ -222,6 +260,8 @@ export default function App() {
               checkoutLayout={checkoutLayout}
               billingEditMode={billingEditMode}
               formBorderMode={formBorderMode}
+              mvpMode={mvpMode}
+              userImageMode={userImageMode}
             />
           ) : (
             <div className={styles.placeholder}>

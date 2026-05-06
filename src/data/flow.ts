@@ -14,6 +14,8 @@ export interface FlowStep {
   supportsCheckoutLayoutToggle?: boolean;   // show checkout subheader layout toggle
   supportsBillingEditToggle?: boolean;      // show billing edit allow/disallow toggle
   supportsFormBorderToggle?: boolean;       // show form border show/hide toggle
+  supportsMVPToggle?: boolean;             // show ideal vs constrained MVP toggle
+  supportsUserImageToggle?: boolean;        // show user image show/hide toggle
 }
 
 export const flowSteps: FlowStep[] = [
@@ -84,13 +86,15 @@ export const flowSteps: FlowStep[] = [
     id: 'solution-builder',
     stepNumber: 7,
     label: 'Build quote in Solution Builder (LBP)',
-    blurb: "In Solution Builder Amy can configure a tailored quote based on talking to Alex. For MVP the customer is already preselected and cannot be edited. The value is determined based on the Lead detail page she navigated here from.<br><br>To proceed please add a product and ensure no errors on page.",
+    blurb: "In Solution Builder Amy can configure a tailored quote based on talking to Alex. For MVP the customer is already preselected and cannot be edited.<br><br>To proceed please add a product and ensure no errors on page.",
     perspective: 'Amy',
     fidelity: 'high',
     component: 'SolutionBuilderScreen',
     supportsQuoteAdvisorToggle: true,
     supportsFSHLayoutToggle: true,
     supportsGlobalHeaderToggle: true,
+    supportsMVPToggle: true,
+    supportsUserImageToggle: true,
   },
   {
     id: 'solution-builder-filled',
@@ -101,6 +105,7 @@ export const flowSteps: FlowStep[] = [
     fidelity: 'high',
     component: 'SolutionBuilderScreen',
     supportsGlobalHeaderToggle: true,
+    supportsMVPToggle: true,
   },
   {
     id: 'checkout',
