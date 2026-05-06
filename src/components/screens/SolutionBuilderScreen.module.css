@@ -341,7 +341,7 @@
 
 .card :global(.ant-table-container),
 .cardReadOnly :global(.ant-table-container) {
-  border-radius: 8px;
+  border-radius: 7px;
   overflow: hidden;
 }
 

@@ -275,6 +275,21 @@ function buildFSHProductColumns(onEdit: (row: ProductRow) => void, onRemove: (ke
   ];
 }
 
+function buildFSHReadOnlyColumns(): ColumnsType<ProductRow> {
+  return buildFSHProductColumns(() => {}, () => {})
+    .filter(col => (col as { key?: string }).key !== 'actions')
+    .map(col => {
+      if ((col as { key?: string }).key === 'quantity') {
+        return {
+          ...col,
+          onHeaderCell: () => ({ style: { paddingRight: 32 } }),
+          onCell: (row: ProductRow) => row.role ? { style: { paddingRight: 32 } } : { colSpan: 0 },
+        };
+      }
+      return col;
+    });
+}
+
 function buildSepLineProductColumns(): ColumnsType<ProductRow> {
   return [
     {
@@ -1045,8 +1060,8 @@ export default function SolutionBuilderScreen({
   const forecastedSalary = ROLE_SALARIES[selectedRole] ?? DEFAULT_SALARY;
   const feePct = Math.max(0, parseFloat(findersFee) || 0);
   const feeAmount = Math.round(forecastedSalary * feePct / 100);
-  const readOnlyColumns = useMemo(() => buildReadOnlyProductColumns(), []);
   const sepLineColumns = useMemo(() => buildSepLineProductColumns(), []);
+  const fshReadOnlyColumns = useMemo(() => buildFSHReadOnlyColumns(), []);
   const isFilled = currentStepId === 'solution-builder-filled' || currentStepId === 'solution-builder-complete';
   const isComplete = currentStepId === 'solution-builder-complete';
 
@@ -1144,13 +1159,19 @@ export default function SolutionBuilderScreen({
               <section className={styles.section}>
                 <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>Products</Typography.Title>
                 <div className={styles.tableWithGuides}>
-                  <div className={`${styles.totalsGuide} ${fshLayout === 'grouped' ? styles.totalsGuideLeftGrouped : styles.totalsGuideLeft}`} />
-                  <div className={`${styles.totalsGuide} ${fshLayout === 'grouped' ? styles.totalsGuideRightGrouped : styles.totalsGuideRight}`} />
+                  <div
+                    className={`${styles.totalsGuide} ${fshLayout === 'grouped' ? styles.totalsGuideLeftGrouped : styles.totalsGuideLeft}`}
+                    style={fshLayout !== 'grouped' && globalHeaderLayout === 'fsh-custom' ? { right: 'calc(160 / 956 * 100%)' } : undefined}
+                  />
+                  <div
+                    className={`${styles.totalsGuide} ${fshLayout === 'grouped' ? styles.totalsGuideRightGrouped : styles.totalsGuideRight}`}
+                    style={fshLayout !== 'grouped' && globalHeaderLayout === 'fsh-custom' ? { right: 0 } : undefined}
+                  />
                   {fshLayout === 'grouped' ? (
                     <GroupedProductTable products={products} readOnly globalHeaderLayout={globalHeaderLayout} />
                   ) : (
                     <Table<ProductRow>
-                      columns={readOnlyColumns}
+                      columns={globalHeaderLayout === 'fsh-custom' ? fshReadOnlyColumns : sepLineColumns}
                       dataSource={products}
                       pagination={false}
                       style={{ marginTop: 0 }}
@@ -1161,7 +1182,9 @@ export default function SolutionBuilderScreen({
                       }}
                     />
                   )}
-                  <div className={`${styles.totalsOuter} ${fshLayout === 'grouped' ? styles.totalsOuterGrouped : ''}`}>
+                  <div
+                    className={`${styles.totalsOuter} ${fshLayout === 'grouped' || globalHeaderLayout === 'fsh-custom' ? styles.totalsOuterGrouped : ''}`}
+                  >
                     <div className={styles.totalsBlock}>
                       <div className={`${styles.totalsRow} ${styles.totalsRowGray}`}>
                         <span className={styles.totalsLabel}>Total discount (0%)</span>
