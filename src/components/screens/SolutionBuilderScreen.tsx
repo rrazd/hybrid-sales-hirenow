@@ -282,8 +282,22 @@ function buildFSHReadOnlyColumns(): ColumnsType<ProductRow> {
       if ((col as { key?: string }).key === 'quantity') {
         return {
           ...col,
-          onHeaderCell: () => ({ style: { paddingRight: 32 } }),
-          onCell: (row: ProductRow) => row.role ? { style: { paddingRight: 32 } } : { colSpan: 0 },
+          title: (
+            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: 64 }}>
+              <span>Quantity</span>
+            </div>
+          ),
+          onCell: (row: ProductRow) => row.role ? {} : { colSpan: 0 },
+          render: (_: unknown, row: ProductRow) => row.role ? (
+            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: 64 }}>
+              <div className={styles.feeTooltipWrap}>
+                <span className={styles.calloutLink} style={{ borderBottomColor: 'rgba(0,0,0,0.9)' }}>
+                  <span className={styles.calloutLinkText} style={{ color: 'rgba(0,0,0,0.9)' }}>Unlimited</span>
+                </span>
+                <div className={styles.feeTooltip}>Any number of hires can be made during the agreed upon term</div>
+              </div>
+            </div>
+          ) : null,
         };
       }
       return col;
@@ -435,7 +449,9 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
                   </div>
                 </div>
               </th>
-              <th style={{ textAlign: 'right' }}>Quantity</th>
+              <th style={{ textAlign: 'right', ...(readOnly ? { paddingRight: 0, overflow: 'visible', zIndex: 1 } : {}) }}>
+                {readOnly ? <span style={{ position: 'relative', left: 8 }}>Quantity</span> : 'Quantity'}
+              </th>
               <th style={{ textAlign: 'right', paddingRight: 16 }}>Net price</th>
               {!readOnly && <th />}
             </tr>
@@ -502,8 +518,8 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
                     <td style={{ textAlign: 'right', paddingRight: 16 }}>
                       {renderFeeCell(p, true)}
                     </td>
-                    <td style={{ textAlign: 'right' }}>
-                      <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
+                    <td style={{ textAlign: 'right', ...(readOnly ? { paddingRight: 0 } : {}) }}>
+                      <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end', ...(readOnly ? { position: 'relative', left: 8 } as React.CSSProperties : {}) }}>
                         <span className={styles.calloutLink} style={{ borderBottomColor: 'rgba(0,0,0,0.6)' }}>
                           <span className={styles.calloutLinkText} style={{ color: 'rgba(0,0,0,0.6)' }}>Unlimited</span>
                         </span>

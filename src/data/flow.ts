@@ -104,8 +104,6 @@ export const flowSteps: FlowStep[] = [
     perspective: 'Amy',
     fidelity: 'high',
     component: 'SolutionBuilderScreen',
-    supportsGlobalHeaderToggle: true,
-    supportsMVPToggle: true,
   },
   {
     id: 'checkout',
