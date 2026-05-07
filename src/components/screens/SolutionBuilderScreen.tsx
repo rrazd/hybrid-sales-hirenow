@@ -384,11 +384,12 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
 
   const renderFeeCell = (p: ProductRow, small = false, grey = false) => {
     const color = fsh2 ? 'rgba(0,0,0,0.9)' : (fsh3 || grey) ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.9)';
+    const valueSpan = <span style={{ fontSize: small && !fsh3 ? 12 : 14, color, letterSpacing: '-0.15px', lineHeight: 1.25 }}>{p.feePct}%</span>;
     return (
       <div className={styles.feeTooltipWrap} style={fsh3 ? { justifyContent: 'flex-end' } : undefined}>
-        <span className={styles.calloutLink}>
-          <span style={{ fontSize: small && !fsh3 ? 12 : 14, color, letterSpacing: '-0.15px', lineHeight: 1.25 }}>{p.feePct}%</span>
-        </span>
+        {p.role === 'Other roles' ? valueSpan : (
+          <span className={styles.calloutLink}>{valueSpan}</span>
+        )}
         {p.role !== 'Other roles' && (
           <div className={styles.feeTooltip}>
             For a forecasted salary of {fmt(p.salary ?? 0)} for {p.role}, the fee per hire would be {fmt(p.feeAmount ?? 0)}.
