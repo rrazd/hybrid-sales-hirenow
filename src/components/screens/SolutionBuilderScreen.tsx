@@ -991,11 +991,34 @@ export default function SolutionBuilderScreen({
       setFindersFee(String(row.feePct ?? DEFAULT_FEE_PCT));
       setModalOpen(true);
     };
-    const onRemove = (key: string) => setProducts((prev: ProductRow[]) => prev.filter((p: ProductRow) => p.key !== key));
-    return globalHeaderLayout === 'fsh-custom'
+    const onRemove = (key: string) => setProducts((prev: ProductRow[]) => {
+      const next = prev.filter((p: ProductRow) => p.key !== key);
+      if (mvpMode === 'constrained' && next.every((p: ProductRow) => p.role === 'Other roles')) return [];
+      return next;
+    });
+    const cols = globalHeaderLayout === 'fsh-custom'
       ? buildFSHProductColumns(onEdit, onRemove)
       : buildProductColumns(onEdit, onRemove);
-  }, [setProducts, globalHeaderLayout]);
+    if (mvpMode === 'constrained') {
+      return cols.map(col => {
+        if ((col as { key?: string }).key !== 'actions') return col;
+        return {
+          ...col,
+          render: (_: unknown, row: ProductRow) => row.role ? (
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
+              <button className={styles.btnTertiary} onClick={() => onEdit(row)}>Edit</button>
+              <button
+                className={styles.btnTertiary}
+                onClick={() => onRemove(row.key)}
+                style={row.role === 'Other roles' ? { visibility: 'hidden' } : undefined}
+              >Remove</button>
+            </div>
+          ) : null,
+        };
+      });
+    }
+    return cols;
+  }, [setProducts, globalHeaderLayout, mvpMode]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -1056,7 +1079,16 @@ export default function SolutionBuilderScreen({
     const pct = parseFloat(findersFee);
     const fee = Math.round(salary * pct / 100);
     const row: ProductRow = { key: editingKey ?? `fsh-${Date.now()}`, role: selectedRole, feePct: pct, salary, feeAmount: fee };
-    setProducts((prev: ProductRow[]) => editingKey ? prev.map((p: ProductRow) => p.key === editingKey ? row : p) : [...prev, row]);
+    setProducts((prev: ProductRow[]) => {
+      if (editingKey) return prev.map((p: ProductRow) => p.key === editingKey ? row : p);
+      if (mvpMode === 'constrained') {
+        const withoutMisc = prev.filter((p: ProductRow) => p.role !== 'Other roles');
+        const miscSalary = ROLE_SALARIES['Other roles'] ?? DEFAULT_SALARY;
+        const miscRow: ProductRow = { key: `fsh-misc-${Date.now()}`, role: 'Other roles', feePct: DEFAULT_FEE_PCT, salary: miscSalary, feeAmount: Math.round(miscSalary * DEFAULT_FEE_PCT / 100) };
+        return [...withoutMisc, row, miscRow];
+      }
+      return [...prev, row];
+    });
     setEditingKey(null);
     setModalOpen(false);
   };
