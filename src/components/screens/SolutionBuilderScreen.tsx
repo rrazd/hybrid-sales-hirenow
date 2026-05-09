@@ -1207,7 +1207,11 @@ export default function SolutionBuilderScreen({
               {/* Products */}
               <section className={styles.section}>
                 <Typography.Title level={2} style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>Products</Typography.Title>
-                <div className={styles.tableWithGuides}>
+                <div className={styles.tableScrollOuter}>
+                <div
+                  className={styles.tableWithGuides}
+                  style={{ minWidth: fshLayout !== 'grouped' && globalHeaderLayout === 'fsh-custom' ? 956 : 600 }}
+                >
                   <div
                     className={`${styles.totalsGuide} ${fshLayout === 'grouped' ? styles.totalsGuideLeftGrouped : styles.totalsGuideLeft}`}
                     style={fshLayout !== 'grouped' && globalHeaderLayout === 'fsh-custom' ? { right: 'calc(160 / 956 * 100%)' } : undefined}
@@ -1255,6 +1259,7 @@ export default function SolutionBuilderScreen({
                       </div>
                     </div>
                   </div>
+                </div>
                 </div>
               </section>
 
@@ -1505,7 +1510,11 @@ export default function SolutionBuilderScreen({
                 </div>
               </div>
             ) : (
-              <div className={styles.tableWithGuides}>
+              <div className={styles.tableScrollOuter}>
+              <div
+                className={styles.tableWithGuides}
+                style={{ minWidth: fshLayout !== 'grouped' && globalHeaderLayout === 'fsh-custom' ? 1116 : 700 }}
+              >
                 {/* Vertical guide lines — span from table header top to totals bottom */}
                 <div
                   className={`${styles.totalsGuide} ${styles.totalsGuideLeft}`}
@@ -1562,7 +1571,8 @@ export default function SolutionBuilderScreen({
                   </div>
                 </div>
               </div>
-            )}{/* end tableWithGuides / empty state */}
+              </div>
+            )}{/* end tableScrollOuter / tableWithGuides / empty state */}
           </section>
 
           {/* ── Section C: Billing ──────────────────────────── */}

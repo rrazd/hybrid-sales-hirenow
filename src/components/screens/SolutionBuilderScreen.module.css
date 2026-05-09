@@ -415,6 +415,11 @@
 /* ─── Section B: Totals ──────────────────────────────────────── */
 
 /* Wraps the ANT Table + totals so guide lines can span both from top to bottom */
+.tableScrollOuter {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .tableWithGuides {
   position: relative;
   display: flex;
@@ -522,6 +527,7 @@
 
 .billingRow {
   display: flex;
+  flex-wrap: wrap;
   gap: 32px;
 }
 
@@ -1859,4 +1865,27 @@
   justify-content: flex-end;
   gap: 8px;
   flex-shrink: 0;
+}
+
+/* ─── Responsive breakpoints ────────────────────────────────── */
+@media (max-width: 991px) {
+  .card {
+    padding: 20px;
+    gap: 32px;
+  }
+  .heroCard {
+    flex-wrap: wrap;
+  }
+  .heroActions {
+    flex-shrink: 1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 574px) {
+  .card {
+    padding: 12px;
+    gap: 24px;
+    border-radius: 0;
+  }
 }
