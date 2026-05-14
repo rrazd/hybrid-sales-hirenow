@@ -157,24 +157,21 @@ function InvoicePage2() {
         <div className={styles.tableHeader}>
           <span className={styles.colItem}>Item</span>
           <span className={styles.colDesc}>Description</span>
-          <span className={styles.colRight}>Rate</span>
-          <span className={styles.colRight}>Quantity</span>
+          <span className={styles.colRight} style={{ marginRight: 32 }}>Rate</span>
           <span className={styles.colRight}>Price</span>
         </div>
         <div className={styles.tableDividerThin} />
         <div className={styles.tableRowTall}>
           <span className={styles.colItem}>1</span>
           <span className={styles.colDesc}>Product Manager $100,000 (15%) –<br />Jane Smith (Apr 1, 2026)</span>
-          <span className={styles.colRight}>$15,000.00</span>
-          <span className={styles.colRight}>1</span>
+          <span className={styles.colRight} style={{ marginRight: 32 }}>$15,000.00</span>
           <span className={styles.colRight}>$15,000.00</span>
         </div>
         <div className={styles.tableDividerThin} />
         <div className={styles.tableRowTall}>
           <span className={styles.colItem}>2</span>
           <span className={styles.colDesc}>Product Manager $100,000 (15%) –<br />Val Smith (Apr 1, 2026)</span>
-          <span className={styles.colRight}>$15,000.00</span>
-          <span className={styles.colRight}>1</span>
+          <span className={styles.colRight} style={{ marginRight: 32 }}>$15,000.00</span>
           <span className={styles.colRight}>$15,000.00</span>
         </div>
         <div className={styles.tableDividerThin} />
