@@ -28,8 +28,8 @@ const PURCHASES = (roleCount: number) => [
     statusLabel: 'Active',
     statusColor: '#057642',
     roles: roleCount,
-    dateStart: 'Feb 22, 2022',
-    dateEnd: 'Feb 22, 2023',
+    dateStart: 'Nov 1, 2026',
+    dateEnd: 'Nov 1, 2027',
   },
   {
     title: 'Full-Service Hiring',
@@ -153,7 +153,7 @@ export default function AdminCenterScreen({
                 <div className={styles.purchaseDetailRow}>
                   <span className={styles.detailText}>Annual agreement (will not auto-renew)</span>
                   <img src={imgDot} alt="" className={styles.dotSep} />
-                  <span className={styles.detailText}>{p.roles} roles</span>
+                  <span className={styles.detailText}>{p.roles} or more roles</span>
                   <img src={imgDot} alt="" className={styles.dotSep} />
                   <span className={styles.detailText}>{p.dateStart}</span>
                   <div className={styles.dateDash} />
