@@ -6,6 +6,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import type { ProductRow } from './SolutionBuilderScreen';
+import OrderSummary from './OrderSummary';
 import styles from './CheckoutPageScreen.module.css';
 
 const US_STATES = [
@@ -284,52 +285,11 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
 
           {/* Right column — Order Summary */}
           <div className={styles.rightCol}>
-            <div className={styles.orderCard}>
-
-              {/* Product title + per-role subtitles */}
-              <div className={styles.orderSection}>
-                <p className={styles.orderTitle}>Full-Service Hiring</p>
-                {products.map(p => (
-                  <p key={p.key} className={styles.orderSubtitle}>{p.role ?? 'Role'} - {p.feePct ?? 0}% fee per hire</p>
-                ))}
-              </div>
-
-              {/* Due Today */}
-              <div className={styles.dueTodayRow}>
-                <span className={styles.dueTodayLabel}>Due Today</span>
-                <span className={styles.dueTodayValue}>$0</span>
-              </div>
-
-              <div className={styles.orderDivider} />
-
-              {/* Timeline bullets */}
-              <ul className={styles.timelineList}>
-                <li>Your plan starts today and services continue till <strong>Jan 1, 2027</strong>.</li>
-                <li>You will be <strong>invoiced</strong> on the hire's start date. Payment is due within <strong>{paymentTerm === 'NET30' ? 30 : paymentTerm === 'NET60' ? 60 : 90} days</strong> of the invoice date.</li>
-                <li>Your invoice will reflect the final amount due based on the agreed fee per hire, calculated as a percentage of each hired candidate's <strong>first-year salary.</strong></li>
-              </ul>
-
-              {/* Legal text */}
-              <p className={styles.legalText}>
-                By placing this order you agree to our{' '}
-                <span className={styles.legalLink}>terms of service</span>
-                {'. To ensure continued service, we\'ll store and update your payment method. Learn about '}
-                <span className={styles.legalLink}>how to cancel</span>
-                {' and our '}
-                <span className={styles.legalLink}>refund policy</span>
-                .
-              </p>
-
-              <div className={styles.orderDivider} />
-
-              <button
-                className={styles.placeOrderBtn}
-                onClick={() => setShowBillingError(true)}
-              >
-                Agree and activate for $0
-              </button>
-
-            </div>
+            <OrderSummary
+              products={products}
+              paymentTerm={paymentTerm}
+              onAgreeClick={() => setShowBillingError(true)}
+            />
           </div>
 
         </div>
