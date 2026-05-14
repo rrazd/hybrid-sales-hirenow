@@ -42,7 +42,7 @@ const imgToastClose    = '/close-small.svg';
 const imgConfirmClose  = '/close-small.svg';
 const imgAddSmall      = '/add-small.svg';
 
-export type ProductRow = { key: string; role?: string; feePct?: number; salary?: number; feeAmount?: number };
+export type ProductRow = { key: string; role?: string; feePct?: number; salary?: number; feeAmount?: number; synced?: boolean };
 
 function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: string) => void): ColumnsType<ProductRow> {
   return [
@@ -120,17 +120,21 @@ function buildProductColumns(onEdit: (row: ProductRow) => void, onRemove: (key: 
       render: (_, row) => row.role ? (
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
           <button className={styles.btnTertiary} onClick={() => onEdit(row)}>Edit</button>
-          <button className={styles.btnTertiary} onClick={() => onRemove(row.key)}>Remove</button>
+          {row.synced
+            ? <DisabledRemoveBtn />
+            : <button className={styles.btnTertiary} onClick={() => onRemove(row.key)}>Remove</button>}
         </div>
       ) : null,
     },
   ];
 }
 
-function PortalTooltip({ children, content, style }: {
+function PortalTooltip({ children, content, style, tooltipStyle, tooltipAnchor = 'left' }: {
   children: React.ReactNode;
   content: React.ReactNode;
   style?: React.CSSProperties;
+  tooltipStyle?: React.CSSProperties;
+  tooltipAnchor?: 'left' | 'right';
 }) {
   const [visible, setVisible] = useState(false);
   const [coords, setCoords] = useState({ top: 0, left: 0 });
@@ -139,10 +143,15 @@ function PortalTooltip({ children, content, style }: {
   const handleMouseEnter = () => {
     if (wrapRef.current) {
       const rect = wrapRef.current.getBoundingClientRect();
-      setCoords({ top: rect.top - 8, left: rect.left });
+      const anchorLeft = tooltipAnchor === 'right' ? rect.right : rect.left;
+      setCoords({ top: rect.top - 8, left: anchorLeft });
     }
     setVisible(true);
   };
+
+  const rightAnchorStyle: React.CSSProperties | undefined = tooltipAnchor === 'right'
+    ? { transform: 'translate(-100%, calc(-100% - 8px))' }
+    : undefined;
 
   return (
     <div
@@ -154,12 +163,36 @@ function PortalTooltip({ children, content, style }: {
     >
       {children}
       {visible && createPortal(
-        <div className={styles.feeTooltipFixed} style={{ top: coords.top, left: coords.left }}>
+        <div
+          className={styles.feeTooltipFixed}
+          style={{ top: coords.top, left: coords.left, ...rightAnchorStyle, ...tooltipStyle }}
+        >
           {content}
         </div>,
         document.body
       )}
     </div>
+  );
+}
+
+const SYNCED_REMOVE_TOOLTIP = "This row was synced from the CRM and can’t be removed here.";
+
+function DisabledRemoveBtn() {
+  return (
+    <PortalTooltip
+      content={SYNCED_REMOVE_TOOLTIP}
+      tooltipAnchor="right"
+      tooltipStyle={{ width: 200, whiteSpace: 'normal' }}
+    >
+      <button
+        type="button"
+        className={`${styles.btnTertiary} ${styles.btnTertiaryDisabled}`}
+        aria-disabled="true"
+        onClick={(e) => e.preventDefault()}
+      >
+        Remove
+      </button>
+    </PortalTooltip>
   );
 }
 
@@ -268,7 +301,9 @@ function buildFSHProductColumns(onEdit: (row: ProductRow) => void, onRemove: (ke
       render: (_, row) => row.role ? (
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
           <button className={styles.btnTertiary} onClick={() => onEdit(row)}>Edit</button>
-          <button className={styles.btnTertiary} onClick={() => onRemove(row.key)}>Remove</button>
+          {row.synced
+            ? <DisabledRemoveBtn />
+            : <button className={styles.btnTertiary} onClick={() => onRemove(row.key)}>Remove</button>}
         </div>
       ) : null,
     },
@@ -369,6 +404,7 @@ interface GroupedProductTableProps {
 }
 function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, globalHeaderLayout = 'generic' }: GroupedProductTableProps) {
   const isEmpty = products.length === 0;
+  const removeDisabled = products.some(p => p.synced);
   const fsh1 = globalHeaderLayout === 'fsh-custom';
   const fsh2 = globalHeaderLayout === 'fsh-custom-2';
   const fsh3 = globalHeaderLayout === 'fsh-custom-3';
@@ -501,7 +537,9 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
                   <td style={{ paddingLeft: 8, paddingRight: 8 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: 4 }}>
                       <button className={styles.btnTertiary} onClick={onEdit}>Edit</button>
-                      <button className={styles.btnTertiary} onClick={onRemove}>Remove</button>
+                      {removeDisabled
+                        ? <DisabledRemoveBtn />
+                        : <button className={styles.btnTertiary} onClick={onRemove}>Remove</button>}
                     </div>
                   </td>
                 )}
@@ -579,7 +617,9 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
                   <td>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
                       <button className={styles.btnTertiary} onClick={onEdit}>Edit</button>
-                      <button className={styles.btnTertiary} onClick={onRemove}>Remove</button>
+                      {removeDisabled
+                        ? <DisabledRemoveBtn />
+                        : <button className={styles.btnTertiary} onClick={onRemove}>Remove</button>}
                     </div>
                   </td>
                 )}
@@ -884,8 +924,9 @@ export default function SolutionBuilderScreen({
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Grouped modal state
-  interface GroupedRole { id: string; roleQuery: string; role: string; feePct: string; }
+  // Grouped modal state — synced/origKey are carried so originally-synced
+  // CRM rows stay synced after Edit-and-Save (i.e. their Remove button stays disabled).
+  interface GroupedRole { id: string; roleQuery: string; role: string; feePct: string; synced?: boolean; origKey?: string; }
   const [groupedRoles, setGroupedRoles] = useState<GroupedRole[]>([]);
   const [miscFeePct, setMiscFeePct] = useState(String(DEFAULT_FEE_PCT));
   const [groupedRoleErrors, setGroupedRoleErrors] = useState<Set<string>>(new Set());
@@ -927,6 +968,8 @@ export default function SolutionBuilderScreen({
       roleQuery: p.role ?? '',
       role: p.role ?? '',
       feePct: String(p.feePct ?? DEFAULT_FEE_PCT),
+      synced: p.synced,
+      origKey: p.key,
     }));
     setGroupedRoles(restored);
     setModalOpen(true);
@@ -947,13 +990,16 @@ export default function SolutionBuilderScreen({
     }
     const miscSalary = ROLE_SALARIES['Other roles'] ?? DEFAULT_SALARY;
     const miscPct = Math.max(0, parseFloat(miscFeePct) || DEFAULT_FEE_PCT);
-    const miscRow: ProductRow = { key: `fsh-misc-${Date.now()}`, role: 'Other roles', feePct: miscPct, salary: miscSalary, feeAmount: Math.round(miscSalary * miscPct / 100) };
+    const prevMisc = products[products.length - 1];
+    const miscWasSynced = prevMisc?.role === 'Other roles' ? prevMisc.synced : undefined;
+    const miscRow: ProductRow = { key: `fsh-misc-${Date.now()}`, role: 'Other roles', feePct: miscPct, salary: miscSalary, feeAmount: Math.round(miscSalary * miscPct / 100), synced: miscWasSynced || undefined };
     const addedRows: ProductRow[] = groupedRoles
       .filter(r => r.role)
       .map(r => {
         const salary = ROLE_SALARIES[r.role] ?? DEFAULT_SALARY;
         const pct = Math.max(0, parseFloat(r.feePct) || 0);
-        return { key: `fsh-${Date.now()}-${r.id}`, role: r.role, feePct: pct, salary, feeAmount: Math.round(salary * pct / 100) };
+        // Preserve key + synced status if this GroupedRole maps back to an originally-synced product
+        return { key: r.origKey ?? `fsh-${Date.now()}-${r.id}`, role: r.role, feePct: pct, salary, feeAmount: Math.round(salary * pct / 100), synced: r.synced || undefined };
       });
     setGroupedRoleErrors(new Set());
     setGroupedFeeErrors(new Set());
@@ -1008,11 +1054,14 @@ export default function SolutionBuilderScreen({
           render: (_: unknown, row: ProductRow) => row.role ? (
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
               <button className={styles.btnTertiary} onClick={() => onEdit(row)}>Edit</button>
-              <button
-                className={styles.btnTertiary}
-                onClick={() => onRemove(row.key)}
-                style={row.role === 'Other roles' ? { visibility: 'hidden' } : undefined}
-              >Remove</button>
+              {row.synced ? (
+                <DisabledRemoveBtn />
+              ) : (
+                <button
+                  className={styles.btnTertiary}
+                  onClick={() => onRemove(row.key)}
+                >Remove</button>
+              )}
             </div>
           ) : null,
         };
@@ -1081,11 +1130,12 @@ export default function SolutionBuilderScreen({
     const fee = Math.round(salary * pct / 100);
     const row: ProductRow = { key: editingKey ?? `fsh-${Date.now()}`, role: selectedRole, feePct: pct, salary, feeAmount: fee };
     setProducts((prev: ProductRow[]) => {
-      if (editingKey) return prev.map((p: ProductRow) => p.key === editingKey ? row : p);
+      if (editingKey) return prev.map((p: ProductRow) => p.key === editingKey ? { ...row, synced: p.synced } : p);
       if (mvpMode === 'constrained') {
+        const wasMiscSynced = prev.some((p: ProductRow) => p.role === 'Other roles' && p.synced);
         const withoutMisc = prev.filter((p: ProductRow) => p.role !== 'Other roles');
         const miscSalary = ROLE_SALARIES['Other roles'] ?? DEFAULT_SALARY;
-        const miscRow: ProductRow = { key: `fsh-misc-${Date.now()}`, role: 'Other roles', feePct: DEFAULT_FEE_PCT, salary: miscSalary, feeAmount: Math.round(miscSalary * DEFAULT_FEE_PCT / 100) };
+        const miscRow: ProductRow = { key: `fsh-misc-${Date.now()}`, role: 'Other roles', feePct: DEFAULT_FEE_PCT, salary: miscSalary, feeAmount: Math.round(miscSalary * DEFAULT_FEE_PCT / 100), synced: wasMiscSynced || undefined };
         return [...withoutMisc, row, miscRow];
       }
       return [...prev, row];

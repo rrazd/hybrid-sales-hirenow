@@ -671,6 +671,17 @@
   color: #004182;
 }
 
+.btnTertiaryDisabled {
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.3);
+  cursor: not-allowed;
+}
+
+.btnTertiaryDisabled:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.3);
+}
+
 .btnOutlined:hover {
   background: rgba(112, 181, 249, 0.1) !important;
   border-color: #004182 !important;

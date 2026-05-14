@@ -73,8 +73,10 @@ const linkedInTheme = {
 };
 
 // Steps that need at least one product to make sense
+// solution-builder is included so the two CRM-synced default rows appear when
+// navigating into step 7 from earlier steps. (Empty-state code is kept for posterity.)
 const STEPS_NEEDING_PRODUCTS = new Set([
-  'solution-builder-filled', 'solution-builder-complete', 'checkout', 'checkout-page', 'order-confirmation', 'adyen-checkout',
+  'solution-builder', 'solution-builder-filled', 'solution-builder-complete', 'checkout', 'checkout-page', 'order-confirmation', 'adyen-checkout',
 ]);
 
 const DEFAULT_PRODUCTS: ProductRow[] = [
@@ -84,6 +86,7 @@ const DEFAULT_PRODUCTS: ProductRow[] = [
     feePct: 15,
     salary: 97800,
     feeAmount: 14670,
+    synced: true,
   },
   {
     key: 'fsh-misc-default',
@@ -91,6 +94,7 @@ const DEFAULT_PRODUCTS: ProductRow[] = [
     feePct: 15,
     salary: 150000,
     feeAmount: 22500,
+    synced: true,
   },
 ];
 
@@ -111,8 +115,7 @@ export default function App() {
   const [quoteAdvisorContentOn, setQuoteAdvisorContentOn] = useState(false);
   const [products, setProducts] = useState<ProductRow[]>(() => {
     const stepId = getInitialStepId();
-    const stepsWithProducts = new Set([...STEPS_NEEDING_PRODUCTS, 'solution-builder']);
-    return stepsWithProducts.has(stepId) ? DEFAULT_PRODUCTS : [];
+    return STEPS_NEEDING_PRODUCTS.has(stepId) ? DEFAULT_PRODUCTS : [];
   });
   const [paymentTerm, setPaymentTerm] = useState<PaymentTerm>('NET30');
   const [globalHeaderLayout, setGlobalHeaderLayout] = useState<GlobalHeaderLayout>('fsh-custom');
