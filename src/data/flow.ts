@@ -86,7 +86,7 @@ export const flowSteps: FlowStep[] = [
     id: 'solution-builder',
     stepNumber: 7,
     label: 'Build quote in Solution Builder (LBP)',
-    blurb: "In Solution Builder Amy can configure a tailored quote based on talking to Alex. For MVP the customer is already preselected and cannot be edited.<br><br>To proceed please add a product and ensure no errors on page.",
+    blurb: "In Solution Builder Amy can configure a tailored quote based on talking to Alex. For MVP the customer is already preselected and cannot be edited.<br><br>Reps can edit the role title and fee per hire for the prepopulated LTS item, but they cannot remove that row. They can still add/edit and remove any additional custom lines outside of the LTS item that they create themselves in the quote.",
     perspective: 'Amy',
     fidelity: 'high',
     component: 'SolutionBuilderScreen',
