@@ -27,7 +27,7 @@ function InvoicePage1({ onNavigate }: { onNavigate?: (id: string) => void }) {
       {/* Header */}
       <div className={styles.header}>
         <InLogo />
-        <span className={styles.headerTitle}>Invoice from LinkedIn India Pvt Ltd</span>
+        <span className={styles.headerTitle}>Invoice from LinkedIn</span>
       </div>
 
       {/* Go to Online Checkout banner */}
@@ -60,8 +60,8 @@ function InvoicePage1({ onNavigate }: { onNavigate?: (id: string) => void }) {
         {[
           { label: 'Amount', value: '$31,020.00' },
           { label: 'Transaction Date', value: '03/1/2025' },
-          { label: 'Billing Frequency', value: 'N/A' },
-          { label: 'Payment Method', value: 'N/A' },
+          { label: 'Billing Frequency', value: 'NET30' },
+          { label: 'Payment Method', value: 'Pay by link' },
         ].map(({ label, value }) => (
           <div key={label} className={styles.metaCol}>
             <span className={styles.metaLabel}>{label}</span>
@@ -112,7 +112,7 @@ function InvoicePage1({ onNavigate }: { onNavigate?: (id: string) => void }) {
       <div className={styles.totals}>
         <div className={styles.totalsInner}>
           <div className={styles.totalsLabels}>
-            {['Subtotal:', 'SGST (3.4%):', 'Total:', 'Payment:', 'Balance:'].map(label => (
+            {['Subtotal:', 'Sales tax (3.4%):', 'Total:', 'Payment:', 'Balance:'].map(label => (
               <span key={label} className={styles.totalLabel}>{label}</span>
             ))}
           </div>
@@ -148,7 +148,7 @@ function InvoicePage2() {
       {/* Header */}
       <div className={styles.header}>
         <InLogo />
-        <span className={styles.headerTitle}>Invoice from LinkedIn India Pvt Ltd</span>
+        <span className={styles.headerTitle}>Invoice from LinkedIn</span>
       </div>
 
       {/* Table — no background, 12px top/bottom row padding */}
