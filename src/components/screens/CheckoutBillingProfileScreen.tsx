@@ -132,11 +132,23 @@ export default function CheckoutBillingProfileScreen({ onNavigate, products = []
 
             {/* Billing information card — profile selected state */}
             <div className={styles.billingCard}>
-              <p className={styles.billingTitle}>Provide your billing information</p>
+              {formValues === null && (
+                <div className={styles.billingHeaderRow}>
+                  <div className={styles.billingHeaderLeft}>
+                    <p className={styles.billingTitle}>Provide your billing information</p>
+                    <div className={styles.profileInfo} style={{ marginTop: 8 }}>
+                      <span className={styles.profileName}>{selected.name}&nbsp;•&nbsp;{selected.email}</span>
+                      <span className={styles.profileAddress}>{selected.address}</span>
+                    </div>
+                  </div>
+                  <button className={styles.profileEditBtn} onClick={() => startEditing(selected)}>Edit</button>
+                </div>
+              )}
 
               {formValues !== null ? (
                 /* ── Edit form ───────────────────────────────── */
                 <>
+                <p className={styles.billingTitle}>Provide your billing information</p>
                 <button
                   className={styles.backToSavedBtn}
                   style={{ marginTop: 24 }}
@@ -205,16 +217,7 @@ export default function CheckoutBillingProfileScreen({ onNavigate, products = []
                   </div>
                 </div>
                 </>
-              ) : (
-                /* ── Static value display ────────────────────── */
-                <div className={styles.profileStaticRow} style={{ marginTop: 8 }}>
-                  <div className={styles.profileInfo}>
-                    <span className={styles.profileName}>{selected.name}&nbsp;•&nbsp;{selected.email}</span>
-                    <span className={styles.profileAddress}>{selected.address}</span>
-                  </div>
-                  <button className={styles.profileEditBtn} onClick={() => startEditing(selected)}>Edit</button>
-                </div>
-              )}{/* end form/static conditional */}
+              ) : null}{/* end form conditional */}
             </div>
 
             {/* FAQ card */}

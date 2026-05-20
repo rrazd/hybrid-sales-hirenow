@@ -1025,10 +1025,15 @@
   flex-direction: column;
 }
 
-.profileStaticRow {
+.billingHeaderRow {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.billingHeaderLeft {
+  flex: 1;
+  min-width: 0;
 }
 
 .profileName {
@@ -1205,7 +1210,6 @@
   line-height: 1.25;
   cursor: pointer;
   font-family: inherit;
-  align-self: flex-start;
   display: flex;
   align-items: center;
 }
