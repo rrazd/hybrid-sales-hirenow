@@ -231,25 +231,10 @@ export default function CheckoutPageScreen({ onNavigate, products = [], paymentT
               <p className={styles.faqHeading}>Frequently asked questions</p>
 
               <div className={styles.faqList}>
-                {[
-                  {
-                    q: 'Will this order affect my contract end date or renewal date?',
-                    a: 'No. This order will match your current contract end date. If your contract auto-renews, it will renew at the same time.',
-                  },
-                  {
-                    q: 'When will I get access?',
-                    a: 'Access is typically granted within minutes. If you don\'t receive access within 24 hours, please contact your LinkedIn representative.',
-                  },
-                  {
-                    q: 'Can I change my payment method for this order?',
-                    a: 'No. Your payment method is tied to your main contract and can\'t be changed here. If you\'d like to change your payment method, please contact your LinkedIn representative to complete your purchase.',
-                  },
-                ].map(({ q, a }) => (
-                  <div key={q} className={styles.faqItem}>
-                    <p className={styles.faqQ}>{q}</p>
-                    <p className={styles.faqA}>{a}</p>
-                  </div>
-                ))}
+                <div className={styles.faqItem}>
+                  <p className={styles.faqQ}>Will I be charged during my free trial?</p>
+                  <p className={styles.faqA}>We will not charge you until your free trial has ended. You can cancel anytime before March 2, 2026 to avoid being charged</p>
+                </div>
               </div>
 
               <div className={styles.faqBars}>

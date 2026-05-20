@@ -108,6 +108,7 @@ export default function OrderSummary({
         <li>Your plan starts today and services continue till <strong>Jan 1, 2027</strong>.</li>
         <li>You will be <strong>invoiced</strong> on the hire's start date. Payment is due within <strong>{days} days</strong> of the invoice date.</li>
         <li>Your invoice will reflect the final amount due based on the agreed fee per hire, calculated as a percentage of each hired candidate's <strong>first-year salary.</strong></li>
+        <li>Applicable <strong>taxes will be applied</strong> to the invoice. LinkedIn may be required to charge sales tax on your order pursuant to certain state and local sales tax laws. Your order will be taxed using the applicable tax rate for your shipping address. If no tax is charged, your state and/or local government may require you to report your purchase and pay appropriate sales and/or use tax amounts to them directly. Please submit any applicable exemption certificate by creating a Ticket with our Billing Support team through our <span className={styles.legalLink}>Billing Help Center</span>.</li>
       </ul>
 
       <p className={styles.legalText}>
