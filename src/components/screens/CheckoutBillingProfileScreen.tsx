@@ -4,7 +4,7 @@
  * Fidelity: High — State after clicking "Add" on the billing form
  */
 
-import { useState, Fragment } from 'react';
+import { useState } from 'react';
 import type { ProductRow } from './SolutionBuilderScreen';
 import OrderSummary from './OrderSummary';
 import styles from './CheckoutPageScreen.module.css';
@@ -17,8 +17,6 @@ const imgAmyAvatar  = '/amy-avatar.png';
 const imgIn14       = '/linkedin-in14.svg';
 const imgLightbulb  = '/lightbulb.svg';
 const imgCaret      = '/checkout-caret.svg';
-const imgCheck      = '/billing-check.svg';
-const imgAddIcon    = '/billing-add-icon.svg';
 const imgArrowLeft  = '/arrow-left-small.svg';
 
 interface Props {
@@ -51,30 +49,19 @@ const INITIAL_PROFILES: Profile[] = [
 
 type FormValues = Omit<Profile, 'id' | 'name' | 'address'>;
 
-export default function CheckoutBillingProfileScreen({ onNavigate, products = [], paymentTerm = 'NET30', billingEditMode = 'disallow' }: Props) {
+export default function CheckoutBillingProfileScreen({ onNavigate, products = [], paymentTerm = 'NET30' }: Props) {
   const [profiles, setProfiles] = useState<Profile[]>(INITIAL_PROFILES);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState('alex');
+  const [selectedId] = useState('alex');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [formValues, setFormValues] = useState<FormValues | null>(null);
 
   const selected = profiles.find(p => p.id === selectedId) ?? profiles[0];
-  const editing = profiles.find(p => p.id === editingId) ?? null;
-
-  const emptyForm: FormValues = { firstName: '', lastName: '', email: '', address1: '', address2: '', city: '', state: '', postal: '' };
 
   const startEditing = (p: Profile) => {
     setEditingId(p.id);
     setIsAddingNew(false);
     setFormValues({ firstName: p.firstName, lastName: p.lastName, email: p.email, address1: p.address1, address2: p.address2, city: p.city, state: p.state, postal: p.postal });
-  };
-
-  const startAdding = () => {
-    setProfileOpen(false);
-    setEditingId(null);
-    setIsAddingNew(true);
-    setFormValues(emptyForm);
   };
 
   const cancelForm = () => {
@@ -219,76 +206,15 @@ export default function CheckoutBillingProfileScreen({ onNavigate, products = []
                 </div>
                 </>
               ) : (
-                /* ── Dropdown selector ───────────────────────── */
-                <div className={styles.billingForm} style={{ marginTop: 24 }}>
-                <div className={styles.profileDropdownWrap}>
-
-                  {/* Closed row trigger */}
-                  <div className={styles.profileDropdown} onClick={() => setProfileOpen(o => !o)} style={{ cursor: 'pointer' }}>
-                    <div className={styles.profileInfo}>
-                      <span className={styles.profileName}>{selected.name}&nbsp;•&nbsp;{selected.email}</span>
-                      <span className={styles.profileAddress}>{selected.address}</span>
-                    </div>
-                    <div className={styles.profileCaretWrap}>
-                      <img src={imgCaret} alt="" className={styles.profileCaretImg} />
-                    </div>
+                /* ── Static value display ────────────────────── */
+                <div className={styles.profileStaticRow} style={{ marginTop: 8 }}>
+                  <div className={styles.profileInfo}>
+                    <span className={styles.profileName}>{selected.name}&nbsp;•&nbsp;{selected.email}</span>
+                    <span className={styles.profileAddress}>{selected.address}</span>
                   </div>
-
-                  {/* Open panel — floats over content below */}
-                  {profileOpen && (
-                  <div className={styles.profilePanel}>
-
-                    {/* Header row */}
-                    <div className={styles.profilePanelHeader}>
-                      <span className={styles.profilePanelTitle}>Saved information</span>
-                      <button className={styles.profilePanelAddBtn} onClick={startAdding}>
-                        <img src={imgAddIcon} alt="" className={styles.profilePanelAddIcon} />
-                        Add new billing information
-                      </button>
-                    </div>
-
-                    <div className={styles.profilePanelDivider} />
-
-                    {profiles.map((p, i) => (
-                      <Fragment key={p.id}>
-                        <div
-                          className={styles.profileOption}
-                          onClick={() => { setSelectedId(p.id); setProfileOpen(false); }}
-                          style={{ cursor: 'pointer' }}
-                        >
-                          <div className={styles.profileCheckWrap}>
-                            {p.id === selectedId && <img src={imgCheck} alt="selected" className={styles.profileCheckImg} />}
-                          </div>
-                          <div className={styles.profileOptionInfo}>
-                            <div className={styles.profileOptionDetails}>
-                              <div className={styles.profileOptionNameRow}>
-                                <span className={styles.profileOptionName}>{p.name}</span>
-                                <span className={styles.profileOptionName}>•</span>
-                                <span className={styles.profileOptionName}>{p.email}</span>
-                              </div>
-                              <span className={styles.profileOptionAddress}>{p.address}</span>
-                            </div>
-                            {billingEditMode === 'allow' && (
-                              <button
-                                className={styles.profileEditBtn}
-                                onClick={e => { e.stopPropagation(); setProfileOpen(false); startEditing(p); }}
-                              >Edit billing information</button>
-                            )}
-                          </div>
-                        </div>
-                        {i < profiles.length - 1 && <div className={styles.profilePanelDivider} />}
-                      </Fragment>
-                    ))}
-
-                    <div className={styles.profilePanelDivider} />
-
-                  </div>
-                  )}
-
-                </div>{/* end profileDropdownWrap */}
-
-              </div>
-              )}{/* end dropdown/edit conditional */}
+                  <button className={styles.profileEditBtn} onClick={() => startEditing(selected)}>Edit</button>
+                </div>
+              )}{/* end form/static conditional */}
             </div>
 
             {/* FAQ card */}
