@@ -772,6 +772,11 @@
   font-weight: 600;
   color: #0a66c2;
   text-decoration: none;
+  cursor: pointer;
+}
+
+.legalLink:hover {
+  text-decoration: underline;
 }
 
 .placeOrderBtn {
