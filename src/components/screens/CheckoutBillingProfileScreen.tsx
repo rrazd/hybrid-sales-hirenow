@@ -178,7 +178,7 @@ export default function CheckoutBillingProfileScreen({ onNavigate, products = []
 
                     <div className={styles.billingField}>
                       <label className={styles.billingLabel}>Country/region</label>
-                      <div className={styles.billingSelect} style={{ width: 320 }}>
+                      <div className={styles.billingSelect} style={{ width: 248 }}>
                         <span className={styles.billingSelectValue}>United States</span>
                         <div className={styles.billingCaretWrap}>
                           <img src={imgCaret} alt="" className={styles.billingCaretImg} />
