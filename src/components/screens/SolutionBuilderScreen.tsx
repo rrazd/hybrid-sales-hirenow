@@ -236,7 +236,7 @@ function buildFSHProductColumns(onEdit: (row: ProductRow) => void, onRemove: (ke
     {
       title: (
         <PortalTooltip
-          style={{ paddingLeft: 24 }}
+          style={{ paddingRight: 16 }}
           content="The percentage of the hire's first year salary paid to LinkedIn."
         >
           <span className={styles.calloutLink} style={{ borderBottomColor: 'rgba(0,0,0,0.75)' }}>
@@ -246,19 +246,18 @@ function buildFSHProductColumns(onEdit: (row: ProductRow) => void, onRemove: (ke
       ),
       key: 'feePerHire',
       width: 136,
-      onCell: (row) => row.role ? {} : { colSpan: 0 },
+      align: 'right',
+      onHeaderCell: () => ({ style: { paddingRight: 16 } }),
+      onCell: (row) => row.role ? { style: { paddingRight: 16 } } : { colSpan: 0 },
       render: (_, row) => {
         if (!row.role) return null;
         if (row.role === 'Other roles') {
           return (
-            <div style={{ paddingLeft: 24 }}>
-              <span style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}%</span>
-            </div>
+            <span style={{ fontSize: 14, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{row.feePct}%</span>
           );
         }
         return (
           <PortalTooltip
-            style={{ paddingLeft: 24 }}
             content={`For a forecasted salary of ${fmt(row.salary ?? 0)} for ${row.role}, the fee per hire would be ${fmt(row.feeAmount ?? 0)}.`}
           >
             <span className={styles.calloutLink} style={{ borderBottomColor: 'rgba(0,0,0,0.9)' }}>
@@ -422,7 +421,7 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
     const color = fsh2 ? 'rgba(0,0,0,0.9)' : (fsh3 || grey) ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.9)';
     const valueSpan = <span style={{ fontSize: small && !fsh3 ? 12 : 14, color, letterSpacing: '-0.15px', lineHeight: 1.25 }}>{p.feePct}%</span>;
     return (
-      <div className={styles.feeTooltipWrap} style={fsh3 ? { justifyContent: 'flex-end' } : undefined}>
+      <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
         {p.role === 'Other roles' ? valueSpan : (
           <span className={styles.calloutLink}>{valueSpan}</span>
         )}
@@ -498,8 +497,8 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
               <th style={{ textAlign: 'right' }}>Quantity</th>
               {fsh1 && <th style={{ textAlign: 'left' }}>Role</th>}
               {(fsh1 || fsh2) && (
-                <th style={fsh1 ? { paddingLeft: 24 } : undefined}>
-                  <div className={styles.feeTooltipWrap}>
+                <th style={fsh1 ? { textAlign: 'right', paddingLeft: 24 } : { textAlign: 'right' }}>
+                  <div className={styles.feeTooltipWrap} style={{ justifyContent: 'flex-end' }}>
                     <span className={styles.calloutLink}>
                       <span style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.75)', letterSpacing: '-0.15px' }}>Fee per hire</span>
                     </span>
@@ -606,7 +605,7 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
                 {fsh1 && <td style={{ textAlign: 'left' }} />}
                 {fsh1 && <td />}
                 {fsh2 && (
-                  <td style={{ verticalAlign: 'bottom', paddingBottom: 6 }}>
+                  <td style={{ textAlign: 'right', verticalAlign: 'bottom', paddingBottom: 6 }}>
                     {firstProduct ? renderFeeCell(firstProduct, true) : null}
                   </td>
                 )}
@@ -666,8 +665,8 @@ function GroupedProductTable({ products, onEdit, onRemove, readOnly = false, glo
                       </div>
                     </td>
                   )}
-                  {fsh1 && <td style={{ paddingLeft: 24 }}>{renderFeeCell(p, false, true)}</td>}
-                  {fsh2 && <td style={{ paddingTop: 10, paddingBottom: 10 }}>{renderFeeCell(p, true)}</td>}
+                  {fsh1 && <td style={{ textAlign: 'right', paddingLeft: 24 }}>{renderFeeCell(p, false, true)}</td>}
+                  {fsh2 && <td style={{ textAlign: 'right', paddingTop: 10, paddingBottom: 10 }}>{renderFeeCell(p, true)}</td>}
                   <td style={{ textAlign: 'right', ...(fsh2 ? { paddingTop: 10, paddingBottom: 10 } : {}) }}>
                     {fsh2 && p.feeAmount != null && (
                       <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.9)', letterSpacing: '-0.15px', lineHeight: 1.25 }}>{fmtCents(p.feeAmount)}</span>
