@@ -121,13 +121,8 @@ export default function OrderConfirmationScreen({ onNavigate }: { onNavigate?: (
               <div className={styles.textInner}>
                 <p className={styles.heading}>Welcome to Full-Service Hiring!</p>
                 <p className={styles.body}>
-                  {'Thanks for choosing Full-Service Hiring, you\'ll receive a welcome email from us shortly. You can manage this agreement and billing in Admin Center.'}
+                  {'Thanks for choosing Full-Service Hiring, you\'ll receive a welcome email from us shortly.'}
                 </p>
-                <div className={styles.btnWrap}>
-                  <button className={styles.downloadBtn} onClick={() => onNavigate?.('admin-center')}>
-                    <span className={styles.downloadLabel}>Go to Admin Center</span>
-                  </button>
-                </div>
               </div>
 
               {/* Divider + More questions — 32px below button, left-aligned */}
