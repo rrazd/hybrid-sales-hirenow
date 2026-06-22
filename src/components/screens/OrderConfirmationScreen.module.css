@@ -120,6 +120,7 @@
   max-width: 100%;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
 }
 
 /* ─── Card ───────────────────────────────────────────────────── */
@@ -128,7 +129,7 @@
   border-radius: 8px;
   padding: 32px;
   width: 731px;
-  height: 455px;
+  height: auto;
   max-width: 100%;
   display: flex;
   flex-direction: column;
