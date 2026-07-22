@@ -761,11 +761,17 @@
 }
 
 .legalText {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.75);
   line-height: 1.25;
+  letter-spacing: -0.15px;
   margin: 0;
+}
+
+.legalText strong {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
 }
 
 .legalLink {

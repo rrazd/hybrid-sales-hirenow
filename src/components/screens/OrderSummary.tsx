@@ -16,7 +16,6 @@ interface Props {
   buttonLabel?: string;
   onAgreeClick?: () => void;
   defaultExpanded?: boolean;
-  salesTaxPct?: number;
 }
 
 export default function OrderSummary({
@@ -25,7 +24,6 @@ export default function OrderSummary({
   buttonLabel = 'Agree and activate for $0',
   onAgreeClick,
   defaultExpanded = true,
-  salesTaxPct = 0,
 }: Props) {
   const [expanded, setExpanded] = useState(defaultExpanded);
   const days = paymentTerm === 'NET30' ? 30 : paymentTerm === 'NET60' ? 60 : 90;
@@ -84,41 +82,12 @@ export default function OrderSummary({
           </div>
 
           <div className={styles.orderDivider} />
-
-          <div className={styles.totalsList}>
-            <div className={styles.totalRow}>
-              <span className={styles.totalLabel}>Subtotal</span>
-              <span className={styles.totalValue}>$0.00</span>
-            </div>
-            <div className={styles.totalRow}>
-              <span className={styles.totalLabel}>Sales tax ({salesTaxPct}%)</span>
-              <span className={styles.totalValue}>$0.00</span>
-            </div>
-            <div className={styles.totalRow}>
-              <span className={styles.totalLabelBold}>Order total</span>
-              <span className={styles.totalValueBold}>$0.00</span>
-            </div>
-          </div>
-
-          <div className={styles.orderDivider} />
         </>
       )}
 
-      <ul className={styles.timelineList}>
-        <li>Your plan starts today and services continue till <strong>Jan 1, 2027</strong>.</li>
-        <li>You will be <strong>invoiced</strong> on the hire's start date. Payment is due within <strong>{days} days</strong> of the invoice date.</li>
-        <li>Your invoice will reflect the final amount due based on the agreed fee per hire, calculated as a percentage of each hired candidate's <strong>first-year salary.</strong></li>
-        <li>Taxes may apply based on your location. If not charged, you may be responsible for reporting and <strong>paying tax</strong>. Submit exemption requests through the <span className={styles.legalLink}>billing Help Center</span>.</li>
-      </ul>
-
       <p className={styles.legalText}>
-        By placing this order you agree to our{' '}
-        <span className={styles.legalLink}>terms of service</span>
-        {'. To ensure continued service, we\'ll store and update your payment method. Learn about '}
-        <span className={styles.legalLink}>how to cancel</span>
-        {' and our '}
-        <span className={styles.legalLink}>refund policy</span>
-        .
+        Your plan starts today and services continue till <strong>Jan 1, 2027</strong>. You will be <strong>invoiced</strong> on the hire's start date. Payment is due within <strong>{days} days</strong> of the invoice date. Your invoice will reflect the final amount due based on the agreed fee per hire, calculated as a percentage of each hired candidate's <strong>first-year salary</strong>. Taxes may apply based on your location. If not charged, you may be responsible for reporting and <strong>paying tax</strong>. By placing this order, you agree to our{' '}
+        <span className={styles.legalLink}>terms of service</span>.
       </p>
 
       <div className={styles.orderDivider} />

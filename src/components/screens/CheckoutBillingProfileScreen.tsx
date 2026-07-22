@@ -266,7 +266,6 @@ export default function CheckoutBillingProfileScreen({ onNavigate, products = []
             <OrderSummary
               products={products}
               paymentTerm={paymentTerm}
-              salesTaxPct={2.5}
               onAgreeClick={() => onNavigate?.('order-confirmation')}
             />
           </div>
